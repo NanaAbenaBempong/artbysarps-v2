@@ -73,7 +73,7 @@ export default function Home() {
 
       <main>
         {/* ── Hero ─────────────────────────────────────────────── */}
-        <section className="bg-[#FAF8F4] min-h-screen flex flex-col justify-end px-8 pb-24 pt-32">
+        <section className="bg-[#FAF8F4] flex flex-col px-8" style={{ paddingTop: '20vh', paddingBottom: '4vh' }}>
           <div className="max-w-6xl mx-auto w-full">
             <p className="text-xs uppercase tracking-[0.25em] text-[#8C8278] mb-10">
               Product designer · painter · writer
