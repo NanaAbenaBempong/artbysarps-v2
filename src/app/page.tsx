@@ -27,22 +27,22 @@ const uxProjects = [
 const paintings = [
   {
     title: 'The Waves',
-    excerpt: 'Movement caught mid-breath — water learning to be still.',
+    excerpt: 'The calming, rushing sound of the waves. The waves that wave away the bad and wave in the good we await.',
     image: '/paintings/waves.png',
   },
   {
     title: 'Mess in the Middle',
-    excerpt: 'An honest portrait of everything that refuses to be organised.',
+    excerpt: 'Sometimes, when you are looking at everything from the centre, it looks messy, with no way in or out.',
     image: '/paintings/Mess.png',
   },
   {
     title: 'Light',
-    excerpt: 'Stripped to the essential. What survives when the noise is gone.',
+    excerpt: 'There comes a time when we must be honest with ourselves and make tough decisions.',
     image: '/paintings/light.png',
   },
   {
     title: 'Symmetry of Calm',
-    excerpt: 'Not stillness, but the pause between two opposing truths.',
+    excerpt: 'Symmetry of Calm explores balance and reflection as conditions for stillness.',
     image: '/paintings/Calm.png',
   },
 ]
