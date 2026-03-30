@@ -183,14 +183,31 @@ export default function Home() {
               {paintings.map((painting) => (
                 <div
                   key={painting.title}
-                  className="group bg-[#080C14] p-10 min-h-[260px] flex flex-col justify-end cursor-default hover:bg-[#0B1120] transition-colors duration-500"
+                  className="group relative overflow-hidden cursor-default"
+                  style={{ height: '400px' }}
                 >
-                  <h3 className="font-serif text-2xl text-[#C8D8F0] group-hover:text-[#8AAAD8] transition-colors duration-300 leading-snug">
-                    {painting.title}
-                  </h3>
-                  <p className="font-serif italic text-[#384868] text-sm mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-500 leading-relaxed max-w-xs">
-                    {painting.excerpt}
-                  </p>
+                  <Image
+                    src={painting.image}
+                    alt={painting.title}
+                    fill
+                    style={{ objectFit: 'cover' }}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                  {/* dark gradient overlay at bottom for title readability */}
+                  <div
+                    className="absolute inset-0"
+                    style={{
+                      background: 'linear-gradient(to top, rgba(4,6,14,0.85) 0%, rgba(4,6,14,0.3) 45%, transparent 100%)',
+                    }}
+                  />
+                  <div className="absolute bottom-0 left-0 right-0 p-8">
+                    <h3 className="font-serif text-2xl text-[#C8D8F0] group-hover:text-[#8AAAD8] transition-colors duration-300 leading-snug">
+                      {painting.title}
+                    </h3>
+                    <p className="font-serif italic text-[#A0B8D8] text-sm mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 leading-relaxed max-w-xs">
+                      {painting.excerpt}
+                    </p>
+                  </div>
                 </div>
               ))}
             </div>
