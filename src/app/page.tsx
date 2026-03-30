@@ -28,18 +28,22 @@ const paintings = [
   {
     title: 'The Waves',
     excerpt: 'Movement caught mid-breath — water learning to be still.',
+    image: '/paintings/waves.png',
   },
   {
     title: 'Mess in the Middle',
     excerpt: 'An honest portrait of everything that refuses to be organised.',
+    image: '/paintings/Mess.png',
   },
   {
     title: 'Light',
     excerpt: 'Stripped to the essential. What survives when the noise is gone.',
+    image: '/paintings/light.png',
   },
   {
     title: 'Symmetry of Calm',
     excerpt: 'Not stillness, but the pause between two opposing truths.',
+    image: '/paintings/Calm.png',
   },
 ]
 
