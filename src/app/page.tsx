@@ -105,9 +105,10 @@ export default function Home() {
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#E8E4E0]">
               {uxProjects.map((project) => (
-                <div
+                <Link
                   key={project.title}
-                  className="group bg-[#FAF8F4] p-10 flex flex-col justify-between min-h-[280px] cursor-pointer hover:bg-[#F0EDE8] transition-colors duration-300"
+                  href={project.href}
+                  className="group bg-[#FAF8F4] p-10 flex flex-col justify-between min-h-[280px] hover:bg-[#F0EDE8] transition-colors duration-300"
                 >
                   <div>
                     <p className="text-xs uppercase tracking-[0.2em] text-[#8C8278] mb-5">
@@ -123,7 +124,7 @@ export default function Home() {
                       View case study →
                     </span>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
