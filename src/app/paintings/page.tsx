@@ -91,13 +91,18 @@ export default function PaintingsPage() {
                         'linear-gradient(to top, rgba(4,6,14,0.9) 0%, rgba(4,6,14,0.35) 50%, transparent 100%)',
                     }}
                   />
-                  <div className="absolute bottom-0 left-0 right-0 p-8">
-                    <p className="font-serif italic text-[#A0B8D8] text-sm mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-500 leading-relaxed max-w-xs">
-                      {painting.excerpt}
-                    </p>
-                    <h2 className="font-serif text-2xl text-[#C8D8F0] group-hover:text-[#8AAAD8] transition-colors duration-300 leading-snug">
-                      {painting.title}
-                    </h2>
+                  <div className="absolute bottom-0 left-0 right-0 p-8 flex items-end justify-between gap-4">
+                    <div>
+                      <p className="font-serif italic text-[#A0B8D8] text-sm mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-500 leading-relaxed max-w-xs">
+                        {painting.excerpt}
+                      </p>
+                      <h2 className="font-serif text-2xl text-[#C8D8F0] group-hover:text-[#8AAAD8] transition-colors duration-300 leading-snug">
+                        {painting.title}
+                      </h2>
+                    </div>
+                    <span className="text-xs text-[#8AAAD8] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-300 shrink-0">
+                      View painting →
+                    </span>
                   </div>
                 </Link>
               ))}
