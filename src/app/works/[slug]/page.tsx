@@ -168,7 +168,7 @@ const caseStudies: CaseStudy[] = [
       },
     ],
     prev: null,
-    next: { slug: 'fittgrad', title: 'FittGrad' },
+    next: { slug: 'breathing-interface', title: 'The Breathing Interface' },
   },
   {
     slug: 'fittgrad',
