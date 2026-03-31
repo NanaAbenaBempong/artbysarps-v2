@@ -79,30 +79,15 @@ export default async function PaintingPage({
         <div className="flex flex-col md:flex-row">
 
           {/* ── Left: sticky image panel ──────────────────────────── */}
-          <div
-            className="relative w-full md:w-1/2 md:sticky md:top-0 md:h-screen bg-[#080C14]"
-            style={{ height: '60vw' }}
-          >
-            <div className="md:hidden relative w-full h-full">
-              <Image
-                src={painting.image}
-                alt={painting.title}
-                fill
-                style={{ objectFit: 'contain' }}
-                sizes="100vw"
-                priority
-              />
-            </div>
-            <div className="hidden md:block absolute inset-0">
-              <Image
-                src={painting.image}
-                alt={painting.title}
-                fill
-                style={{ objectFit: 'contain' }}
-                sizes="50vw"
-                priority
-              />
-            </div>
+          <div className="relative w-full h-[60vw] md:w-1/2 md:h-screen md:sticky md:top-0 bg-[#080C14]">
+            <Image
+              src={painting.image}
+              alt={painting.title}
+              fill
+              style={{ objectFit: 'contain' }}
+              sizes="(max-width: 768px) 100vw, 50vw"
+              priority
+            />
           </div>
 
           {/* ── Right: scrollable content ─────────────────────────── */}
