@@ -7,21 +7,25 @@ const uxProjects = [
     title: 'ReadNext',
     label: 'Product Design',
     year: '2025',
+    href: '/works/readnext',
   },
   {
     title: 'FittGrad',
     label: 'Product Design',
     year: '2025',
+    href: '/works/fittgrad',
   },
   {
     title: 'The Breathing Interface',
     label: 'Interaction Design',
     year: '2024',
+    href: '#',
   },
   {
     title: 'Nature in Abstraction',
     label: 'Visual Design',
     year: '2024',
+    href: '#',
   },
 ]
 
