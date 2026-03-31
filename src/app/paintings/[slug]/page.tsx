@@ -76,37 +76,33 @@ export default async function PaintingPage({
       <Nav forceDark />
 
       <main className="bg-[#080C14] min-h-screen">
-        {/* ── Hero image ──────────────────────────────────────────── */}
-        <div className="relative w-full" style={{ height: '70vh' }}>
-          <Image
-            src={painting.image}
-            alt={painting.title}
-            fill
-            style={{ objectFit: 'cover' }}
-            sizes="100vw"
-            priority
-          />
-          {/* gradual bottom fade into page bg */}
+        <div className="flex flex-col md:flex-row">
+
+          {/* ── Left: sticky image panel ──────────────────────────── */}
           <div
-            className="absolute inset-0"
-            style={{
-              background: 'linear-gradient(to top, #080C14 0%, rgba(8,12,20,0.6) 25%, rgba(8,12,20,0.15) 50%, transparent 65%)',
-            }}
-          />
-          {/* back link floated over image */}
-          <div className="absolute top-0 left-0 right-0 pt-24 px-8">
+            className="w-full md:w-1/2 md:sticky md:top-0 md:h-screen flex items-center justify-center bg-[#080C14]"
+          >
+            <div className="relative w-full h-[60vw] md:h-full">
+              <Image
+                src={painting.image}
+                alt={painting.title}
+                fill
+                style={{ objectFit: 'contain' }}
+                sizes="(max-width: 768px) 100vw, 50vw"
+                priority
+              />
+            </div>
+          </div>
+
+          {/* ── Right: scrollable content ─────────────────────────── */}
+          <div className="w-full md:w-1/2 px-8 md:px-12 pt-28 pb-32">
             <Link
               href="/paintings"
-              className="text-xs text-[#8AAAD8] hover:text-[#C8D8F0] transition-colors duration-200 uppercase tracking-widest"
+              className="text-xs text-[#8AAAD8] hover:text-[#C8D8F0] transition-colors duration-200 uppercase tracking-widest block mb-16"
             >
               ← Back to paintings
             </Link>
-          </div>
-        </div>
 
-        {/* ── Content ─────────────────────────────────────────────── */}
-        <section className="px-8 pb-32">
-          <div className="max-w-2xl mx-auto pt-12">
             <h1 className="font-serif text-4xl sm:text-5xl text-[#C8D8F0] mb-12 leading-tight">
               {painting.title}
             </h1>
@@ -137,7 +133,8 @@ export default async function PaintingPage({
               </p>
             </div>
           </div>
-        </section>
+
+        </div>
       </main>
     </>
   )
