@@ -69,9 +69,10 @@ export default function PaintingsPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#141E33]">
               {natureCollection.map((painting) => (
-                <div
+                <Link
                   key={painting.title}
-                  className="group relative overflow-hidden cursor-default"
+                  href={`/paintings/${painting.slug}`}
+                  className="group relative overflow-hidden block"
                   style={{ height: '400px' }}
                 >
                   <Image
@@ -97,7 +98,7 @@ export default function PaintingsPage() {
                       {painting.title}
                     </h2>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
