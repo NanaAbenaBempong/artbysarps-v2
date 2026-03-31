@@ -43,13 +43,13 @@ export default function Nav({ forceDark = false }: { forceDark?: boolean }) {
           <Image
             src={
               isDark
-                ? '/Transparent Logo/Logo - White LogoMark.png'
-                : '/Transparent Logo/Logo - Black LogoMark.png'
+                ? '/Transparent Logo/Logo - White LogoMark (2).png'
+                : '/Transparent Logo/Logo - Black LogoMark (2).png'
             }
             alt="artbysarps"
-            height={40}
-            width={150}
-            style={{ height: '40px', width: 'auto' }}
+            height={48}
+            width={180}
+            style={{ height: '48px', width: 'auto' }}
             priority
           />
         </Link>
