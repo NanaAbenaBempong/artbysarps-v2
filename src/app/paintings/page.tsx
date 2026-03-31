@@ -73,15 +73,14 @@ export default function PaintingsPage() {
                   key={painting.title}
                   href={`/paintings/${painting.slug}`}
                   className="group relative overflow-hidden block cursor-pointer"
-                  style={{ height: '400px', transition: 'transform 0.4s ease' }}
-                  onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.02)')}
-                  onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
+                  style={{ height: '400px' }}
                 >
                   <Image
                     src={painting.image}
                     alt={painting.title}
                     fill
-                    style={{ objectFit: 'cover' }}
+                    style={{ objectFit: 'cover', transition: 'transform 0.5s ease' }}
+                    className="group-hover:scale-[1.02]"
                     sizes="(max-width: 768px) 100vw, 50vw"
                   />
                   {/* dark gradient for text legibility */}
