@@ -118,6 +118,20 @@ export default function Home() {
                   href={project.href}
                   className="group bg-[#FAF8F4] p-10 flex flex-col justify-between min-h-[280px] hover:bg-[#F0EDE8] transition-colors duration-300"
                 >
+                  {/* Thumbnail */}
+                  {project.thumbnail ? (
+                    <div className="relative w-full mb-6 overflow-hidden" style={{ height: '200px', borderRadius: '8px' }}>
+                      <Image
+                        src={project.thumbnail}
+                        alt={project.title}
+                        fill
+                        style={{ objectFit: 'cover' }}
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                      />
+                    </div>
+                  ) : (
+                    <div className="w-full mb-6" style={{ height: '200px', borderRadius: '8px', backgroundColor: project.thumbnailColor ?? undefined }} />
+                  )}
                   <div>
                     <p className="text-xs uppercase tracking-[0.2em] text-[#8C8278] mb-5">
                       {project.label}
