@@ -130,7 +130,7 @@ export default function BreathingInterfacePage() {
         <div className="max-w-[800px] mx-auto px-8 mb-10">
           <div className="relative w-full overflow-hidden" style={{ borderRadius: '12px', height: '420px' }}>
             <Image
-              src="/works/breathing-interface/The_Breathing_Interface_1-1920x910 (4).png"
+              src="/works/breathing_interface/The Breathing Interface@1-1920x910 (4).png"
               alt="The Breathing Interface motion study"
               fill
               style={{ objectFit: 'cover' }}
