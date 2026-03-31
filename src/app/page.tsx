@@ -212,9 +212,6 @@ export default function Home() {
                 </div>
               ))}
             </div>
-          </div>
-        </section>
-
             <Link
               href="/paintings"
               className="text-xs text-[#8AAAD8] hover:text-[#C8D8F0] transition-colors duration-200 uppercase tracking-widest w-fit"
