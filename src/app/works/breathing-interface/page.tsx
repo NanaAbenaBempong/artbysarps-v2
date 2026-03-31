@@ -53,7 +53,7 @@ export default function BreathingInterfacePage() {
         <div className="max-w-[800px] mx-auto px-8 mb-24">
           <div className="relative w-full overflow-hidden" style={{ borderRadius: '12px', height: '480px' }}>
             <Image
-              src="/works/breathing-interface/The_Breathing_Interface_Hero.png"
+              src="/works/breathing_interface/The Breathing Interface_Hero.png"
               alt="The Breathing Interface hero"
               fill
               style={{ objectFit: 'cover' }}
