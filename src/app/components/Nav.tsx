@@ -47,9 +47,9 @@ export default function Nav({ forceDark = false }: { forceDark?: boolean }) {
                 : '/Transparent Logo/Logo - Black LogoMark.png'
             }
             alt="artbysarps"
-            height={32}
-            width={120}
-            style={{ height: '32px', width: 'auto' }}
+            height={40}
+            width={150}
+            style={{ height: '40px', width: 'auto' }}
             priority
           />
         </Link>
