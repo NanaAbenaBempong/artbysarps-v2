@@ -180,7 +180,7 @@ export default function Home() {
             <p className="text-xs uppercase tracking-[0.25em] text-[#384868] mb-12">
               Paintings
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#141E33]">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#141E33] mb-10">
               {paintings.map((painting) => (
                 <div
                   key={painting.title}
