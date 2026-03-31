@@ -12,6 +12,7 @@ const links = [
 
 export default function Nav({ forceDark = false }: { forceDark?: boolean }) {
   const [scrollDark, setScrollDark] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
     if (forceDark) return
@@ -19,7 +20,6 @@ export default function Nav({ forceDark = false }: { forceDark?: boolean }) {
       const zone = document.getElementById('transition-zone')
       if (!zone) return
       const rect = zone.getBoundingClientRect()
-      // Go dark when the middle of the transition zone crosses the nav
       setScrollDark(rect.top + rect.height / 2 <= 72)
     }
 
@@ -28,47 +28,98 @@ export default function Nav({ forceDark = false }: { forceDark?: boolean }) {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [forceDark])
 
+  // Lock body scroll when menu is open
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [menuOpen])
+
   const isDark = forceDark || scrollDark
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-700 ${
-        isDark
-          ? 'bg-[#080C14] border-b border-[#0D1525]'
-          : 'bg-[#FAF8F4] border-b border-[#EDE9E4]'
-      }`}
-    >
-      <div className="max-w-6xl mx-auto px-8 py-5 flex items-center justify-between">
-        <Link href="/" className="flex items-center">
-          <Image
-            src={
-              isDark
-                ? '/Transparent Logo/Logo - White LogoMark (2).png'
-                : '/Transparent Logo/Logo - Black LogoMark (2).png'
-            }
-            alt="artbysarps"
-            height={48}
-            width={180}
-            style={{ height: '48px', width: 'auto' }}
-            priority
-          />
-        </Link>
-        <div className="flex items-center gap-8">
+    <>
+      <nav
+        className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-700 ${
+          isDark
+            ? 'bg-[#080C14] border-b border-[#0D1525]'
+            : 'bg-[#FAF8F4] border-b border-[#EDE9E4]'
+        }`}
+      >
+        <div className="max-w-6xl mx-auto px-8 py-5 flex items-center justify-between">
+          <Link href="/" className="flex items-center">
+            <Image
+              src={
+                isDark
+                  ? '/Transparent Logo/Logo - White LogoMark (2).png'
+                  : '/Transparent Logo/Logo - Black LogoMark (2).png'
+              }
+              alt="artbysarps"
+              height={48}
+              width={180}
+              style={{ height: '48px', width: 'auto' }}
+              priority
+            />
+          </Link>
+
+          {/* Desktop links */}
+          <div className="hidden md:flex items-center gap-8">
+            {links.map(({ label, href }) => (
+              <a
+                key={label}
+                href={href}
+                className={`text-xs uppercase tracking-widest transition-colors duration-700 ${
+                  isDark
+                    ? 'text-[#8AAAD8] hover:text-[#C8D8F0]'
+                    : 'text-[#8C8278] hover:text-[#2C2820]'
+                }`}
+              >
+                {label}
+              </a>
+            ))}
+          </div>
+
+          {/* Hamburger button — mobile only */}
+          <button
+            className="md:hidden flex flex-col justify-center gap-[5px] w-6 h-6"
+            onClick={() => setMenuOpen(true)}
+            aria-label="Open menu"
+          >
+            <span className={`block h-px w-full transition-colors duration-700 ${isDark ? 'bg-[#8AAAD8]' : 'bg-[#8C8278]'}`} />
+            <span className={`block h-px w-full transition-colors duration-700 ${isDark ? 'bg-[#8AAAD8]' : 'bg-[#8C8278]'}`} />
+            <span className={`block h-px w-full transition-colors duration-700 ${isDark ? 'bg-[#8AAAD8]' : 'bg-[#8C8278]'}`} />
+          </button>
+        </div>
+      </nav>
+
+      {/* Mobile full-screen overlay menu */}
+      <div
+        className={`fixed inset-0 z-[60] bg-[#080C14] flex flex-col items-center justify-center transition-opacity duration-300 md:hidden ${
+          menuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
+        onClick={() => setMenuOpen(false)}
+      >
+        {/* Close button */}
+        <button
+          className="absolute top-6 right-8 text-[#384868] hover:text-[#C8D8F0] transition-colors duration-200 text-2xl leading-none"
+          onClick={() => setMenuOpen(false)}
+          aria-label="Close menu"
+        >
+          ✕
+        </button>
+
+        <nav className="flex flex-col items-center gap-10" onClick={e => e.stopPropagation()}>
           {links.map(({ label, href }) => (
             <a
               key={label}
               href={href}
-              className={`text-xs uppercase tracking-widest transition-colors duration-700 ${
-                isDark
-                  ? 'text-[#8AAAD8] hover:text-[#C8D8F0]'
-                  : 'text-[#8C8278] hover:text-[#2C2820]'
-              }`}
+              className="font-serif text-4xl text-[#C8D8F0] hover:text-[#8AAAD8] transition-colors duration-200"
+              onClick={() => setMenuOpen(false)}
             >
               {label}
             </a>
           ))}
-        </div>
+        </nav>
       </div>
-    </nav>
+    </>
   )
 }
