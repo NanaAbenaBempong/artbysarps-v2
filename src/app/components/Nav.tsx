@@ -39,14 +39,20 @@ export default function Nav({ forceDark = false }: { forceDark?: boolean }) {
       }`}
     >
       <div className="max-w-6xl mx-auto px-8 py-5 flex items-center justify-between">
-        <a
-          href="#"
-          className={`font-serif text-lg tracking-tight transition-colors duration-700 ${
-            isDark ? 'text-[#C8D8F0]' : 'text-[#2C2820]'
-          }`}
-        >
-          artbysarps
-        </a>
+        <Link href="/" className="flex items-center">
+          <Image
+            src={
+              isDark
+                ? '/Transparent Logo/Logo - White LogoMark.png'
+                : '/Transparent Logo/Logo - Black LogoMark.png'
+            }
+            alt="artbysarps"
+            height={32}
+            width={120}
+            style={{ height: '32px', width: 'auto' }}
+            priority
+          />
+        </Link>
         <div className="flex items-center gap-8">
           {links.map(({ label, href }) => (
             <a
