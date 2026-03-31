@@ -215,6 +215,15 @@ export default function Home() {
           </div>
         </section>
 
+            <Link
+              href="/paintings"
+              className="text-xs text-[#8AAAD8] hover:text-[#C8D8F0] transition-colors duration-200 uppercase tracking-widest w-fit"
+            >
+              View all paintings →
+            </Link>
+          </div>
+        </section>
+
         {/* ── Fiction ───────────────────────────────────────────── */}
         <section id="writing" className="bg-[#080C14] px-8 py-24">
           <div className="max-w-6xl mx-auto border-t border-[#0D1525] pt-24">
