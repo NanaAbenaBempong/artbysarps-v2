@@ -8,22 +8,25 @@ const links = [
   { label: 'Writing', href: '#writing' },
 ]
 
-export default function Nav() {
-  const [isDark, setIsDark] = useState(false)
+export default function Nav({ forceDark = false }: { forceDark?: boolean }) {
+  const [scrollDark, setScrollDark] = useState(false)
 
   useEffect(() => {
+    if (forceDark) return
     const handleScroll = () => {
       const zone = document.getElementById('transition-zone')
       if (!zone) return
       const rect = zone.getBoundingClientRect()
       // Go dark when the middle of the transition zone crosses the nav
-      setIsDark(rect.top + rect.height / 2 <= 72)
+      setScrollDark(rect.top + rect.height / 2 <= 72)
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true })
     handleScroll()
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+  }, [forceDark])
+
+  const isDark = forceDark || scrollDark
 
   return (
     <nav
