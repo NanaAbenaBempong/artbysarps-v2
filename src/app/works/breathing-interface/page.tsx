@@ -148,7 +148,7 @@ export default function BreathingInterfacePage() {
             playsInline
             style={{ width: '100%', borderRadius: '12px', display: 'block' }}
           >
-            <source src="/works/breathing-interface/Breathing.m4v" type="video/mp4" />
+            <source src="/works/breathing_interface/Breathing.m4v" type="video/mp4" />
           </video>
           <p className="text-xs uppercase tracking-[0.2em] text-[#8C8278] mt-4">
             A looping breathing animation designed to be experienced rather than completed.
