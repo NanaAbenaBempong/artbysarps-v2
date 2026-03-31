@@ -167,8 +167,8 @@ export default function BreathingInterfacePage() {
         <div className="max-w-[800px] mx-auto px-8 mb-20">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {[
-              '/works/breathing-interface/The_Breathing_Interface_1-1920x910 (6).png',
-              '/works/breathing-interface/The_Breathing_Interface_1-1920x910.png',
+              '/works/breathing_interface/The Breathing Interface@1-1920x910 (6).png',
+              '/works/breathing_interface/The Breathing Interface@1-1920x910.png',
             ].map((src, i) => (
               <div
                 key={i}
