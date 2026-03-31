@@ -1,39 +1,47 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import Nav from '../components/Nav'
 import UnrestrainedGallery from '../components/UnrestrainedGallery'
 
 const natureCollection = [
   {
+    slug: 'the-wood',
     title: 'The Wood',
     image: '/paintings/Wood.png',
     excerpt: 'Out of the mundane and ordinary things can come the most beautiful creation.',
   },
   {
+    slug: 'the-waves',
     title: 'The Waves',
     image: '/paintings/waves.png',
     excerpt: 'The waves that wave away the bad and wave in the good we await.',
   },
   {
+    slug: 'mess-in-the-middle',
     title: 'Mess in the Middle',
     image: '/paintings/Mess.png',
     excerpt: 'Sometimes, when you are looking at everything from the centre, it looks messy.',
   },
   {
+    slug: 'light',
     title: 'Light',
     image: '/paintings/light.png',
     excerpt: 'There comes a time when we must be honest with ourselves and make tough decisions.',
   },
   {
+    slug: 'fresh-start',
     title: 'Fresh Start',
     image: '/paintings/FreshStart.png',
     excerpt: 'No matter what you are going through, there is a chance to have a different and better tomorrow.',
   },
   {
+    slug: 'hourglass',
     title: 'Hourglass',
     image: '/paintings/Hour_Glass.png',
     excerpt: "Time isn't going to sit still and wait for you.",
   },
   {
+    slug: 'symmetry-of-calm',
     title: 'Symmetry of Calm',
     image: '/paintings/Calm.png',
     excerpt: 'Symmetry of Calm explores balance and reflection as conditions for stillness.',
