@@ -18,8 +18,8 @@ const uxProjects = [
   {
     title: 'The Breathing Interface',
     label: 'Interaction Design',
-    year: '2024',
-    href: '#',
+    year: '2025',
+    href: '/works/breathing-interface',
   },
   {
     title: 'Nature in Abstraction',
