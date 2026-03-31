@@ -72,8 +72,10 @@ export default function PaintingsPage() {
                 <Link
                   key={painting.title}
                   href={`/paintings/${painting.slug}`}
-                  className="group relative overflow-hidden block"
-                  style={{ height: '400px' }}
+                  className="group relative overflow-hidden block cursor-pointer"
+                  style={{ height: '400px', transition: 'transform 0.4s ease' }}
+                  onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.02)')}
+                  onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
                 >
                   <Image
                     src={painting.image}
