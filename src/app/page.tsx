@@ -8,24 +8,32 @@ const uxProjects = [
     label: 'Product Design',
     year: '2025',
     href: '/works/readnext',
+    thumbnail: null,
+    thumbnailColor: '#E8F0F8',
   },
   {
     title: 'FittGrad',
     label: 'Product Design',
     year: '2025',
     href: '/works/fittgrad',
+    thumbnail: null,
+    thumbnailColor: '#EAF0E8',
   },
   {
     title: 'The Breathing Interface',
     label: 'Interaction Design',
     year: '2025',
     href: '/works/breathing-interface',
+    thumbnail: '/works/breathing_interface/The Breathing Interface_Hero.png',
+    thumbnailColor: null,
   },
   {
     title: 'Nature in Abstraction',
     label: 'Visual Design',
     year: '2024',
-    href: '#',
+    href: '/paintings',
+    thumbnail: '/paintings/Wood.png',
+    thumbnailColor: null,
   },
 ]
 
