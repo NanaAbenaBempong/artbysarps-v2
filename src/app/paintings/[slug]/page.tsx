@@ -86,11 +86,11 @@ export default async function PaintingPage({
             sizes="100vw"
             priority
           />
-          {/* subtle bottom fade into page bg */}
+          {/* gradual bottom fade into page bg */}
           <div
             className="absolute inset-0"
             style={{
-              background: 'linear-gradient(to top, #080C14 0%, transparent 40%)',
+              background: 'linear-gradient(to top, #080C14 0%, rgba(8,12,20,0.6) 25%, rgba(8,12,20,0.15) 50%, transparent 65%)',
             }}
           />
           {/* back link floated over image */}
