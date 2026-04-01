@@ -157,7 +157,7 @@ export default function PaintingsPage() {
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#141E33] mb-10">
-              {Array.from({ length: 6 }, (_, i) => {
+              {Array.from({ length: 4 }, (_, i) => {
                 const n = String(i + 1).padStart(2, '0')
                 return `/paintings/unrestrained/unrestrained-${n}.png`
               }).map((src) => (
