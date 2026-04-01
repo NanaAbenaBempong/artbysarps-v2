@@ -177,12 +177,14 @@ export default function PaintingsPage() {
               ))}
             </div>
 
-            <Link
-              href="/paintings/unrestrained"
-              className="text-xs text-[#8AAAD8] hover:text-[#C8D8F0] transition-colors duration-200 uppercase tracking-widest w-fit"
-            >
-              View all paintings →
-            </Link>
+            <div className="flex justify-end">
+              <Link
+                href="/paintings/unrestrained"
+                className="text-xs text-[#8AAAD8] hover:text-[#C8D8F0] transition-colors duration-200 uppercase tracking-widest"
+              >
+                View all paintings →
+              </Link>
+            </div>
           </div>
         </section>
       </main>
