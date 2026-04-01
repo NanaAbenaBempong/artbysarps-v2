@@ -140,7 +140,33 @@ export default function PaintingsPage() {
               A collection of my wandering mind, brought together to create art; unrestrained by timelines or deadlines.
             </p>
 
-            <UnrestrainedGallery />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#141E33] mb-10">
+              {Array.from({ length: 6 }, (_, i) => {
+                const n = String(i + 1).padStart(2, '0')
+                return `/paintings/unrestrained/unrestrained-${n}.png`
+              }).map((src) => (
+                <div
+                  key={src}
+                  className="relative overflow-hidden"
+                  style={{ height: '400px' }}
+                >
+                  <Image
+                    src={src}
+                    alt=""
+                    fill
+                    style={{ objectFit: 'cover' }}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                </div>
+              ))}
+            </div>
+
+            <Link
+              href="/paintings/unrestrained"
+              className="text-xs text-[#8AAAD8] hover:text-[#C8D8F0] transition-colors duration-200 uppercase tracking-widest w-fit"
+            >
+              View all paintings →
+            </Link>
           </div>
         </section>
       </main>
