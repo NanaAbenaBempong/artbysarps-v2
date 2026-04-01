@@ -330,7 +330,7 @@ function ProseSection({ heading, body, image, imageSide }: { heading: string; bo
     return (
       <div className="mb-16">
         <h2 className="font-serif text-2xl text-[#2C2820] mb-8 leading-snug">{heading}</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
           <p className={`text-[#5C4D3C] text-base leading-relaxed${imageSide === 'left' ? ' md:order-last' : ''}`}>{body}</p>
           <SectionImage src={image} side={imageSide!} />
         </div>
