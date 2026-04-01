@@ -119,8 +119,6 @@ const caseStudies: CaseStudy[] = [
           'More tailored than just a title dump.',
           "I'd actually use this. I don't have to think about organizing anything — it just works.",
         ],
-        image: '/works/readnext/readnext-13.png',
-        imageSide: 'right',
       },
       {
         kind: 'prose',
