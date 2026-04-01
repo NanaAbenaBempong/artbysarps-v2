@@ -401,6 +401,36 @@ function QuotesSection({ heading, quotes, image, imageSide }: { heading: string;
   )
 }
 
+function SolutionRowsSection({ heading, rows }: { heading: string; rows: SolutionRow[] }) {
+  return (
+    <div className="mb-16">
+      <h2 className="font-serif text-2xl text-[#2C2820] mb-10 leading-snug">{heading}</h2>
+      <div className="flex flex-col gap-16">
+        {rows.map((row) => (
+          <div key={row.title} className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            {/* Image — always first on mobile (order-1), reordered on desktop */}
+            <div className={`relative min-h-[360px] rounded-2xl shadow-sm overflow-hidden order-1${row.imageSide === 'left' ? ' md:order-first' : ' md:order-last'}`}>
+              <Image
+                src={row.image}
+                alt={row.title}
+                fill
+                style={{ objectFit: 'contain', objectPosition: 'top center' }}
+                sizes="(max-width: 768px) 100vw, 400px"
+              />
+            </div>
+            {/* Text — always second on mobile, reordered on desktop */}
+            <div className={`order-2${row.imageSide === 'left' ? ' md:order-last' : ' md:order-first'}`}>
+              <p className="text-xs uppercase tracking-widest text-[#8C8278] mb-3">{row.label}</p>
+              <h3 className="font-serif text-2xl text-[#2C2820] mb-4 leading-snug">{row.title}</h3>
+              <p className="text-[#5C4D3C] text-base leading-relaxed">{row.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 function TakeawaysSection({ heading, items }: { heading: string; items: Takeaway[] }) {
   return (
     <div className="mb-16">
