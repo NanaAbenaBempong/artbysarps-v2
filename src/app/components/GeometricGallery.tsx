@@ -32,7 +32,7 @@ export default function GeometricGallery({ limit = paintings.length }: { limit?:
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#141E33]">
-        {paintings.map((painting) => (
+        {visible.map((painting) => (
           <button
             key={painting.title}
             className="group relative overflow-hidden block cursor-pointer text-left w-full"
