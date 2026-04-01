@@ -549,6 +549,8 @@ export default async function CaseStudyPage({
               return <TakeawaysSection key={i} {...section} />
             if (section.kind === 'prototype')
               return <PrototypeButton key={i} href={section.href} />
+            if (section.kind === 'solution-rows')
+              return <SolutionRowsSection key={i} {...section} />
             return null
           })}
 
