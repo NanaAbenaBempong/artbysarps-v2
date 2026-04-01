@@ -20,6 +20,13 @@ export default function NatureInAbstractionPage() {
       <main className="bg-[#080C14] min-h-screen">
         <section className="px-8 pt-40 pb-32">
           <div className="max-w-6xl mx-auto">
+            <Link
+              href="/paintings"
+              className="text-xs text-[#8AAAD8] hover:text-[#C8D8F0] transition-colors duration-200 uppercase tracking-widest block mb-16"
+            >
+              ← All paintings
+            </Link>
+
             <p className="text-xs uppercase tracking-[0.25em] text-[#384868] mb-4">
               Collection
             </p>
