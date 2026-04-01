@@ -33,6 +33,7 @@ const caseStudies: CaseStudy[] = [
   {
     slug: 'readnext',
     title: 'ReadNext',
+    heroImage: '/works/readnext/readnext-06.png',
     description:
       'A personalized book discovery experience designed to help readers find their next great read — faster, easier, and with more joy.',
     meta: [
