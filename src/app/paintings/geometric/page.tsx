@@ -1,3 +1,6 @@
+'use client'
+
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import Nav from '../../components/Nav'
@@ -13,6 +16,20 @@ const geometricSeries = [
 ]
 
 export default function GeometricSeriesPage() {
+  const [selected, setSelected] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!selected) return
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setSelected(null) }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [selected])
+
+  useEffect(() => {
+    document.body.style.overflow = selected ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [selected])
+
   return (
     <>
       <Nav forceDark />
@@ -39,10 +56,11 @@ export default function GeometricSeriesPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#141E33]">
               {geometricSeries.map((painting) => (
-                <div
+                <button
                   key={painting.title}
-                  className="group relative overflow-hidden"
+                  className="group relative overflow-hidden block cursor-pointer w-full text-left"
                   style={{ height: '400px' }}
+                  onClick={() => setSelected(painting.image)}
                 >
                   <Image
                     src={painting.image}
@@ -70,12 +88,52 @@ export default function GeometricSeriesPage() {
                       </h2>
                     </div>
                   </div>
-                </div>
+                </button>
               ))}
             </div>
           </div>
         </section>
       </main>
+
+      {/* Lightbox */}
+      <div
+        className="fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-300"
+        style={{
+          backgroundColor: 'rgba(0,0,0,0.92)',
+          opacity: selected ? 1 : 0,
+          pointerEvents: selected ? 'auto' : 'none',
+        }}
+        onClick={() => setSelected(null)}
+      >
+        <button
+          className="absolute top-6 right-8 text-[#384868] hover:text-[#C8D8F0] transition-colors duration-200 text-2xl leading-none z-10"
+          onClick={() => setSelected(null)}
+          aria-label="Close"
+        >
+          ✕
+        </button>
+        {selected && (
+          <div
+            style={{ maxWidth: '90vw', maxHeight: '90vh' }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Image
+              src={selected}
+              alt=""
+              width={1200}
+              height={1200}
+              style={{
+                maxWidth: '90vw',
+                maxHeight: '90vh',
+                width: 'auto',
+                height: 'auto',
+                display: 'block',
+              }}
+              sizes="90vw"
+            />
+          </div>
+        )}
+      </div>
     </>
   )
 }
