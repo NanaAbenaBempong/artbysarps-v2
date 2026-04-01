@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import Nav from '../components/Nav'
-import UnrestrainedGallery from '../components/UnrestrainedGallery'
+import GeometricGallery from '../components/GeometricGallery'
 
 const natureCollection = [
   {
