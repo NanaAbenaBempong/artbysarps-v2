@@ -20,6 +20,7 @@ type CaseStudy = {
   slug: string
   title: string
   description: string
+  heroImage?: string
   meta: { label: string; value: string }[]
   sections: Section[]
   prev: { slug: string; title: string } | null
