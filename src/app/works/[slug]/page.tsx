@@ -482,13 +482,26 @@ export default async function CaseStudyPage({
             ))}
           </div>
 
-          {/* Hero placeholder */}
-          <div
-            className="w-full rounded-xl mb-20 flex items-center justify-center"
-            style={{ height: '500px', backgroundColor: '#E8E2D9' }}
-          >
-            <span className="font-serif text-2xl text-[#8C8278]">{cs.title}</span>
-          </div>
+          {/* Hero image */}
+          {cs.heroImage ? (
+            <div className="relative w-full rounded-2xl overflow-hidden mb-20" style={{ height: '500px' }}>
+              <Image
+                src={cs.heroImage}
+                alt={cs.title}
+                fill
+                style={{ objectFit: 'cover' }}
+                sizes="800px"
+                priority
+              />
+            </div>
+          ) : (
+            <div
+              className="w-full rounded-2xl mb-20 flex items-center justify-center"
+              style={{ height: '500px', backgroundColor: '#E8E2D9' }}
+            >
+              <span className="font-serif text-2xl text-[#8C8278]">{cs.title}</span>
+            </div>
+          )}
 
           {/* Sections */}
           {cs.sections.map((section, i) => {
