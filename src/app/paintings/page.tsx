@@ -114,20 +114,57 @@ export default function PaintingsPage() {
         <section className="px-8 pb-24">
           <div className="max-w-6xl mx-auto border-t border-[#0D1525] pt-24">
             <p className="text-xs uppercase tracking-[0.25em] text-[#384868] mb-4">
-              Series
+              Collection
             </p>
             <h2 className="font-serif text-4xl sm:text-5xl text-[#C8D8F0] mb-4 leading-tight">
               Geometric Series
             </h2>
-            <p className="text-[#384868] text-sm max-w-md leading-relaxed mb-10">
+            <p className="text-[#384868] text-sm max-w-md leading-relaxed mb-16">
               A generative exploration of simple geometric shapes through repetition, rotation, spacing, and color variation.
             </p>
-            <Link
-              href="/paintings/geometric"
-              className="text-xs text-[#8AAAD8] hover:text-[#C8D8F0] transition-colors duration-200 uppercase tracking-widest w-fit block"
-            >
-              View series →
-            </Link>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#141E33]">
+              {[
+                { title: 'Squares',  image: '/paintings/unrestrained/unrestrained-11.png', href: '/paintings/geometric/squares'  },
+                { title: 'Circles',  image: '/paintings/unrestrained/unrestrained-12.png', href: '/paintings/geometric/circles'  },
+                { title: 'Diamonds', image: '/paintings/unrestrained/unrestrained-13.png', href: '/paintings/geometric/diamonds' },
+                { title: 'Prisms',   image: '/paintings/unrestrained/unrestrained-14.png', href: '/paintings/geometric/prisms'   },
+                { title: 'Lattice',  image: '/paintings/unrestrained/unrestrained-15.png', href: '/paintings/geometric/lattice'  },
+                { title: 'Planes',   image: '/paintings/unrestrained/unrestrained-16.png', href: '/paintings/geometric/planes'   },
+                { title: 'Rest',     image: '/paintings/unrestrained/unrestrained-23.png', href: '/paintings/geometric/rest'     },
+              ].map((painting) => (
+                <Link
+                  key={painting.title}
+                  href={painting.href}
+                  className="group relative overflow-hidden block cursor-pointer"
+                  style={{ height: '400px' }}
+                >
+                  <Image
+                    src={painting.image}
+                    alt={painting.title}
+                    fill
+                    style={{ objectFit: 'cover', transition: 'transform 0.5s ease' }}
+                    className="group-hover:scale-[1.02]"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                  <div
+                    className="absolute inset-0"
+                    style={{
+                      background:
+                        'linear-gradient(to top, rgba(4,6,14,0.9) 0%, rgba(4,6,14,0.35) 50%, transparent 100%)',
+                    }}
+                  />
+                  <div className="absolute bottom-0 left-0 right-0 p-8 flex items-end justify-between gap-4">
+                    <h2 className="font-serif text-2xl text-[#C8D8F0] group-hover:text-[#8AAAD8] transition-colors duration-300 leading-snug">
+                      {painting.title}
+                    </h2>
+                    <span className="text-xs text-[#8AAAD8] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-300 shrink-0">
+                      View painting →
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
         </section>
 
