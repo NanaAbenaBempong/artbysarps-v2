@@ -78,6 +78,8 @@ const caseStudies: CaseStudy[] = [
       {
         kind: 'cards',
         heading: 'Design Solution',
+        image: '/works/readnext/readnext-14.png',
+        imageSide: 'left',
         cards: [
           {
             label: 'Discovery',
