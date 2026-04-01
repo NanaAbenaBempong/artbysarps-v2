@@ -78,34 +78,36 @@ const caseStudies: CaseStudy[] = [
         ],
       },
       {
-        kind: 'cards',
+        kind: 'solution-rows',
         heading: 'Design Solution',
-        image: '/works/readnext/readnext-14.png',
-        imageSide: 'left',
-        cards: [
+        rows: [
           {
+            image: '/works/readnext/readnext-12.png',
+            imageSide: 'left',
             label: 'Discovery',
             title: 'Personalized Discovery',
-            description:
-              'Introduced Personalized and Trending tabs with tags and clear explanations like "Because you enjoyed..."',
+            description: 'Personalized and Trending tabs with context tags like "Because you enjoyed…" so every recommendation feels earned.',
           },
           {
+            image: '/works/readnext/readnext-14.png',
+            imageSide: 'right',
             label: 'Search',
             title: 'Smarter Search',
-            description:
-              'Soft filter chips and preview-first cards to reduce visual density.',
+            description: 'Filter chips and preview-first cards cut visual noise — fewer results, but ones you actually trust.',
           },
           {
-            label: 'Collections',
-            title: 'Curated Collections',
-            description:
-              'Separate section for Trending, Expert, and Community lists with source transparency.',
+            image: '/works/readnext/readnext-13.png',
+            imageSide: 'left',
+            label: 'Reviews',
+            title: 'AI-Powered Reviews',
+            description: 'Trending, Expert, and Community lists each labelled by source, so readers always know if a pick is algorithmic or human.',
           },
           {
+            image: '/works/readnext/readnext-10.png',
+            imageSide: 'right',
             label: 'Tracking',
             title: 'Save & Track',
-            description:
-              'Seamless saving with automatic categorization and built-in progress tracking.',
+            description: 'Progress bars, page counts, and last-read timestamps — your reading life stays organised without any manual effort.',
           },
         ],
       },
