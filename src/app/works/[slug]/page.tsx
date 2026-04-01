@@ -48,6 +48,8 @@ const caseStudies: CaseStudy[] = [
         kind: 'prose',
         heading: 'Problem',
         body: 'Readers struggle with decision fatigue and lack of trust when choosing their next book. Existing platforms prioritize commerce and generic bestsellers.',
+        image: '/works/readnext/readnext-12.png',
+        imageSide: 'right',
       },
       {
         kind: 'cards',
