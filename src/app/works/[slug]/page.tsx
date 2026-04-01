@@ -14,6 +14,7 @@ type Section =
   | { kind: 'quotes'; heading: string; quotes: Quote[] }
   | { kind: 'takeaways'; heading: string; items: Takeaway[] }
   | { kind: 'prototype'; href: string }
+  | { kind: 'key-screens'; heading: string; hero: string; grid: string[] }
 
 type CaseStudy = {
   slug: string
