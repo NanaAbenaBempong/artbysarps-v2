@@ -9,12 +9,11 @@ type Card = { label: string; title: string; description: string }
 type Quote = string
 type Takeaway = { number: string; heading: string; body: string }
 type Section =
-  | { kind: 'prose'; heading: string; body: string }
-  | { kind: 'cards'; heading: string; cards: Card[] }
-  | { kind: 'quotes'; heading: string; quotes: Quote[] }
+  | { kind: 'prose'; heading: string; body: string; image?: string; imageSide?: 'left' | 'right' }
+  | { kind: 'cards'; heading: string; cards: Card[]; image?: string; imageSide?: 'left' | 'right' }
+  | { kind: 'quotes'; heading: string; quotes: Quote[]; image?: string; imageSide?: 'left' | 'right' }
   | { kind: 'takeaways'; heading: string; items: Takeaway[] }
   | { kind: 'prototype'; href: string }
-  | { kind: 'key-screens'; heading: string; hero: string; grid: string[] }
 
 type CaseStudy = {
   slug: string
