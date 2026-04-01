@@ -389,6 +389,38 @@ function TakeawaysSection({ heading, items }: { heading: string; items: Takeaway
   )
 }
 
+function KeyScreensSection({ heading, hero, grid }: { heading: string; hero: string; grid: string[] }) {
+  return (
+    <div className="mb-16">
+      <h2 className="font-serif text-2xl text-[#2C2820] mb-8 leading-snug">{heading}</h2>
+      {/* Full-width hero image */}
+      <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-md mb-4">
+        <Image
+          src={hero}
+          alt="Key screen hero"
+          fill
+          style={{ objectFit: 'cover' }}
+          sizes="800px"
+        />
+      </div>
+      {/* 2×2 grid */}
+      <div className="grid grid-cols-2 gap-4">
+        {grid.map((src, i) => (
+          <div key={i} className="relative aspect-[3/4] rounded-2xl overflow-hidden shadow-md">
+            <Image
+              src={src}
+              alt={`Key screen ${i + 1}`}
+              fill
+              style={{ objectFit: 'cover' }}
+              sizes="(max-width: 800px) 50vw, 400px"
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 function PrototypeButton({ href }: { href: string }) {
   return (
     <div className="mb-16">
