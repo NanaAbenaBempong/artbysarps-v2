@@ -110,6 +110,27 @@ export default function PaintingsPage() {
           </div>
         </section>
 
+        {/* ── Geometric Series ──────────────────────────────────── */}
+        <section className="px-8 pb-24">
+          <div className="max-w-6xl mx-auto border-t border-[#0D1525] pt-24">
+            <p className="text-xs uppercase tracking-[0.25em] text-[#384868] mb-4">
+              Series
+            </p>
+            <h2 className="font-serif text-4xl sm:text-5xl text-[#C8D8F0] mb-4 leading-tight">
+              Geometric Series
+            </h2>
+            <p className="text-[#384868] text-sm max-w-md leading-relaxed mb-10">
+              A generative exploration of simple geometric shapes through repetition, rotation, spacing, and color variation.
+            </p>
+            <Link
+              href="/paintings/geometric"
+              className="text-xs text-[#8AAAD8] hover:text-[#C8D8F0] transition-colors duration-200 uppercase tracking-widest w-fit block"
+            >
+              View series →
+            </Link>
+          </div>
+        </section>
+
         {/* ── Unrestrained ──────────────────────────────────────── */}
         <section className="px-8 pb-32">
           <div className="max-w-6xl mx-auto border-t border-[#0D1525] pt-24">
