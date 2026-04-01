@@ -103,6 +103,17 @@ const caseStudies: CaseStudy[] = [
         ],
       },
       {
+        kind: 'key-screens',
+        heading: 'Key Screens',
+        hero: '/works/readnext/readnext-06.png',
+        grid: [
+          '/works/readnext/readnext-12.png',
+          '/works/readnext/readnext-14.png',
+          '/works/readnext/readnext-13.png',
+          '/works/readnext/readnext-19.png',
+        ],
+      },
+      {
         kind: 'quotes',
         heading: 'What Users Said',
         quotes: [
