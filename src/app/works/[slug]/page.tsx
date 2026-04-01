@@ -326,75 +326,84 @@ function SectionImage({ src, side }: { src: string; side: 'left' | 'right' }) {
 }
 
 function ProseSection({ heading, body, image, imageSide }: { heading: string; body: string; image?: string; imageSide?: 'left' | 'right' }) {
-  const content = (
-    <div className={image && imageSide === 'left' ? 'md:order-last' : undefined}>
-      <h2 className="font-serif text-2xl text-[#2C2820] mb-5 leading-snug">{heading}</h2>
-      <p className="text-[#5C4D3C] text-base leading-relaxed">{body}</p>
-    </div>
-  )
-  return (
-    <div className="mb-16">
-      {image ? (
+  if (image) {
+    return (
+      <div className="mb-16">
+        <h2 className="font-serif text-2xl text-[#2C2820] mb-8 leading-snug">{heading}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
-          {content}
+          <p className={`text-[#5C4D3C] text-base leading-relaxed${imageSide === 'left' ? ' md:order-last' : ''}`}>{body}</p>
           <SectionImage src={image} side={imageSide!} />
         </div>
-      ) : content}
+      </div>
+    )
+  }
+  return (
+    <div className="mb-16">
+      <h2 className="font-serif text-2xl text-[#2C2820] mb-5 leading-snug">{heading}</h2>
+      <p className="text-[#5C4D3C] text-base leading-relaxed">{body}</p>
     </div>
   )
 }
 
 function CardsSection({ heading, cards, image, imageSide }: { heading: string; cards: Card[]; image?: string; imageSide?: 'left' | 'right' }) {
   const isThree = cards.length === 3
-  const content = (
-    <div className={image && imageSide === 'left' ? 'md:order-last' : undefined}>
-      <h2 className="font-serif text-2xl text-[#2C2820] mb-8 leading-snug">{heading}</h2>
-      <div className={`grid gap-4 grid-cols-1 ${isThree ? 'sm:grid-cols-3' : 'sm:grid-cols-2'}`}>
-        {cards.map((card) => (
-          <div key={card.title} className="bg-[#F0EDE8] rounded-lg p-6 flex flex-col gap-3">
-            <span className="text-xs uppercase tracking-[0.2em] text-[#8C8278]">{card.label}</span>
-            <h3 className="font-serif text-lg text-[#2C2820] leading-snug">{card.title}</h3>
-            <p className="text-sm text-[#5C4D3C] leading-relaxed">{card.description}</p>
-          </div>
-        ))}
-      </div>
+  const cardGrid = (
+    <div className={`grid gap-4 grid-cols-1 ${isThree ? 'sm:grid-cols-3' : 'sm:grid-cols-2'}${image && imageSide === 'left' ? ' md:order-last' : ''}`}>
+      {cards.map((card) => (
+        <div key={card.title} className="bg-[#F0EDE8] rounded-lg p-6 flex flex-col gap-3">
+          <span className="text-xs uppercase tracking-[0.2em] text-[#8C8278]">{card.label}</span>
+          <h3 className="font-serif text-lg text-[#2C2820] leading-snug">{card.title}</h3>
+          <p className="text-sm text-[#5C4D3C] leading-relaxed">{card.description}</p>
+        </div>
+      ))}
     </div>
   )
-  return (
-    <div className="mb-16">
-      {image ? (
+  if (image) {
+    return (
+      <div className="mb-16">
+        <h2 className="font-serif text-2xl text-[#2C2820] mb-8 leading-snug">{heading}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
-          {content}
+          {cardGrid}
           <SectionImage src={image} side={imageSide!} />
         </div>
-      ) : content}
+      </div>
+    )
+  }
+  return (
+    <div className="mb-16">
+      <h2 className="font-serif text-2xl text-[#2C2820] mb-8 leading-snug">{heading}</h2>
+      {cardGrid}
     </div>
   )
 }
 
 function QuotesSection({ heading, quotes, image, imageSide }: { heading: string; quotes: Quote[]; image?: string; imageSide?: 'left' | 'right' }) {
-  const content = (
-    <div className={image && imageSide === 'left' ? 'md:order-last' : undefined}>
-      <h2 className="font-serif text-2xl text-[#2C2820] mb-8 leading-snug">{heading}</h2>
-      <div className="flex flex-col gap-6">
-        {quotes.map((q, i) => (
-          <blockquote key={i} className="border-l-2 border-[#2C2820] pl-6">
-            <p className="font-serif italic text-xl text-[#2C2820] leading-relaxed">
-              &ldquo;{q}&rdquo;
-            </p>
-          </blockquote>
-        ))}
-      </div>
+  const quoteList = (
+    <div className={`flex flex-col gap-6${image && imageSide === 'left' ? ' md:order-last' : ''}`}>
+      {quotes.map((q, i) => (
+        <blockquote key={i} className="border-l-2 border-[#2C2820] pl-6">
+          <p className="font-serif italic text-xl text-[#2C2820] leading-relaxed">
+            &ldquo;{q}&rdquo;
+          </p>
+        </blockquote>
+      ))}
     </div>
   )
-  return (
-    <div className="mb-16">
-      {image ? (
+  if (image) {
+    return (
+      <div className="mb-16">
+        <h2 className="font-serif text-2xl text-[#2C2820] mb-8 leading-snug">{heading}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
-          {content}
+          {quoteList}
           <SectionImage src={image} side={imageSide!} />
         </div>
-      ) : content}
+      </div>
+    )
+  }
+  return (
+    <div className="mb-16">
+      <h2 className="font-serif text-2xl text-[#2C2820] mb-8 leading-snug">{heading}</h2>
+      {quoteList}
     </div>
   )
 }
