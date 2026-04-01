@@ -82,7 +82,7 @@ const caseStudies: CaseStudy[] = [
         heading: 'Design Solution',
         rows: [
           {
-            image: '/works/readnext/readnext-12.png',
+            image: '/works/readnext/readnext-08.png',
             imageSide: 'left',
             label: 'Discovery',
             title: 'Personalized Discovery',
