@@ -67,8 +67,8 @@ export default function PaintingsPage() {
               A collection of nature-inspired artwork that explores the representation of nature in an abstract way.
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#141E33]">
-              {natureCollection.map((painting) => (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#141E33] mb-10">
+              {natureCollection.slice(0, 4).map((painting) => (
                 <Link
                   key={painting.title}
                   href={`/paintings/${painting.slug}`}
