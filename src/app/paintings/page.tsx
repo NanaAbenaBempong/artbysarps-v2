@@ -131,7 +131,15 @@ export default function PaintingsPage() {
               A generative exploration of simple geometric shapes through repetition, rotation, spacing, and color variation.
             </p>
 
-            <GeometricGallery />
+            <GeometricGallery limit={4} />
+            <div className="flex justify-end mt-10">
+              <Link
+                href="/paintings/geometric"
+                className="text-xs text-[#8AAAD8] hover:text-[#C8D8F0] transition-colors duration-200 uppercase tracking-widest"
+              >
+                View all paintings →
+              </Link>
+            </div>
           </div>
         </section>
 
