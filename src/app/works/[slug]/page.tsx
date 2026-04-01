@@ -108,17 +108,6 @@ const caseStudies: CaseStudy[] = [
         ],
       },
       {
-        kind: 'key-screens',
-        heading: 'Key Screens',
-        hero: '/works/readnext/readnext-06.png',
-        grid: [
-          '/works/readnext/readnext-12.png',
-          '/works/readnext/readnext-14.png',
-          '/works/readnext/readnext-13.png',
-          '/works/readnext/readnext-19.png',
-        ],
-      },
-      {
         kind: 'quotes',
         heading: 'What Users Said',
         quotes: [
@@ -126,11 +115,15 @@ const caseStudies: CaseStudy[] = [
           'More tailored than just a title dump.',
           "I'd actually use this. I don't have to think about organizing anything — it just works.",
         ],
+        image: '/works/readnext/readnext-13.png',
+        imageSide: 'right',
       },
       {
         kind: 'prose',
         heading: 'Usability Testing',
         body: 'Moderated tests with 5 avid readers across 6 core tasks. Key findings: scannability improvements for Discover and Explore tasks; filter redesign after errors in Search & Filter task; refinements to Reviews and Explore flows.',
+        image: '/works/readnext/readnext-19.png',
+        imageSide: 'left',
       },
       {
         kind: 'cards',
