@@ -13,8 +13,9 @@ const paintings = [
   { title: 'Rest',     image: '/paintings/unrestrained/unrestrained-23.png' },
 ]
 
-export default function GeometricGallery() {
+export default function GeometricGallery({ limit = paintings.length }: { limit?: number }) {
   const [selected, setSelected] = useState<string | null>(null)
+  const visible = paintings.slice(0, limit)
 
   useEffect(() => {
     if (!selected) return
