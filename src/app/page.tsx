@@ -8,8 +8,8 @@ const uxProjects = [
     label: 'Product Design',
     year: '2025',
     href: '/works/readnext',
-    thumbnail: null,
-    thumbnailColor: '#E8F0F8',
+    thumbnail: '/works/readnext/readnext-06.png',
+    thumbnailColor: null,
   },
   {
     title: 'FittGrad',
