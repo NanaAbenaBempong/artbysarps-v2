@@ -65,7 +65,7 @@ export default function WorksPage() {
             Works
           </h1>
           <p className="text-[#5C4D3C] text-lg leading-relaxed mb-10 max-w-xl">
-            A selection of product design and interaction work \u2014 from research through to high-fidelity design.
+            A selection of product design and interaction work — from research through to high-fidelity design.
           </p>
           <div className="border-t border-[#E8E4E0] mb-16" />
 
