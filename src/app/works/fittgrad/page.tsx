@@ -191,17 +191,17 @@ export default function FittGradPage() {
                 {
                   number: '01',
                   heading: 'Flexibility over Structure',
-                  body: 'Grad students don't need more discipline tools — they need apps that bend around their lives.',
+                  body: "Grad students don\u2019t need more discipline tools \u2014 they need apps that bend around their lives.",
                 },
                 {
                   number: '02',
                   heading: 'Research Shapes Design',
-                  body: 'Every feature maps directly to a survey finding — nothing was assumed.',
+                  body: "Every feature maps directly to a survey finding \u2014 nothing was assumed.",
                 },
                 {
                   number: '03',
                   heading: 'Low Friction Wins',
-                  body: 'The fewer decisions a tired grad student has to make, the more likely they are to actually work out.',
+                  body: "The fewer decisions a tired grad student has to make, the more likely they are to actually work out.",
                 },
               ].map((item) => (
                 <div key={item.number} className="flex gap-6">
