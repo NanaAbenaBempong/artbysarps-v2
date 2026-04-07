@@ -113,7 +113,7 @@ export default function WorksPage() {
                       href={work.href}
                       className="text-xs uppercase tracking-widest text-[#8C8278] hover:text-[#2C2820] transition-colors duration-200"
                     >
-                      {work.linkLabel} \u2192
+                      {work.linkLabel} →
                     </Link>
                   </div>
 
