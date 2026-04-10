@@ -167,116 +167,64 @@ export default function HeroCanvas() {
       }
     }
 
-    // ── Paint splatter ────────────────────────────────────────────
+    // ── Brush stroke ─────────────────────────────────────────────
 
-    function createSeededRandom(seed: number): () => number {
-      let s = seed
-      return function() {
-        s = (s * 16807 + 0) % 2147483647
-        return (s - 1) / 2147483646
-      }
+    // Three stroke paths as bezier control points [px, py] as fractions of CW / CH.
+    // Indexed by cycleIndex % 3, matching the palette order.
+    type BezierStroke = {
+      p0: [number, number]
+      p1: [number, number]
+      p2: [number, number]
+      p3: [number, number]
+      maxR: number   // peak brush radius in px (tip-to-tip width = 2× this)
     }
 
-    function drawSplash(
-      rctx: CanvasRenderingContext2D,
-      cx: number,
-      cy: number,
-      palette: string[],
-      progress: number,
-    ) {
-      const eased   = 1 - Math.pow(1 - Math.min(progress * 1.5, 1), 3)
-      const fadeOut = progress > 0.7 ? 1 - ((progress - 0.7) / 0.3) : 1
+    const STROKES: BezierStroke[] = [
+      // Stroke A — palette 0 (warm earthy): left-centre → right-centre, gentle S-curve upward arc
+      { p0: [0.06, 0.56], p1: [0.26, 0.30], p2: [0.70, 0.70], p3: [0.94, 0.44], maxR: 14 },
+      // Stroke B — palette 1 (cool moody): diagonal top-left → bottom-right, slight midpoint curve
+      { p0: [0.10, 0.18], p1: [0.36, 0.26], p2: [0.60, 0.70], p3: [0.90, 0.82], maxR: 12 },
+      // Stroke C — palette 2 (bold contrast): shorter gestural, roughly centred, curves back on itself
+      { p0: [0.26, 0.64], p1: [0.58, 0.20], p2: [0.76, 0.60], p3: [0.44, 0.46], maxR: 10 },
+    ]
 
-      const rng = createSeededRandom(currentBurstSeed)
+    function drawBrushStroke(drawProgress: number, alpha: number) {
+      const ci     = cycleIndex % 3
+      const color  = PALETTES[ci][0]   // first colour from each palette
+      const stroke = STROKES[ci]
 
-      const mainAngle = rng() * Math.PI * 2
+      const POINTS = 200
+      const count  = Math.max(1, Math.floor(POINTS * drawProgress))
 
-      type LineSpec = { angle: number; length: number; width: number; dropR: number }
-      const lines: LineSpec[] = []
+      ctx.save()
+      ctx.globalAlpha = alpha
+      ctx.fillStyle   = color
 
-      // 4 long lines clustered around main angle
-      for (let i = 0; i < 4; i++) {
-        const angle = mainAngle + (rng() - 0.5) * 0.8
-        lines.push({ angle, length: 180 + rng() * 60, width: 1 + rng(), dropR: 6 + rng() * 6 })
+      for (let i = 0; i < count; i++) {
+        const u  = i / (POINTS - 1)
+        const mt = 1 - u
+
+        // Cubic bezier position
+        const x =
+          mt*mt*mt * stroke.p0[0] * CW +
+          3*mt*mt*u * stroke.p1[0] * CW +
+          3*mt*u*u  * stroke.p2[0] * CW +
+          u*u*u     * stroke.p3[0] * CW
+        const y =
+          mt*mt*mt * stroke.p0[1] * CH +
+          3*mt*mt*u * stroke.p1[1] * CH +
+          3*mt*u*u  * stroke.p2[1] * CH +
+          u*u*u     * stroke.p3[1] * CH
+
+        // Sine-based taper: thin at both ends, full width in the middle
+        const radius = 1 + (stroke.maxR - 1) * Math.sin(Math.PI * u)
+
+        ctx.beginPath()
+        ctx.arc(x, y, radius, 0, Math.PI * 2)
+        ctx.fill()
       }
-      // 4 medium lines loosely around main angle
-      for (let i = 0; i < 4; i++) {
-        const angle = mainAngle + (rng() - 0.5) * 1.5
-        lines.push({ angle, length: 80 + rng() * 50, width: 0.8 + rng() * 0.8, dropR: 3 + rng() * 4 })
-      }
-      // 3 medium lines opposite direction
-      for (let i = 0; i < 3; i++) {
-        const angle = mainAngle + Math.PI + (rng() - 0.5) * 1.2
-        lines.push({ angle, length: 70 + rng() * 60, width: 0.8 + rng() * 0.6, dropR: 3 + rng() * 3 })
-      }
-      // 5 random scattered short lines
-      for (let i = 0; i < 5; i++) {
-        const angle = rng() * Math.PI * 2
-        lines.push({ angle, length: 15 + rng() * 45, width: 0.5 + rng() * 0.8, dropR: 1.5 + rng() * 2.5 })
-      }
 
-      const color  = palette[Math.floor(rng() * palette.length)]
-      const color2 = palette[Math.floor(rng() * palette.length)]
-
-      // ── Main blob ─────────────────────────────────────────────────
-      rctx.save()
-      rctx.globalAlpha = fadeOut * 0.9
-      rctx.fillStyle = color
-      rctx.beginPath()
-      const blobSize = 55 + rng() * 30
-      rctx.moveTo(cx + blobSize * 0.9, cy)
-      rctx.bezierCurveTo(
-        cx + blobSize,        cy - blobSize * 0.7,
-        cx + blobSize * 0.3,  cy - blobSize * 1.1,
-        cx - blobSize * 0.2,  cy - blobSize * 0.8,
-      )
-      rctx.bezierCurveTo(
-        cx - blobSize * 0.9, cy - blobSize * 0.5,
-        cx - blobSize * 1.0, cy + blobSize * 0.2,
-        cx - blobSize * 0.6, cy + blobSize * 0.7,
-      )
-      rctx.bezierCurveTo(
-        cx - blobSize * 0.1, cy + blobSize * 1.1,
-        cx + blobSize * 0.6, cy + blobSize * 0.9,
-        cx + blobSize * 0.9, cy,
-      )
-      rctx.fill()
-
-      // ── Secondary blob ────────────────────────────────────────────
-      rctx.fillStyle = color2
-      rctx.globalAlpha = fadeOut * 0.6
-      rctx.beginPath()
-      const b2 = blobSize * 0.55
-      const box = (rng() - 0.5) * 30
-      const boy = (rng() - 0.5) * 30
-      rctx.ellipse(cx + box, cy + boy, b2 * 1.2, b2 * 0.8, rng() * Math.PI, 0, Math.PI * 2)
-      rctx.fill()
-      rctx.restore()
-
-      // ── Spatter lines + endpoint droplets ────────────────────────
-      lines.forEach((line, i) => {
-        const len = line.length * eased
-        const ex  = cx + Math.cos(line.angle) * len
-        const ey  = cy + Math.sin(line.angle) * len
-        const lineColor = palette[i % palette.length]
-
-        rctx.save()
-        rctx.globalAlpha = fadeOut * (0.5 + rng() * 0.5)
-        rctx.strokeStyle = lineColor
-        rctx.lineWidth   = line.width
-        rctx.lineCap     = 'round'
-        rctx.beginPath()
-        rctx.moveTo(cx, cy)
-        rctx.lineTo(ex, ey)
-        rctx.stroke()
-
-        rctx.fillStyle  = lineColor
-        rctx.globalAlpha = fadeOut * 0.9
-        rctx.beginPath()
-        rctx.arc(ex, ey, line.dropR * eased, 0, Math.PI * 2)
-        rctx.fill()
-        rctx.restore()
-      })
+      ctx.restore()
     }
 
     // ── Text helpers — unchanged ──────────────────────────────────
