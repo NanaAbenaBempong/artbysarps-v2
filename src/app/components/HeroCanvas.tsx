@@ -198,7 +198,7 @@ export default function HeroCanvas() {
       // Main blob — large, slightly off-centre, full opacity
       const mainCx  = ox + (Math.random() - 0.5) * D * 0.06
       const mainCy  = oy + (Math.random() - 0.5) * D * 0.06
-      const mainR   = D * (0.14 + Math.random() * 0.04)  // ~50–65 px → width ~93–120 px
+      const mainR   = D * (0.168 + Math.random() * 0.048)  // 20% bigger: ~60–78 px → width ~112–144 px
       const mainPts = makeBlobPts(mainCx, mainCy, mainR, 12 + Math.floor(Math.random() * 3))
       blobs.push({
         cx: mainCx, cy: mainCy, pts: mainPts,
