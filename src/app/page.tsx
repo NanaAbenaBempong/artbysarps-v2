@@ -16,8 +16,8 @@ const uxProjects = [
     label: 'Product Design',
     year: '2025',
     href: '/works/fittgrad',
-    thumbnail: null,
-    thumbnailColor: '#EAF0E8',
+    thumbnail: '/works/fittgrad/fittgrad-hero.png',
+    thumbnailColor: null,
   },
   {
     title: 'The Breathing Interface',
