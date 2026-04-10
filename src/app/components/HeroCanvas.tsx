@@ -67,12 +67,6 @@ const FRAMES: Prim[][] = [
   ],
 ]
 
-// ── Splash geometry types ─────────────────────────────────────────────────────
-interface BlobPt    { x: number; y: number }
-interface Blob      { cx: number; cy: number; pts: BlobPt[]; bottomY: number; color: string; opacity: number; dripMaxY: number }
-interface SpatterLn { ox: number; oy: number; angle: number; length: number; lw: number; dotR: number; opacity: number; color: string; delay: number }
-interface SatDrop   { x: number; y: number; r: number; color: string; delay: number }
-interface Splash    { blobs: Blob[]; lines: SpatterLn[]; droplets: SatDrop[] }
 
 async function fetchSentence(): Promise<string> {
   try {
