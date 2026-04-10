@@ -302,6 +302,7 @@ export default function HeroCanvas() {
         }))
         const N = pts.length
 
+        ctx.globalAlpha = alpha * blob.opacity
         ctx.fillStyle = blob.color
         ctx.beginPath()
         ctx.moveTo((pts[N-1].x + pts[0].x) / 2, (pts[N-1].y + pts[0].y) / 2)
@@ -336,6 +337,7 @@ export default function HeroCanvas() {
             ctx.restore()
           }
         }
+        ctx.globalAlpha = alpha  // restore for next blob and subsequent elements
       }
 
       // ── Spatter lines — staggered extension ───────────────────────
