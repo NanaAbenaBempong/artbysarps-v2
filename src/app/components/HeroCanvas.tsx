@@ -8,23 +8,73 @@ const FALLBACKS = [
   "He smiled at Otto when he was done and soon wished he hadn't.",
 ]
 
-const SPLASH_COLORS = ['#c17a3a', '#4a7a6a', '#8a4a6a', '#6a4a8a']
+// Three palettes — each paired with the frame at the same index
+const PALETTES: string[][] = [
+  ['#c17a3a', '#d4a853', '#8a6a2a', '#e8c87a'], // warm earthy  (frame 0)
+  ['#3a6a8a', '#4a5a7a', '#6a4a8a', '#2a4a6a'], // cool moody   (frame 1)
+  ['#8a2a2a', '#c84a2a', '#f5e6c8', '#6a2a1a'], // bold contrast (frame 2)
+]
 
-// Wireframe rects as [x, y, w, h] fractions of canvas CSS size
-const RECTS: [number, number, number, number][] = [
-  [0.08, 0.04, 0.84, 0.92],   // outer frame
-  [0.08, 0.04, 0.84, 0.065],  // status bar
-  [0.10, 0.115, 0.80, 0.12],  // header
-  [0.12, 0.265, 0.76, 0.13],  // card 1
-  [0.12, 0.42,  0.76, 0.13],  // card 2
-  [0.12, 0.575, 0.76, 0.13],  // card 3
-  [0.25, 0.80,  0.50, 0.08],  // button
+// Primitive types — coords as fractions of CW (x/w) and CH (y/h); circle.r is fraction of CW
+type Prim =
+  | { k: 'rect';   x: number; y: number; w: number; h: number }
+  | { k: 'circle'; cx: number; cy: number; r: number }
+  | { k: 'line';   x1: number; y1: number; x2: number; y2: number }
+
+// ── Three wireframe frames ────────────────────────────────────────────────────
+
+const FRAMES: Prim[][] = [
+  // Frame 0 — Mobile App
+  [
+    { k: 'rect',   x: 0.08, y: 0.04, w: 0.84, h: 0.92 }, // outer frame
+    { k: 'rect',   x: 0.08, y: 0.04, w: 0.84, h: 0.06 }, // status bar
+    { k: 'rect',   x: 0.12, y: 0.14, w: 0.76, h: 0.16 }, // hero / header block
+    { k: 'rect',   x: 0.12, y: 0.34, w: 0.35, h: 0.22 }, // left card
+    { k: 'rect',   x: 0.52, y: 0.34, w: 0.35, h: 0.22 }, // right card
+    { k: 'rect',   x: 0.12, y: 0.60, w: 0.76, h: 0.10 }, // list item
+    { k: 'rect',   x: 0.08, y: 0.84, w: 0.84, h: 0.12 }, // bottom nav bar
+  ],
+  // Frame 1 — Browser Window
+  [
+    { k: 'rect',   x: 0.04, y: 0.05,  w: 0.92, h: 0.90 },           // outer frame
+    { k: 'rect',   x: 0.04, y: 0.05,  w: 0.92, h: 0.10 },           // title bar
+    { k: 'circle', cx: 0.12, cy: 0.100, r: 0.018 },                  // traffic dot 1
+    { k: 'circle', cx: 0.18, cy: 0.100, r: 0.018 },                  // traffic dot 2
+    { k: 'circle', cx: 0.24, cy: 0.100, r: 0.018 },                  // traffic dot 3
+    { k: 'rect',   x: 0.30, y: 0.065, w: 0.60, h: 0.05 },           // address bar
+    { k: 'line',   x1: 0.04, y1: 0.155, x2: 0.96, y2: 0.155 },      // chrome divider
+    { k: 'rect',   x: 0.08, y: 0.22,  w: 0.52, h: 0.060 },          // page heading
+    { k: 'rect',   x: 0.08, y: 0.33,  w: 0.74, h: 0.028 },          // body line 1
+    { k: 'rect',   x: 0.08, y: 0.375, w: 0.65, h: 0.028 },          // body line 2
+    { k: 'rect',   x: 0.08, y: 0.420, w: 0.46, h: 0.028 },          // body line 3
+    { k: 'rect',   x: 0.08, y: 0.50,  w: 0.46, h: 0.35 },           // media block
+    { k: 'rect',   x: 0.60, y: 0.50,  w: 0.32, h: 0.13 },           // sidebar card 1
+    { k: 'rect',   x: 0.60, y: 0.67,  w: 0.32, h: 0.13 },           // sidebar card 2
+  ],
+  // Frame 2 — Card / Component
+  [
+    { k: 'rect',   x: 0.08, y: 0.06, w: 0.84, h: 0.88 },            // card frame
+    { k: 'circle', cx: 0.21, cy: 0.21, r: 0.075 },                   // avatar circle
+    { k: 'rect',   x: 0.34, y: 0.14, w: 0.50, h: 0.045 },           // name / heading
+    { k: 'rect',   x: 0.34, y: 0.21, w: 0.35, h: 0.030 },           // subheading
+    { k: 'line',   x1: 0.08, y1: 0.34, x2: 0.92, y2: 0.34 },        // section divider
+    { k: 'rect',   x: 0.12, y: 0.40, w: 0.76, h: 0.028 },           // body line 1
+    { k: 'rect',   x: 0.12, y: 0.45, w: 0.76, h: 0.028 },           // body line 2
+    { k: 'rect',   x: 0.12, y: 0.50, w: 0.54, h: 0.028 },           // body line 3 (short)
+    { k: 'rect',   x: 0.12, y: 0.59, w: 0.22, h: 0.055 },           // tag 1
+    { k: 'rect',   x: 0.37, y: 0.59, w: 0.22, h: 0.055 },           // tag 2
+    { k: 'rect',   x: 0.28, y: 0.74, w: 0.44, h: 0.09 },            // button
+  ],
 ]
 
 interface Particle {
   x: number; y: number
   vx: number; vy: number
-  r: number; color: string
+  rx: number   // ellipse semi-major (along travel direction)
+  ry: number   // ellipse semi-minor
+  angle: number // initial travel angle — constant (friction is symmetric)
+  color: string
+  dripMaxY: number // > 0 for large splats only
 }
 
 async function fetchSentence(): Promise<string> {
@@ -52,21 +102,21 @@ export default function HeroCanvas() {
     let CW = 0
     let CH = 0
 
-    // ── Setup ────────────────────────────────────────────────────
+    // ── Setup ─────────────────────────────────────────────────────
     function setup() {
       const rect = canvas!.getBoundingClientRect()
       CW = rect.width
       CH = rect.height
-      canvas!.width = Math.round(CW * dpr)
+      canvas!.width  = Math.round(CW * dpr)
       canvas!.height = Math.round(CH * dpr)
-      // canvas.width assignment resets the transform; re-apply DPR scale
+      // canvas.width resets the transform — re-apply DPR scale
       canvas!.getContext('2d')!.scale(dpr, dpr)
     }
     setup()
 
     const ctx = canvas.getContext('2d')!
 
-    // ── Timings (ms) ─────────────────────────────────────────────
+    // ── Timings (ms) — unchanged ──────────────────────────────────
     const DRAW_DUR  = 2200
     const SHAKE_DUR = 450
     const BURST_DUR = 750
@@ -74,77 +124,158 @@ export default function HeroCanvas() {
     const HOLD_DUR  = 1600
     const FADE_DUR  = 900
 
-    // ── State ────────────────────────────────────────────────────
+    // ── State ─────────────────────────────────────────────────────
     type Phase = 'draw' | 'shake' | 'burst' | 'type' | 'hold' | 'fade'
     let phase: Phase = 'draw'
-    let phaseStart = 0
-    let sentence = ''
+    let phaseStart  = 0
+    let sentence    = ''
     let particles: Particle[] = []
-    let nextSentence = ''   // pre-fetched for next cycle
-    let prefetching = false
+    let nextSentence = ''
+    let prefetching  = false
+    let cycleIndex   = 0   // 0 → 1 → 2 → 0 … incremented on each fade→draw
 
-    // ── Draw helpers ─────────────────────────────────────────────
+    // ── Primitive drawing ─────────────────────────────────────────
 
-    function drawAnimatedRect(
-      x: number, y: number, w: number, h: number, progress: number
-    ) {
-      const perim = 2 * (w + h)
-      ctx.save()
-      ctx.setLineDash([perim, perim])
-      ctx.lineDashOffset = perim * (1 - progress)
-      ctx.beginPath()
-      ctx.rect(x, y, w, h)
-      ctx.stroke()
-      ctx.restore()
-    }
-
-    function drawWireframe(totalProgress: number) {
-      ctx.strokeStyle = '#8C8278'
-      ctx.lineWidth = 1
-      const N = RECTS.length
-      for (let i = 0; i < N; i++) {
-        const [rx, ry, rw, rh] = RECTS[i]
-        const start = i / N
-        const end   = (i + 1) / N
-        const p = Math.max(0, Math.min(1, (totalProgress - start) / (end - start)))
-        if (p > 0) drawAnimatedRect(rx * CW, ry * CH, rw * CW, rh * CH, p)
+    function drawPrimAt(prim: Prim, progress: number) {
+      if (prim.k === 'rect') {
+        const x = prim.x * CW, y = prim.y * CH, w = prim.w * CW, h = prim.h * CH
+        const perim = 2 * (w + h)
+        ctx.save()
+        ctx.setLineDash([perim, perim])
+        ctx.lineDashOffset = perim * (1 - progress)
+        ctx.beginPath()
+        ctx.rect(x, y, w, h)
+        ctx.stroke()
+        ctx.restore()
+      } else if (prim.k === 'circle') {
+        const cx = prim.cx * CW, cy = prim.cy * CH, r = prim.r * CW
+        ctx.beginPath()
+        ctx.arc(cx, cy, r, -Math.PI / 2, -Math.PI / 2 + 2 * Math.PI * progress)
+        ctx.stroke()
+      } else if (prim.k === 'line') {
+        const x1 = prim.x1 * CW, y1 = prim.y1 * CH
+        const x2 = prim.x2 * CW, y2 = prim.y2 * CH
+        ctx.beginPath()
+        ctx.moveTo(x1, y1)
+        ctx.lineTo(x1 + (x2 - x1) * progress, y1 + (y2 - y1) * progress)
+        ctx.stroke()
       }
     }
 
+    function drawFrame(totalProgress: number) {
+      ctx.strokeStyle = '#8C8278'
+      ctx.lineWidth = 1
+      const prims = FRAMES[cycleIndex % 3]
+      const N = prims.length
+      for (let i = 0; i < N; i++) {
+        const start = i / N
+        const end   = (i + 1) / N
+        const p = Math.max(0, Math.min(1, (totalProgress - start) / (end - start)))
+        if (p > 0) drawPrimAt(prims[i], p)
+      }
+    }
+
+    // ── Directional paint splash ──────────────────────────────────
+
     function spawnParticles() {
       particles = []
-      for (const [rx, ry, rw, rh] of RECTS) {
-        const cx = (rx + rw / 2) * CW
-        const cy = (ry + rh / 2) * CH
-        for (let i = 0; i < 10; i++) {
-          const angle = (Math.PI * 2 * i) / 10 + Math.random() * 0.4
-          const speed = 1.5 + Math.random() * 4
-          particles.push({
-            x: cx, y: cy,
-            vx: Math.cos(angle) * speed,
-            vy: Math.sin(angle) * speed,
-            r: 2 + Math.random() * 6,
-            color: SPLASH_COLORS[Math.floor(Math.random() * SPLASH_COLORS.length)],
-          })
+      const colors = PALETTES[cycleIndex % 3]
+      // Origin: centre-left of canvas
+      const ox = CW * 0.15
+      const oy = CH * 0.50
+
+      // Large splats — elongated, leave drip trails
+      const largeCount = 6 + Math.floor(Math.random() * 3)
+      for (let i = 0; i < largeCount; i++) {
+        // Angle centred on 0 (rightward), biased very slightly downward
+        const angle = 0.1 + (Math.random() - 0.5) * 1.4  // ≈ −0.6 to +0.8 rad
+        const speed = 3 + Math.random() * 4
+        particles.push({
+          x:  ox + (Math.random() - 0.5) * CW * 0.06,
+          y:  oy + (Math.random() - 0.5) * CH * 0.15,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          rx: 14 + Math.random() * 18,  // semi-major 14–32 px
+          ry:  3 + Math.random() *  5,  // semi-minor  3–8  px
+          angle,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          dripMaxY: 18 + Math.random() * 38,
+        })
+      }
+
+      // Small splats — slightly wider angular spread, no drips
+      const smallCount = 24 + Math.floor(Math.random() * 9)
+      for (let i = 0; i < smallCount; i++) {
+        const angle = 0.1 + (Math.random() - 0.5) * 1.8  // ≈ −0.8 to +1.0 rad
+        const speed = 1.5 + Math.random() * 6
+        particles.push({
+          x:  ox + (Math.random() - 0.5) * CW * 0.08,
+          y:  oy + (Math.random() - 0.5) * CH * 0.20,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          rx: 2.5 + Math.random() * 4,  // semi-major 2.5–6.5 px
+          ry: 1.0 + Math.random() * 2,  // semi-minor 1–3    px
+          angle,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          dripMaxY: 0,
+        })
+      }
+    }
+
+    function drawParticles(t: number) {
+      for (const p of particles) {
+        // Advance with friction
+        p.x += p.vx
+        p.y += p.vy
+        p.vx *= 0.95
+        p.vy *= 0.95
+
+        const alpha = 1 - t
+
+        // Rotated ellipse splat
+        ctx.save()
+        ctx.globalAlpha = alpha
+        ctx.fillStyle = p.color
+        ctx.translate(p.x, p.y)
+        ctx.rotate(p.angle)
+        ctx.beginPath()
+        ctx.ellipse(0, 0, p.rx, p.ry, 0, 0, Math.PI * 2)
+        ctx.fill()
+        ctx.restore()
+
+        // Drip trail — grows in from t = 0.25, fades with overall burst
+        if (p.dripMaxY > 0 && t > 0.25) {
+          const dripAlpha = Math.min((t - 0.25) / 0.30, 1) * alpha * 0.7
+          const dripLen   = p.dripMaxY * Math.min((t - 0.25) / 0.40, 1)
+          if (dripLen > 0.5) {
+            ctx.save()
+            ctx.globalAlpha = dripAlpha
+            ctx.strokeStyle = p.color
+            ctx.lineWidth   = Math.max(p.ry * 0.9, 1)
+            ctx.lineCap     = 'round'
+            ctx.beginPath()
+            ctx.moveTo(p.x, p.y + p.ry)
+            ctx.lineTo(p.x, p.y + p.ry + dripLen)
+            ctx.stroke()
+            ctx.restore()
+          }
         }
       }
     }
 
+    // ── Text helpers — unchanged ──────────────────────────────────
+
     function wrapText(text: string): string[] {
       const fontSize = Math.min(CW * 0.065, 20)
       ctx.font = `italic ${fontSize}px Georgia, serif`
-      const maxW = CW * 0.85
+      const maxW  = CW * 0.85
       const words = text.split(' ')
       const lines: string[] = []
       let cur = ''
       for (const word of words) {
         const test = cur ? `${cur} ${word}` : word
-        if (ctx.measureText(test).width > maxW && cur) {
-          lines.push(cur)
-          cur = word
-        } else {
-          cur = test
-        }
+        if (ctx.measureText(test).width > maxW && cur) { lines.push(cur); cur = word }
+        else cur = test
       }
       if (cur) lines.push(cur)
       return lines
@@ -154,16 +285,14 @@ export default function HeroCanvas() {
       if (!text) return
       const fontSize = Math.min(CW * 0.065, 20)
       ctx.save()
-      ctx.globalAlpha = alpha
-      ctx.font = `italic ${fontSize}px Georgia, serif`
-      ctx.fillStyle = '#2C2820'
-      ctx.textAlign = 'center'
-      ctx.textBaseline = 'middle'
-
-      const lines = wrapText(text)
-      const lineH = fontSize * 1.7
+      ctx.globalAlpha    = alpha
+      ctx.font           = `italic ${fontSize}px Georgia, serif`
+      ctx.fillStyle      = '#2C2820'
+      ctx.textAlign      = 'center'
+      ctx.textBaseline   = 'middle'
+      const lines  = wrapText(text)
+      const lineH  = fontSize * 1.7
       const startY = CH / 2 - ((lines.length - 1) * lineH) / 2
-
       for (let i = 0; i < lines.length; i++) {
         let line = lines[i]
         if (cursor && i === lines.length - 1) {
@@ -175,7 +304,7 @@ export default function HeroCanvas() {
       ctx.restore()
     }
 
-    // ── Animation loop ───────────────────────────────────────────
+    // ── Animation loop ────────────────────────────────────────────
 
     function frame(now: number) {
       if (!running) return
@@ -186,7 +315,7 @@ export default function HeroCanvas() {
 
       if (phase === 'draw') {
         const t = Math.min(elapsed / DRAW_DUR, 1)
-        drawWireframe(t)
+        drawFrame(t)
         if (t >= 1) { phase = 'shake'; phaseStart = now }
 
       } else if (phase === 'shake') {
@@ -196,39 +325,23 @@ export default function HeroCanvas() {
         const dy = (Math.random() - 0.5) * intensity
         ctx.save()
         ctx.translate(dx, dy)
-        drawWireframe(1)
+        drawFrame(1)
         ctx.restore()
-        if (t >= 1) {
-          spawnParticles()
-          phase = 'burst'
-          phaseStart = now
-        }
+        if (t >= 1) { spawnParticles(); phase = 'burst'; phaseStart = now }
 
       } else if (phase === 'burst') {
         const t = Math.min(elapsed / BURST_DUR, 1)
-        for (const p of particles) {
-          p.x += p.vx
-          p.y += p.vy
-          p.vx *= 0.96
-          p.vy *= 0.96
-          ctx.globalAlpha = 1 - t
-          ctx.fillStyle = p.color
-          ctx.beginPath()
-          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
-          ctx.fill()
-        }
+        drawParticles(t)
         ctx.globalAlpha = 1
         if (t >= 1) { phase = 'type'; phaseStart = now }
 
       } else if (phase === 'type') {
         const charsToShow = Math.floor(elapsed / CHAR_MS)
         const visible = sentence.slice(0, charsToShow)
-        const done = charsToShow >= sentence.length
+        const done    = charsToShow >= sentence.length
         drawText(visible, 1, !done, now)
         if (done) {
-          phase = 'hold'
-          phaseStart = now
-          // pre-fetch the next sentence while user reads
+          phase = 'hold'; phaseStart = now
           if (!prefetching) {
             prefetching = true
             fetchSentence().then(s => { nextSentence = s; prefetching = false })
@@ -243,17 +356,17 @@ export default function HeroCanvas() {
         const t = Math.min(elapsed / FADE_DUR, 1)
         drawText(sentence, 1 - t, false, now)
         if (t >= 1) {
-          sentence = nextSentence || FALLBACKS[Math.floor(Math.random() * FALLBACKS.length)]
+          sentence     = nextSentence || FALLBACKS[Math.floor(Math.random() * FALLBACKS.length)]
           nextSentence = ''
-          phase = 'draw'
-          phaseStart = now
+          cycleIndex   = (cycleIndex + 1) % 3   // advance frame + palette together
+          phase        = 'draw'
+          phaseStart   = now
         }
       }
 
       rafId = requestAnimationFrame(frame)
     }
 
-    // Fetch first sentence then start the loop
     fetchSentence().then(s => {
       if (!running) return
       sentence = s
