@@ -93,16 +93,23 @@ export default function Home() {
       <main>
         {/* ── Hero ─────────────────────────────────────────────── */}
         <section className="bg-[#FAF8F4] flex flex-col px-8" style={{ paddingTop: '20vh', paddingBottom: '4vh' }}>
-          <div className="max-w-6xl mx-auto w-full">
-            <p className="text-xs uppercase tracking-[0.25em] text-[#8C8278] mb-10">
-              Product designer · painter · writer
-            </p>
-            <h1 className="font-serif text-6xl sm:text-7xl lg:text-[7.5rem] text-[#2C2820] leading-[0.92] tracking-tight mb-10">
-              Sarpomaa<br />Bempong
-            </h1>
-            <p className="text-base text-[#8C8278] max-w-sm leading-relaxed">
-              Designing products. Painting worlds. Telling stories.
-            </p>
+          <div className="max-w-6xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 gap-16 md:items-center">
+            {/* Left: name + tagline */}
+            <div>
+              <p className="text-xs uppercase tracking-[0.25em] text-[#8C8278] mb-10">
+                Product designer · painter · writer
+              </p>
+              <h1 className="font-serif text-6xl sm:text-7xl lg:text-[7.5rem] text-[#2C2820] leading-[0.92] tracking-tight mb-10">
+                Sarpomaa<br />Bempong
+              </h1>
+              <p className="text-base text-[#8C8278] max-w-sm leading-relaxed">
+                Designing products. Painting worlds. Telling stories.
+              </p>
+            </div>
+            {/* Right: animated canvas — hidden on mobile */}
+            <div className="hidden md:block" style={{ height: '360px' }}>
+              <HeroCanvas />
+            </div>
           </div>
         </section>
 
