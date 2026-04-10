@@ -365,12 +365,14 @@ export default function HeroCanvas() {
         const endX = line.ox + Math.cos(line.angle) * len
         const endY = line.oy + Math.sin(line.angle) * len
 
+        ctx.globalAlpha = alpha * line.opacity
         ctx.strokeStyle = line.color
         ctx.lineWidth   = line.lw
         ctx.beginPath()
         ctx.moveTo(line.ox, line.oy)
         ctx.lineTo(endX, endY)
         ctx.stroke()
+        ctx.globalAlpha = alpha
 
         // Dot/teardrop at tip — fades in over last 15% of extension
         if (lineT >= 0.85) {
