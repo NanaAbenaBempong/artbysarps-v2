@@ -126,7 +126,7 @@ export default function HeroCanvas() {
     let phase: Phase = 'draw'
     let phaseStart  = 0
     let sentence    = ''
-    let particles: Particle[] = []
+    let splash: Splash | null = null
     let nextSentence = ''
     let prefetching  = false
     let cycleIndex   = 0   // 0 → 1 → 2 → 0 … incremented on each fade→draw
