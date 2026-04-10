@@ -175,54 +175,74 @@ export default function HeroCanvas() {
       }
     }
 
-    // ── Directional paint splash ──────────────────────────────────
+    // ── Centrifugal paint splash ──────────────────────────────────
+    //
+    // Physics: with 0.95 friction per frame at ~60 fps over 750 ms (≈45 frames),
+    // total distance ≈ v0 × 18.4.  CW/2 ≈ 270 px → v0 ≈ 15 to reach the edge.
+    // Large at v0 10-16 travel 184-294 px; medium 6-11 → 110-202 px.
 
     function spawnParticles() {
       particles = []
       const colors = PALETTES[cycleIndex % 3]
-      // Origin: centre-left of canvas
-      const ox = CW * 0.15
+      const ox = CW * 0.50   // centre of canvas
       const oy = CH * 0.50
 
-      // Large splats — elongated, leave drip trails
-      const largeCount = 6 + Math.floor(Math.random() * 3)
-      for (let i = 0; i < largeCount; i++) {
-        // Angle centred on 0 (rightward), biased very slightly downward
-        const angle = 0.1 + (Math.random() - 0.5) * 1.4  // ≈ −0.6 to +0.8 rad
-        const speed = 3 + Math.random() * 4
+      // ── 8 large splats — evenly spaced angles + jitter, with drip trails ──
+      for (let i = 0; i < 8; i++) {
+        const angle = (Math.PI * 2 * i) / 8 + (Math.random() - 0.5) * 0.55
+        const speed = 10 + Math.random() * 6            // 10-16 px/frame
+        const rx    = 25 + Math.random() * 25           // semi-major 25-50 px
+        const ry    =  5 + Math.random() *  8           // semi-minor  5-13 px
         particles.push({
-          x:  ox + (Math.random() - 0.5) * CW * 0.06,
-          y:  oy + (Math.random() - 0.5) * CH * 0.15,
+          x:  ox + (Math.random() - 0.5) * 8,
+          y:  oy + (Math.random() - 0.5) * 8,
           vx: Math.cos(angle) * speed,
           vy: Math.sin(angle) * speed,
-          rx: 14 + Math.random() * 18,  // semi-major 14–32 px
-          ry:  3 + Math.random() *  5,  // semi-minor  3–8  px
-          angle,
-          color: colors[Math.floor(Math.random() * colors.length)],
-          dripMaxY: 18 + Math.random() * 38,
+          rx, ry, angle,
+          color:    colors[Math.floor(Math.random() * colors.length)],
+          dripMaxY: i < 4 ? 28 + Math.random() * 44 : 0,  // 4 of 8 drip
         })
       }
 
-      // Small splats — slightly wider angular spread, no drips
-      const smallCount = 24 + Math.floor(Math.random() * 9)
-      for (let i = 0; i < smallCount; i++) {
-        const angle = 0.1 + (Math.random() - 0.5) * 1.8  // ≈ −0.8 to +1.0 rad
-        const speed = 1.5 + Math.random() * 6
+      // ── 12 medium splats — random angles ──────────────────────────────────
+      for (let i = 0; i < 12; i++) {
+        const angle = Math.random() * Math.PI * 2
+        const speed = 6 + Math.random() * 5             // 6-11 px/frame
+        const rx    = 12 + Math.random() * 13           // 12-25 px
+        const ry    =  3 + Math.random() *  5           // 3-8  px
         particles.push({
-          x:  ox + (Math.random() - 0.5) * CW * 0.08,
-          y:  oy + (Math.random() - 0.5) * CH * 0.20,
+          x:  ox + (Math.random() - 0.5) * 12,
+          y:  oy + (Math.random() - 0.5) * 12,
           vx: Math.cos(angle) * speed,
           vy: Math.sin(angle) * speed,
-          rx: 2.5 + Math.random() * 4,  // semi-major 2.5–6.5 px
-          ry: 1.0 + Math.random() * 2,  // semi-minor 1–3    px
+          rx, ry, angle,
+          color:    colors[Math.floor(Math.random() * colors.length)],
+          dripMaxY: 0,
+        })
+      }
+
+      // ── 20 small dots — circles (rx = ry), random angles ─────────────────
+      for (let i = 0; i < 20; i++) {
+        const angle = Math.random() * Math.PI * 2
+        const speed = 3 + Math.random() * 7             // 3-10 px/frame
+        const r     = 4 + Math.random() * 6             // radius 4-10 px
+        particles.push({
+          x:  ox + (Math.random() - 0.5) * 18,
+          y:  oy + (Math.random() - 0.5) * 18,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          rx: r, ry: r,                                 // circle
           angle,
-          color: colors[Math.floor(Math.random() * colors.length)],
+          color:    colors[Math.floor(Math.random() * colors.length)],
           dripMaxY: 0,
         })
       }
     }
 
     function drawParticles(t: number) {
+      // Fully opaque for first 25 % of burst, then linear fade to 0
+      const alpha = t < 0.25 ? 1.0 : Math.max(0, 1.0 - (t - 0.25) / 0.75)
+
       for (const p of particles) {
         // Advance with friction
         p.x += p.vx
@@ -230,12 +250,10 @@ export default function HeroCanvas() {
         p.vx *= 0.95
         p.vy *= 0.95
 
-        const alpha = 1 - t
-
-        // Rotated ellipse splat
+        // Rotated ellipse (or circle when rx === ry)
         ctx.save()
         ctx.globalAlpha = alpha
-        ctx.fillStyle = p.color
+        ctx.fillStyle   = p.color
         ctx.translate(p.x, p.y)
         ctx.rotate(p.angle)
         ctx.beginPath()
@@ -243,20 +261,28 @@ export default function HeroCanvas() {
         ctx.fill()
         ctx.restore()
 
-        // Drip trail — grows in from t = 0.25, fades with overall burst
-        if (p.dripMaxY > 0 && t > 0.25) {
-          const dripAlpha = Math.min((t - 0.25) / 0.30, 1) * alpha * 0.7
-          const dripLen   = p.dripMaxY * Math.min((t - 0.25) / 0.40, 1)
-          if (dripLen > 0.5) {
+        // Drip: grows from t = 0.40, tip is a small filled circle
+        if (p.dripMaxY > 0 && t > 0.40) {
+          const grow     = Math.min((t - 0.40) / 0.35, 1)
+          const dripLen  = p.dripMaxY * grow
+          const dripAlpha = grow * alpha
+          if (dripLen > 1) {
+            const tipX = p.x
+            const tipY = p.y + p.ry + dripLen
             ctx.save()
             ctx.globalAlpha = dripAlpha
             ctx.strokeStyle = p.color
-            ctx.lineWidth   = Math.max(p.ry * 0.9, 1)
+            ctx.lineWidth   = Math.max(p.ry * 0.65, 1.5)
             ctx.lineCap     = 'round'
             ctx.beginPath()
             ctx.moveTo(p.x, p.y + p.ry)
-            ctx.lineTo(p.x, p.y + p.ry + dripLen)
+            ctx.lineTo(tipX, tipY)
             ctx.stroke()
+            // Teardrop tip
+            ctx.fillStyle = p.color
+            ctx.beginPath()
+            ctx.arc(tipX, tipY, Math.max(p.ry * 0.55, 2.5), 0, Math.PI * 2)
+            ctx.fill()
             ctx.restore()
           }
         }
