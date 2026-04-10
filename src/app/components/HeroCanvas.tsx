@@ -224,78 +224,75 @@ export default function HeroCanvas() {
         })
       }
 
-      // ── Spatter lines — exactly 16 total, directionally clustered ──
+      // ── Spatter lines — exactly 16, explosion-angle distribution ──
       const lines: SpatterLn[] = []
+      const explAngle = Math.random() * Math.PI * 2  // random explosion direction each burst
+      const deg = Math.PI / 180
 
-      // Fixed size bands: [count, lMin_px, lMax_px, lwMin, lwMax, opMin, opMax, dotRMin, dotRMax]
-      type Band = [number, number, number, number, number, number, number, number, number]
-      const bands: Band[] = [
-        [4, 200, 240, 1.2, 2.0, 0.85, 1.00,  8, 12],  // very long — 4 lines
-        [5,  90, 130, 0.8, 1.5, 0.70, 1.00,  5,  8],  // medium    — 5 lines
-        [4,  30,  60, 0.6, 1.2, 0.50, 0.85,  3,  5],  // short     — 4 lines
-        [3,  10,  20, 0.5, 0.9, 0.40, 0.75,  1,  2],  // tiny      — 3 lines
-      ]
-
-      // Flatten into a shuffled list of specs (lengths in px, not fractions)
-      type LineSpec = { length: number; lw: number; opacity: number; dotR: number }
-      const specs: LineSpec[] = []
-      for (const [count, lMin, lMax, lwMin, lwMax, opMin, opMax, dotRMin, dotRMax] of bands) {
-        for (let i = 0; i < count; i++) {
-          specs.push({
-            length:  lMin  + Math.random() * (lMax  - lMin),
-            lw:      lwMin + Math.random() * (lwMax - lwMin),
-            opacity: opMin + Math.random() * (opMax - opMin),
-            dotR:    dotRMin + Math.random() * (dotRMax - dotRMin),
-          })
-        }
-      }
-      // Shuffle so size bands are interleaved (not all longs first)
-      for (let i = specs.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [specs[i], specs[j]] = [specs[j], specs[i]]
-      }
-
-      // Directional clustering: pick a main direction, put 5–6 lines within ±30° of it, rest random
-      const mainDir     = Math.random() * Math.PI * 2
-      const clusterN    = 5 + Math.floor(Math.random() * 2)  // 5 or 6
-      for (let i = 0; i < specs.length; i++) {
-        const { length, lw, opacity, dotR } = specs[i]
-        const angle = i < clusterN
-          ? mainDir + (Math.random() - 0.5) * (Math.PI / 3)  // ±30° of main direction
-          : Math.random() * Math.PI * 2                        // fully random
+      // Helper: build one line spec and push it
+      function mkLine(angle: number, length: number, dotR: number) {
         lines.push({
-          ox: ox + (Math.random() - 0.5) * D * 0.04,
-          oy: oy + (Math.random() - 0.5) * D * 0.04,
-          angle, length, lw, opacity, dotR,
-          color: colors[Math.floor(Math.random() * colors.length)],
-          delay: i * (0.25 / specs.length),
+          ox: ox, oy: oy,
+          angle,
+          length,
+          lw:      0.8 + Math.random() * 1.2,   // 0.8–2.0
+          opacity: 0.5 + Math.random() * 0.5,   // 0.5–1.0
+          dotR,
+          color:   colors[Math.floor(Math.random() * colors.length)],
+          delay:   0,
         })
       }
 
-      // ── Satellite droplets — three size bands near line endpoints ──
-      const droplets: SatDrop[] = []
-      const largeDropN  = 5  + Math.floor(Math.random() * 3)  // 5–7  large  8–12 px
-      const medDropN    = 8  + Math.floor(Math.random() * 4)  // 8–11 medium 3–5  px
-      const tinyDropN   = 6  + Math.floor(Math.random() * 4)  // 6–9  tiny   1.5–2.5 px
-
-      function addDrops(count: number, rMin: number, rMax: number) {
-        for (let i = 0; i < count; i++) {
-          const base  = lines[Math.floor(Math.random() * lines.length)]
-          const angle = base.angle + (Math.random() - 0.5) * 0.9
-          const dist  = D * (0.08 + Math.random() * 0.36)
-          droplets.push({
-            x: ox + Math.cos(angle) * dist,
-            y: oy + Math.sin(angle) * dist,
-            r:     rMin + Math.random() * (rMax - rMin),
-            color: colors[Math.floor(Math.random() * colors.length)],
-            delay: 0.15 + Math.random() * 0.25,
-          })
-        }
+      // Lines 1–4: tight forward cluster, long
+      for (let i = 0; i < 4; i++) {
+        mkLine(
+          explAngle + (Math.random() * 50 - 25) * deg,
+          200 + Math.random() * 40,
+          6 + Math.random() * 6,
+        )
       }
-      addDrops(largeDropN, 8,   12)
-      addDrops(medDropN,   3,    5)
-      addDrops(tinyDropN,  1.5,  2.5)
+      // Lines 5–6: wider forward cluster, medium
+      for (let i = 0; i < 2; i++) {
+        mkLine(
+          explAngle + (Math.random() * 80 - 40) * deg,
+          90 + Math.random() * 40,
+          4 + Math.random() * 3,
+        )
+      }
+      // Lines 7–9: opposite direction cluster, medium
+      for (let i = 0; i < 3; i++) {
+        mkLine(
+          explAngle + Math.PI + (Math.random() * 60 - 30) * deg,
+          90 + Math.random() * 40,
+          4 + Math.random() * 3,
+        )
+      }
+      // Lines 10–12: fully random, short
+      for (let i = 0; i < 3; i++) {
+        mkLine(
+          Math.random() * Math.PI * 2,
+          30 + Math.random() * 30,
+          2 + Math.random() * 2,
+        )
+      }
+      // Lines 13–14: fully random, medium-length
+      for (let i = 0; i < 2; i++) {
+        mkLine(
+          Math.random() * Math.PI * 2,
+          90 + Math.random() * 30,
+          2 + Math.random() * 2,
+        )
+      }
+      // Lines 15–16: fully random, tiny flicks
+      for (let i = 0; i < 2; i++) {
+        mkLine(
+          Math.random() * Math.PI * 2,
+          10 + Math.random() * 10,
+          1.5,
+        )
+      }
 
+      const droplets: SatDrop[] = []   // endpoint droplets live on lines; no satellites
       splash = { blobs, lines, droplets }
     }
 
