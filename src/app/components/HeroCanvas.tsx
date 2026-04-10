@@ -107,13 +107,15 @@ export default function HeroCanvas() {
 
     const ctx = canvas.getContext('2d')!
 
-    // ── Timings (ms) — unchanged ──────────────────────────────────
-    const DRAW_DUR  = 2200
-    const SHAKE_DUR = 450
-    const BURST_DUR = 750
-    const CHAR_MS   = 55
-    const HOLD_DUR  = 1600
-    const FADE_DUR  = 900
+    // ── Timings (ms) ─────────────────────────────────────────────
+    const DRAW_DUR    = 2200
+    const SHAKE_DUR   = 450
+    const STROKE_DRAW = 1500  // ms to paint the brush stroke
+    const STROKE_HOLD =  500  // ms to hold it fully visible
+    const STROKE_FADE =  300  // ms to fade it out before text types in
+    const CHAR_MS     = 55
+    const HOLD_DUR    = 1600
+    const FADE_DUR    = 900
 
     // ── State ─────────────────────────────────────────────────────
     type Phase = 'draw' | 'shake' | 'burst' | 'type' | 'hold' | 'fade'
