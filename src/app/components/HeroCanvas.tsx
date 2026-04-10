@@ -411,8 +411,7 @@ export default function HeroCanvas() {
 
       } else if (phase === 'burst') {
         const t = Math.min(elapsed / BURST_DUR, 1)
-        drawParticles(t)
-        ctx.globalAlpha = 1
+        drawSplash(t)
         if (t >= 1) { phase = 'type'; phaseStart = now }
 
       } else if (phase === 'type') {
