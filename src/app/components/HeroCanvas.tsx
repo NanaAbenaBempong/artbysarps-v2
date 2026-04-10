@@ -291,12 +291,15 @@ export default function HeroCanvas() {
         ctx.translate(dx, dy)
         drawFrame(1)
         ctx.restore()
-        if (t >= 1) { currentBurstSeed = Math.floor(Math.random() * 999999); phase = 'burst'; phaseStart = now }
+        if (t >= 1) { phase = 'burst'; phaseStart = now }
 
       } else if (phase === 'burst') {
-        const t = Math.min(elapsed / BURST_DUR, 1)
-        drawSplash(ctx, CW / 2, CH / 2, PALETTES[cycleIndex % 3], t)
-        if (t >= 1) { phase = 'type'; phaseStart = now }
+        // Sub-phases: draw stroke → hold → fade out → hand off to 'type'
+        const drawProgress = Math.min(elapsed / STROKE_DRAW, 1)
+        const fadeElapsed  = Math.max(0, elapsed - STROKE_DRAW - STROKE_HOLD)
+        const alpha        = fadeElapsed > 0 ? Math.max(0, 1 - fadeElapsed / STROKE_FADE) : 1
+        drawBrushStroke(drawProgress, alpha)
+        if (elapsed >= STROKE_DRAW + STROKE_HOLD + STROKE_FADE) { phase = 'type'; phaseStart = now }
 
       } else if (phase === 'type') {
         const charsToShow = Math.floor(elapsed / CHAR_MS)
