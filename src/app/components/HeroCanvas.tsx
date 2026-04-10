@@ -191,55 +191,94 @@ export default function HeroCanvas() {
       const ox = CW * 0.50
       const oy = CH * 0.50
 
-      // ── 3–5 organic blobs clustered at centre ─────────────────────
+      // ── Blobs: 1 dominant central blob + 2–3 smaller overlapping secondaries ──
       const blobs: Blob[] = []
-      const blobCount = 3 + Math.floor(Math.random() * 3)
-      for (let i = 0; i < blobCount; i++) {
-        const cx    = ox + (Math.random() - 0.5) * D * 0.13
-        const cy    = oy + (Math.random() - 0.5) * D * 0.14
-        const baseR = D * (0.08 + Math.random() * 0.06)   // ~29–50 px at D=360
-        const N     = 10 + Math.floor(Math.random() * 5)  // 10–14 control pts
-        const pts   = makeBlobPts(cx, cy, baseR, N)
+      const mainColor = colors[Math.floor(Math.random() * colors.length)]
+
+      // Main blob — large, slightly off-centre, full opacity
+      const mainCx  = ox + (Math.random() - 0.5) * D * 0.06
+      const mainCy  = oy + (Math.random() - 0.5) * D * 0.06
+      const mainR   = D * (0.14 + Math.random() * 0.04)  // ~50–65 px → width ~93–120 px
+      const mainPts = makeBlobPts(mainCx, mainCy, mainR, 12 + Math.floor(Math.random() * 3))
+      blobs.push({
+        cx: mainCx, cy: mainCy, pts: mainPts,
+        bottomY: Math.max(...mainPts.map(p => p.y)),
+        color: mainColor, opacity: 1,
+        dripMaxY: D * (0.08 + Math.random() * 0.10),
+      })
+
+      // Secondary blobs — smaller, overlapping the main blob, slightly transparent
+      const secCount = 2 + Math.floor(Math.random() * 2)  // 2–3
+      for (let i = 0; i < secCount; i++) {
+        // Cluster tightly around the main blob centre
+        const cx    = mainCx + (Math.random() - 0.5) * mainR * 1.2
+        const cy    = mainCy + (Math.random() - 0.5) * mainR * 1.2
+        const baseR = D * (0.06 + Math.random() * 0.04)   // ~22–36 px
+        const pts   = makeBlobPts(cx, cy, baseR, 10 + Math.floor(Math.random() * 4))
         blobs.push({
           cx, cy, pts,
-          bottomY: Math.max(...pts.map(p => p.y)),
+          bottomY:  Math.max(...pts.map(p => p.y)),
           color:    colors[Math.floor(Math.random() * colors.length)],
-          dripMaxY: i < 3 ? D * (0.07 + Math.random() * 0.12) : 0,
+          opacity:  0.65 + Math.random() * 0.25,   // 0.65–0.90
+          dripMaxY: i === 0 ? D * (0.06 + Math.random() * 0.08) : 0,
         })
       }
 
-      // ── 8–12 spatter lines radiating outward ──────────────────────
+      // ── Spatter lines — explicit size bands: long / medium / short ──
       const lines: SpatterLn[] = []
-      const lineCount = 8 + Math.floor(Math.random() * 5)
-      for (let i = 0; i < lineCount; i++) {
-        const angle  = (2 * Math.PI * i) / lineCount + (Math.random() - 0.5) * 0.45
-        const length = D * (0.24 + Math.random() * 0.32)   // 24–56% of D
+      const longCount   = 2 + Math.floor(Math.random() * 2)   // 2–3 long
+      const medCount    = 3 + Math.floor(Math.random() * 2)   // 3–4 medium
+      const shortCount  = 2 + Math.floor(Math.random() * 3)   // 2–4 short
+      const totalLines  = longCount + medCount + shortCount
+
+      // Assign evenly-spread base angles then add jitter
+      for (let i = 0; i < totalLines; i++) {
+        const baseAngle = (2 * Math.PI * i) / totalLines + (Math.random() - 0.5) * 0.50
+        let length: number
+        let lw: number
+        if (i < longCount) {
+          length = D * (0.42 + Math.random() * 0.14)  // 151–202 px at D=360
+          lw     = 1.2 + Math.random() * 0.8           // 1.2–2.0 px
+        } else if (i < longCount + medCount) {
+          length = D * (0.22 + Math.random() * 0.11)  //  79–119 px
+          lw     = 0.8 + Math.random() * 0.7           // 0.8–1.5 px
+        } else {
+          length = D * (0.08 + Math.random() * 0.06)  //  29–50  px
+          lw     = 0.6 + Math.random() * 0.5           // 0.6–1.1 px
+        }
         lines.push({
           ox: ox + (Math.random() - 0.5) * D * 0.04,
           oy: oy + (Math.random() - 0.5) * D * 0.04,
-          angle, length,
-          lw:    0.8 + Math.random() * 1.2,
-          dotR:  2.5 + Math.random() * 3.5,
+          angle: baseAngle, length, lw,
+          dotR:  0,  // assigned below per droplet; line tip handled by satellite droplets
           color: colors[Math.floor(Math.random() * colors.length)],
-          delay: i * (0.25 / lineCount),  // stagger 0 → 0.25
+          delay: i * (0.25 / totalLines),
         })
       }
 
-      // ── 15–25 satellite droplets near line endpoints ───────────────
+      // ── Satellite droplets — three size bands near line endpoints ──
       const droplets: SatDrop[] = []
-      const dropCount = 15 + Math.floor(Math.random() * 11)
-      for (let i = 0; i < dropCount; i++) {
-        const base  = lines[Math.floor(Math.random() * lines.length)]
-        const angle = base.angle + (Math.random() - 0.5) * 0.9
-        const dist  = D * (0.08 + Math.random() * 0.36)
-        droplets.push({
-          x: ox + Math.cos(angle) * dist,
-          y: oy + Math.sin(angle) * dist,
-          r:     3 + Math.random() * 9,
-          color: colors[Math.floor(Math.random() * colors.length)],
-          delay: 0.15 + Math.random() * 0.25,
-        })
+      const largeDropN  = 5  + Math.floor(Math.random() * 3)  // 5–7  large  8–12 px
+      const medDropN    = 8  + Math.floor(Math.random() * 4)  // 8–11 medium 3–5  px
+      const tinyDropN   = 6  + Math.floor(Math.random() * 4)  // 6–9  tiny   1.5–2.5 px
+
+      function addDrops(count: number, rMin: number, rMax: number) {
+        for (let i = 0; i < count; i++) {
+          const base  = lines[Math.floor(Math.random() * lines.length)]
+          const angle = base.angle + (Math.random() - 0.5) * 0.9
+          const dist  = D * (0.08 + Math.random() * 0.36)
+          droplets.push({
+            x: ox + Math.cos(angle) * dist,
+            y: oy + Math.sin(angle) * dist,
+            r:     rMin + Math.random() * (rMax - rMin),
+            color: colors[Math.floor(Math.random() * colors.length)],
+            delay: 0.15 + Math.random() * 0.25,
+          })
+        }
       }
+      addDrops(largeDropN, 8,   12)
+      addDrops(medDropN,   3,    5)
+      addDrops(tinyDropN,  1.5,  2.5)
 
       splash = { blobs, lines, droplets }
     }
