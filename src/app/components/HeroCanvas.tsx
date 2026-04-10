@@ -67,15 +67,12 @@ const FRAMES: Prim[][] = [
   ],
 ]
 
-interface Particle {
-  x: number; y: number
-  vx: number; vy: number
-  rx: number   // ellipse semi-major (along travel direction)
-  ry: number   // ellipse semi-minor
-  angle: number // initial travel angle — constant (friction is symmetric)
-  color: string
-  dripMaxY: number // > 0 for large splats only
-}
+// ── Splash geometry types ─────────────────────────────────────────────────────
+interface BlobPt    { x: number; y: number }
+interface Blob      { cx: number; cy: number; pts: BlobPt[]; bottomY: number; color: string; dripMaxY: number }
+interface SpatterLn { ox: number; oy: number; angle: number; length: number; lw: number; dotR: number; color: string; delay: number }
+interface SatDrop   { x: number; y: number; r: number; color: string; delay: number }
+interface Splash    { blobs: Blob[]; lines: SpatterLn[]; droplets: SatDrop[] }
 
 async function fetchSentence(): Promise<string> {
   try {
