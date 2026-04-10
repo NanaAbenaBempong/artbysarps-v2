@@ -224,52 +224,52 @@ export default function HeroCanvas() {
         })
       }
 
-      // ── Spatter lines — 14–18 total, clustered angles, 4 size bands ──
+      // ── Spatter lines — exactly 16 total, directionally clustered ──
       const lines: SpatterLn[] = []
 
-      // Size bands: [count, lengthMin, lengthMax, lwMin, lwMax, opacityMin, opacityMax]
-      type Band = [number, number, number, number, number, number, number]
+      // Fixed size bands: [count, lMin_px, lMax_px, lwMin, lwMax, opMin, opMax, dotRMin, dotRMax]
+      type Band = [number, number, number, number, number, number, number, number, number]
       const bands: Band[] = [
-        [3 + Math.floor(Math.random() * 2),  0.50, 0.694, 1.2, 2.0, 0.85, 1.00], // very long 180–250px
-        [4 + Math.floor(Math.random() * 2),  0.22, 0.361, 0.8, 1.5, 0.70, 1.00], // medium    80–130px
-        [5 + Math.floor(Math.random() * 2),  0.056, 0.139, 0.6, 1.2, 0.50, 0.85], // short    20–50px
-        [2 + Math.floor(Math.random() * 2),  0.022, 0.042, 0.5, 0.9, 0.40, 0.75], // tiny      8–15px
+        [4, 200, 240, 1.2, 2.0, 0.85, 1.00,  8, 12],  // very long — 4 lines
+        [5,  90, 130, 0.8, 1.5, 0.70, 1.00,  5,  8],  // medium    — 5 lines
+        [4,  30,  60, 0.6, 1.2, 0.50, 0.85,  3,  5],  // short     — 4 lines
+        [3,  10,  20, 0.5, 0.9, 0.40, 0.75,  1,  2],  // tiny      — 3 lines
       ]
 
-      // Flatten into a shuffled list of specs
-      type LineSpec = { length: number; lw: number; opacity: number }
+      // Flatten into a shuffled list of specs (lengths in px, not fractions)
+      type LineSpec = { length: number; lw: number; opacity: number; dotR: number }
       const specs: LineSpec[] = []
-      for (const [count, lMin, lMax, lwMin, lwMax, opMin, opMax] of bands) {
+      for (const [count, lMin, lMax, lwMin, lwMax, opMin, opMax, dotRMin, dotRMax] of bands) {
         for (let i = 0; i < count; i++) {
           specs.push({
-            length:  D * (lMin  + Math.random() * (lMax  - lMin)),
-            lw:      lwMin  + Math.random() * (lwMax  - lwMin),
-            opacity: opMin  + Math.random() * (opMax  - opMin),
+            length:  lMin  + Math.random() * (lMax  - lMin),
+            lw:      lwMin + Math.random() * (lwMax - lwMin),
+            opacity: opMin + Math.random() * (opMax - opMin),
+            dotR:    dotRMin + Math.random() * (dotRMax - dotRMin),
           })
         }
       }
-      // Shuffle specs so size categories are interleaved (not all longs first)
+      // Shuffle so size bands are interleaved (not all longs first)
       for (let i = specs.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [specs[i], specs[j]] = [specs[j], specs[i]]
       }
 
-      // Assign clustered angles: random tight step (cluster) or large gap (spread)
-      let cursor = Math.random() * Math.PI * 2
+      // Directional clustering: pick a main direction, put 5–6 lines within ±30° of it, rest random
+      const mainDir     = Math.random() * Math.PI * 2
+      const clusterN    = 5 + Math.floor(Math.random() * 2)  // 5 or 6
       for (let i = 0; i < specs.length; i++) {
-        const { length, lw, opacity } = specs[i]
+        const { length, lw, opacity, dotR } = specs[i]
+        const angle = i < clusterN
+          ? mainDir + (Math.random() - 0.5) * (Math.PI / 3)  // ±30° of main direction
+          : Math.random() * Math.PI * 2                        // fully random
         lines.push({
           ox: ox + (Math.random() - 0.5) * D * 0.04,
           oy: oy + (Math.random() - 0.5) * D * 0.04,
-          angle: cursor, length, lw, opacity,
-          dotR:  0,
+          angle, length, lw, opacity, dotR,
           color: colors[Math.floor(Math.random() * colors.length)],
           delay: i * (0.25 / specs.length),
         })
-        // Tight cluster step (40% chance) or spread gap (60%)
-        cursor += Math.random() < 0.40
-          ? 0.12 + Math.random() * 0.28  // 7–23° — cluster
-          : 0.50 + Math.random() * 0.85  // 29–77° — spread
       }
 
       // ── Satellite droplets — three size bands near line endpoints ──
