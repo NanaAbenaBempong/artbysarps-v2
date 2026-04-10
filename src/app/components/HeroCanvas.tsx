@@ -224,36 +224,52 @@ export default function HeroCanvas() {
         })
       }
 
-      // ── Spatter lines — explicit size bands: long / medium / short ──
+      // ── Spatter lines — 14–18 total, clustered angles, 4 size bands ──
       const lines: SpatterLn[] = []
-      const longCount   = 2 + Math.floor(Math.random() * 2)   // 2–3 long
-      const medCount    = 3 + Math.floor(Math.random() * 2)   // 3–4 medium
-      const shortCount  = 2 + Math.floor(Math.random() * 3)   // 2–4 short
-      const totalLines  = longCount + medCount + shortCount
 
-      // Assign evenly-spread base angles then add jitter
-      for (let i = 0; i < totalLines; i++) {
-        const baseAngle = (2 * Math.PI * i) / totalLines + (Math.random() - 0.5) * 0.50
-        let length: number
-        let lw: number
-        if (i < longCount) {
-          length = D * (0.42 + Math.random() * 0.14)  // 151–202 px at D=360
-          lw     = 1.2 + Math.random() * 0.8           // 1.2–2.0 px
-        } else if (i < longCount + medCount) {
-          length = D * (0.22 + Math.random() * 0.11)  //  79–119 px
-          lw     = 0.8 + Math.random() * 0.7           // 0.8–1.5 px
-        } else {
-          length = D * (0.08 + Math.random() * 0.06)  //  29–50  px
-          lw     = 0.6 + Math.random() * 0.5           // 0.6–1.1 px
+      // Size bands: [count, lengthMin, lengthMax, lwMin, lwMax, opacityMin, opacityMax]
+      type Band = [number, number, number, number, number, number, number]
+      const bands: Band[] = [
+        [3 + Math.floor(Math.random() * 2),  0.50, 0.694, 1.2, 2.0, 0.85, 1.00], // very long 180–250px
+        [4 + Math.floor(Math.random() * 2),  0.22, 0.361, 0.8, 1.5, 0.70, 1.00], // medium    80–130px
+        [5 + Math.floor(Math.random() * 2),  0.056, 0.139, 0.6, 1.2, 0.50, 0.85], // short    20–50px
+        [2 + Math.floor(Math.random() * 2),  0.022, 0.042, 0.5, 0.9, 0.40, 0.75], // tiny      8–15px
+      ]
+
+      // Flatten into a shuffled list of specs
+      type LineSpec = { length: number; lw: number; opacity: number }
+      const specs: LineSpec[] = []
+      for (const [count, lMin, lMax, lwMin, lwMax, opMin, opMax] of bands) {
+        for (let i = 0; i < count; i++) {
+          specs.push({
+            length:  D * (lMin  + Math.random() * (lMax  - lMin)),
+            lw:      lwMin  + Math.random() * (lwMax  - lwMin),
+            opacity: opMin  + Math.random() * (opMax  - opMin),
+          })
         }
+      }
+      // Shuffle specs so size categories are interleaved (not all longs first)
+      for (let i = specs.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [specs[i], specs[j]] = [specs[j], specs[i]]
+      }
+
+      // Assign clustered angles: random tight step (cluster) or large gap (spread)
+      let cursor = Math.random() * Math.PI * 2
+      for (let i = 0; i < specs.length; i++) {
+        const { length, lw, opacity } = specs[i]
         lines.push({
           ox: ox + (Math.random() - 0.5) * D * 0.04,
           oy: oy + (Math.random() - 0.5) * D * 0.04,
-          angle: baseAngle, length, lw,
-          dotR:  0,  // assigned below per droplet; line tip handled by satellite droplets
+          angle: cursor, length, lw, opacity,
+          dotR:  0,
           color: colors[Math.floor(Math.random() * colors.length)],
-          delay: i * (0.25 / totalLines),
+          delay: i * (0.25 / specs.length),
         })
+        // Tight cluster step (40% chance) or spread gap (60%)
+        cursor += Math.random() < 0.40
+          ? 0.12 + Math.random() * 0.28  // 7–23° — cluster
+          : 0.50 + Math.random() * 0.85  // 29–77° — spread
       }
 
       // ── Satellite droplets — three size bands near line endpoints ──
