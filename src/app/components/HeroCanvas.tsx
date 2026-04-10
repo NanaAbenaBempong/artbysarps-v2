@@ -168,215 +168,114 @@ export default function HeroCanvas() {
 
     // ── Paint splatter ────────────────────────────────────────────
 
-    function makeBlobPts(cx: number, cy: number, baseR: number, N: number): BlobPt[] {
-      const pts: BlobPt[] = []
-      const step = (2 * Math.PI) / N
-      for (let i = 0; i < N; i++) {
-        const angle = step * i + (Math.random() - 0.5) * step * 0.55
-        const r     = baseR * (0.50 + Math.random() * 0.85) // 50–135% of baseR
-        pts.push({ x: cx + r * Math.cos(angle), y: cy + r * Math.sin(angle) })
+    function createSeededRandom(seed: number): () => number {
+      let s = seed
+      return function() {
+        s = (s * 16807 + 0) % 2147483647
+        return (s - 1) / 2147483646
       }
-      return pts
     }
 
-    function buildSplash() {
-      const colors = PALETTES[cycleIndex % 3]
-      const D  = Math.min(CW, CH) // reference dimension
-      const ox = CW * 0.50
-      const oy = CH * 0.50
+    function drawSplash(
+      rctx: CanvasRenderingContext2D,
+      cx: number,
+      cy: number,
+      palette: string[],
+      progress: number,
+    ) {
+      const eased   = 1 - Math.pow(1 - Math.min(progress * 1.5, 1), 3)
+      const fadeOut = progress > 0.7 ? 1 - ((progress - 0.7) / 0.3) : 1
 
-      // ── Blobs: 1 dominant central blob + 2–3 smaller overlapping secondaries ──
-      const blobs: Blob[] = []
-      const mainColor = colors[Math.floor(Math.random() * colors.length)]
+      const rng = createSeededRandom(currentBurstSeed)
 
-      // Main blob — large, slightly off-centre, full opacity
-      const mainCx  = ox + (Math.random() - 0.5) * D * 0.06
-      const mainCy  = oy + (Math.random() - 0.5) * D * 0.06
-      const mainR   = D * (0.168 + Math.random() * 0.048)  // 20% bigger: ~60–78 px → width ~112–144 px
-      const mainPts = makeBlobPts(mainCx, mainCy, mainR, 12 + Math.floor(Math.random() * 3))
-      blobs.push({
-        cx: mainCx, cy: mainCy, pts: mainPts,
-        bottomY: Math.max(...mainPts.map(p => p.y)),
-        color: mainColor, opacity: 1,
-        dripMaxY: D * (0.08 + Math.random() * 0.10),
-      })
+      const mainAngle = rng() * Math.PI * 2
 
-      // Secondary blobs — smaller, overlapping the main blob, slightly transparent
-      const secCount = 2 + Math.floor(Math.random() * 2)  // 2–3
-      for (let i = 0; i < secCount; i++) {
-        // Cluster tightly around the main blob centre
-        const cx    = mainCx + (Math.random() - 0.5) * mainR * 1.2
-        const cy    = mainCy + (Math.random() - 0.5) * mainR * 1.2
-        const baseR = D * (0.06 + Math.random() * 0.04)   // ~22–36 px
-        const pts   = makeBlobPts(cx, cy, baseR, 10 + Math.floor(Math.random() * 4))
-        blobs.push({
-          cx, cy, pts,
-          bottomY:  Math.max(...pts.map(p => p.y)),
-          color:    colors[Math.floor(Math.random() * colors.length)],
-          opacity:  0.65 + Math.random() * 0.25,   // 0.65–0.90
-          dripMaxY: i === 0 ? D * (0.06 + Math.random() * 0.08) : 0,
-        })
-      }
+      type LineSpec = { angle: number; length: number; width: number; dropR: number }
+      const lines: LineSpec[] = []
 
-      // ── Spatter lines — exactly 16, explosion-angle distribution ──
-      const lines: SpatterLn[] = []
-      const explAngle = Math.random() * Math.PI * 2  // random explosion direction each burst
-      const deg = Math.PI / 180
-
-      // Helper: build one line spec and push it
-      function mkLine(angle: number, length: number, dotR: number) {
-        lines.push({
-          ox: ox, oy: oy,
-          angle,
-          length,
-          lw:      0.8 + Math.random() * 1.2,   // 0.8–2.0
-          opacity: 0.5 + Math.random() * 0.5,   // 0.5–1.0
-          dotR,
-          color:   colors[Math.floor(Math.random() * colors.length)],
-          delay:   0,
-        })
-      }
-
-      // Lines 1–4: tight forward cluster, long
+      // 4 long lines clustered around main angle
       for (let i = 0; i < 4; i++) {
-        mkLine(
-          explAngle + (Math.random() * 50 - 25) * deg,
-          200 + Math.random() * 40,
-          6 + Math.random() * 6,
-        )
+        const angle = mainAngle + (rng() - 0.5) * 0.8
+        lines.push({ angle, length: 180 + rng() * 60, width: 1 + rng(), dropR: 6 + rng() * 6 })
       }
-      // Lines 5–6: wider forward cluster, medium
-      for (let i = 0; i < 2; i++) {
-        mkLine(
-          explAngle + (Math.random() * 80 - 40) * deg,
-          90 + Math.random() * 40,
-          4 + Math.random() * 3,
-        )
+      // 4 medium lines loosely around main angle
+      for (let i = 0; i < 4; i++) {
+        const angle = mainAngle + (rng() - 0.5) * 1.5
+        lines.push({ angle, length: 80 + rng() * 50, width: 0.8 + rng() * 0.8, dropR: 3 + rng() * 4 })
       }
-      // Lines 7–9: opposite direction cluster, medium
+      // 3 medium lines opposite direction
       for (let i = 0; i < 3; i++) {
-        mkLine(
-          explAngle + Math.PI + (Math.random() * 60 - 30) * deg,
-          90 + Math.random() * 40,
-          4 + Math.random() * 3,
-        )
+        const angle = mainAngle + Math.PI + (rng() - 0.5) * 1.2
+        lines.push({ angle, length: 70 + rng() * 60, width: 0.8 + rng() * 0.6, dropR: 3 + rng() * 3 })
       }
-      // Lines 10–12: fully random, short
-      for (let i = 0; i < 3; i++) {
-        mkLine(
-          Math.random() * Math.PI * 2,
-          30 + Math.random() * 30,
-          2 + Math.random() * 2,
-        )
-      }
-      // Lines 13–14: fully random, medium-length
-      for (let i = 0; i < 2; i++) {
-        mkLine(
-          Math.random() * Math.PI * 2,
-          90 + Math.random() * 30,
-          2 + Math.random() * 2,
-        )
-      }
-      // Lines 15–16: fully random, tiny flicks
-      for (let i = 0; i < 2; i++) {
-        mkLine(
-          Math.random() * Math.PI * 2,
-          10 + Math.random() * 10,
-          1.5,
-        )
+      // 5 random scattered short lines
+      for (let i = 0; i < 5; i++) {
+        const angle = rng() * Math.PI * 2
+        lines.push({ angle, length: 15 + rng() * 45, width: 0.5 + rng() * 0.8, dropR: 1.5 + rng() * 2.5 })
       }
 
-      const droplets: SatDrop[] = []   // endpoint droplets live on lines; no satellites
-      splash = { blobs, lines, droplets }
-    }
+      const color  = palette[Math.floor(rng() * palette.length)]
+      const color2 = palette[Math.floor(rng() * palette.length)]
 
-    function drawSplash(t: number) {
-      if (!splash) return
-      ctx.save()
+      // ── Main blob ─────────────────────────────────────────────────
+      rctx.save()
+      rctx.globalAlpha = fadeOut * 0.9
+      rctx.fillStyle = color
+      rctx.beginPath()
+      const blobSize = 55 + rng() * 30
+      rctx.moveTo(cx + blobSize * 0.9, cy)
+      rctx.bezierCurveTo(
+        cx + blobSize,        cy - blobSize * 0.7,
+        cx + blobSize * 0.3,  cy - blobSize * 1.1,
+        cx - blobSize * 0.2,  cy - blobSize * 0.8,
+      )
+      rctx.bezierCurveTo(
+        cx - blobSize * 0.9, cy - blobSize * 0.5,
+        cx - blobSize * 1.0, cy + blobSize * 0.2,
+        cx - blobSize * 0.6, cy + blobSize * 0.7,
+      )
+      rctx.bezierCurveTo(
+        cx - blobSize * 0.1, cy + blobSize * 1.1,
+        cx + blobSize * 0.6, cy + blobSize * 0.9,
+        cx + blobSize * 0.9, cy,
+      )
+      rctx.fill()
 
-      // Fully opaque for first 45% of burst, then fade to 0
-      const alpha = t < 0.45 ? 1.0 : Math.max(0, 1.0 - (t - 0.45) / 0.55)
-      ctx.globalAlpha = alpha
+      // ── Secondary blob ────────────────────────────────────────────
+      rctx.fillStyle = color2
+      rctx.globalAlpha = fadeOut * 0.6
+      rctx.beginPath()
+      const b2 = blobSize * 0.55
+      const box = (rng() - 0.5) * 30
+      const boy = (rng() - 0.5) * 30
+      rctx.ellipse(cx + box, cy + boy, b2 * 1.2, b2 * 0.8, rng() * Math.PI, 0, Math.PI * 2)
+      rctx.fill()
+      rctx.restore()
 
-      // ── Blobs — cubic ease-out burst over first 22% of t ──────────
-      const blobS = 1 - Math.pow(1 - Math.min(t / 0.22, 1), 3)
+      // ── Spatter lines + endpoint droplets ────────────────────────
+      lines.forEach((line, i) => {
+        const len = line.length * eased
+        const ex  = cx + Math.cos(line.angle) * len
+        const ey  = cy + Math.sin(line.angle) * len
+        const lineColor = palette[i % palette.length]
 
-      for (const blob of splash.blobs) {
-        // Scale control pts from blob centre
-        const pts = blob.pts.map(p => ({
-          x: blob.cx + (p.x - blob.cx) * blobS,
-          y: blob.cy + (p.y - blob.cy) * blobS,
-        }))
-        const N = pts.length
+        rctx.save()
+        rctx.globalAlpha = fadeOut * (0.5 + rng() * 0.5)
+        rctx.strokeStyle = lineColor
+        rctx.lineWidth   = line.width
+        rctx.lineCap     = 'round'
+        rctx.beginPath()
+        rctx.moveTo(cx, cy)
+        rctx.lineTo(ex, ey)
+        rctx.stroke()
 
-        ctx.globalAlpha = alpha * blob.opacity
-        ctx.fillStyle = blob.color
-        ctx.beginPath()
-        ctx.moveTo((pts[N-1].x + pts[0].x) / 2, (pts[N-1].y + pts[0].y) / 2)
-        for (let i = 0; i < N; i++) {
-          const c = pts[i], n = pts[(i + 1) % N]
-          ctx.quadraticCurveTo(c.x, c.y, (c.x + n.x) / 2, (c.y + n.y) / 2)
-        }
-        ctx.closePath()
-        ctx.fill()
-
-        // Drip — grows from t=0.25, tip is an elongated teardrop
-        if (blob.dripMaxY > 0 && t > 0.25) {
-          const dripLen  = blob.dripMaxY * Math.min((t - 0.25) / 0.40, 1)
-          const dripTopY = blob.cy + (blob.bottomY - blob.cy) * blobS
-          if (dripLen > 1) {
-            const tipY = dripTopY + dripLen
-            const tipR = 3 + dripLen * 0.045
-            ctx.strokeStyle = blob.color
-            ctx.lineWidth   = 2
-            ctx.lineCap     = 'round'
-            ctx.beginPath()
-            ctx.moveTo(blob.cx, dripTopY)
-            ctx.lineTo(blob.cx, tipY)
-            ctx.stroke()
-            ctx.fillStyle = blob.color
-            ctx.save()
-            ctx.translate(blob.cx, tipY)
-            ctx.scale(1, 1.55)
-            ctx.beginPath()
-            ctx.arc(0, 0, tipR, 0, Math.PI * 2)
-            ctx.fill()
-            ctx.restore()
-          }
-        }
-        ctx.globalAlpha = alpha  // restore for next blob and subsequent elements
-      }
-
-      // ── Spatter lines — all extend simultaneously over 0.4 s ────────
-      // 0.4s / BURST_DUR(0.75s) = 0.533 of burst t
-      const LINE_DUR = 0.533
-      ctx.lineCap = 'round'
-      for (const line of splash.lines) {
-        const lineT = Math.min(1, t / LINE_DUR)
-        if (lineT <= 0) continue
-        const len  = line.length * lineT
-        const endX = line.ox + Math.cos(line.angle) * len
-        const endY = line.oy + Math.sin(line.angle) * len
-
-        ctx.globalAlpha = alpha * line.opacity
-        ctx.strokeStyle = line.color
-        ctx.lineWidth   = line.lw
-        ctx.beginPath()
-        ctx.moveTo(line.ox, line.oy)
-        ctx.lineTo(endX, endY)
-        ctx.stroke()
-
-        // Droplet travels with the tip from the moment the line starts moving
-        if (line.dotR > 0) {
-          ctx.fillStyle = line.color
-          ctx.beginPath()
-          ctx.arc(endX, endY, line.dotR, 0, Math.PI * 2)
-          ctx.fill()
-        }
-        ctx.globalAlpha = alpha
-      }
-
-      ctx.restore() // restores globalAlpha, lineWidth, lineCap, etc.
+        rctx.fillStyle  = lineColor
+        rctx.globalAlpha = fadeOut * 0.9
+        rctx.beginPath()
+        rctx.arc(ex, ey, line.dropR * eased, 0, Math.PI * 2)
+        rctx.fill()
+        rctx.restore()
+      })
     }
 
     // ── Text helpers — unchanged ──────────────────────────────────
