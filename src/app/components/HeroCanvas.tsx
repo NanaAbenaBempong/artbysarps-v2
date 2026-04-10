@@ -407,7 +407,7 @@ export default function HeroCanvas() {
         ctx.translate(dx, dy)
         drawFrame(1)
         ctx.restore()
-        if (t >= 1) { spawnParticles(); phase = 'burst'; phaseStart = now }
+        if (t >= 1) { buildSplash(); phase = 'burst'; phaseStart = now }
 
       } else if (phase === 'burst') {
         const t = Math.min(elapsed / BURST_DUR, 1)
