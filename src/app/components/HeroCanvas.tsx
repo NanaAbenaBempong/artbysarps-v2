@@ -353,10 +353,12 @@ export default function HeroCanvas() {
         ctx.globalAlpha = alpha  // restore for next blob and subsequent elements
       }
 
-      // ── Spatter lines — staggered extension ───────────────────────
+      // ── Spatter lines — all extend simultaneously over 0.4 s ────────
+      // 0.4s / BURST_DUR(0.75s) = 0.533 of burst t
+      const LINE_DUR = 0.533
       ctx.lineCap = 'round'
       for (const line of splash.lines) {
-        const lineT = Math.max(0, Math.min(1, (t - line.delay) / 0.22))
+        const lineT = Math.min(1, t / LINE_DUR)
         if (lineT <= 0) continue
         const len  = line.length * lineT
         const endX = line.ox + Math.cos(line.angle) * len
@@ -369,31 +371,15 @@ export default function HeroCanvas() {
         ctx.moveTo(line.ox, line.oy)
         ctx.lineTo(endX, endY)
         ctx.stroke()
-        ctx.globalAlpha = alpha
 
-        // Dot/teardrop at tip — fades in over last 15% of extension
-        if (lineT >= 0.85) {
-          ctx.globalAlpha = alpha * ((lineT - 0.85) / 0.15)
-          ctx.fillStyle   = line.color
-          ctx.save()
-          ctx.translate(endX, endY)
-          ctx.scale(1, 1.3)
+        // Droplet travels with the tip from the moment the line starts moving
+        if (line.dotR > 0) {
+          ctx.fillStyle = line.color
           ctx.beginPath()
-          ctx.arc(0, 0, line.dotR, 0, Math.PI * 2)
+          ctx.arc(endX, endY, line.dotR, 0, Math.PI * 2)
           ctx.fill()
-          ctx.restore()
-          ctx.globalAlpha = alpha
         }
-      }
-
-      // ── Satellite droplets — pop in staggered ─────────────────────
-      for (const drop of splash.droplets) {
-        if (t < drop.delay) continue
-        const s = Math.min((t - drop.delay) / 0.06, 1)
-        ctx.fillStyle = drop.color
-        ctx.beginPath()
-        ctx.arc(drop.x, drop.y, drop.r * s, 0, Math.PI * 2)
-        ctx.fill()
+        ctx.globalAlpha = alpha
       }
 
       ctx.restore() // restores globalAlpha, lineWidth, lineCap, etc.
