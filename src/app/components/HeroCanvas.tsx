@@ -172,118 +172,175 @@ export default function HeroCanvas() {
       }
     }
 
-    // ── Centrifugal paint splash ──────────────────────────────────
-    //
-    // Physics: with 0.95 friction per frame at ~60 fps over 750 ms (≈45 frames),
-    // total distance ≈ v0 × 18.4.  CW/2 ≈ 270 px → v0 ≈ 15 to reach the edge.
-    // Large at v0 10-16 travel 184-294 px; medium 6-11 → 110-202 px.
+    // ── Paint splatter ────────────────────────────────────────────
 
-    function spawnParticles() {
-      particles = []
-      const colors = PALETTES[cycleIndex % 3]
-      const ox = CW * 0.50   // centre of canvas
-      const oy = CH * 0.50
-
-      // ── 8 large splats — evenly spaced angles + jitter, with drip trails ──
-      for (let i = 0; i < 8; i++) {
-        const angle = (Math.PI * 2 * i) / 8 + (Math.random() - 0.5) * 0.55
-        const speed = 10 + Math.random() * 6            // 10-16 px/frame
-        const rx    = 25 + Math.random() * 25           // semi-major 25-50 px
-        const ry    =  5 + Math.random() *  8           // semi-minor  5-13 px
-        particles.push({
-          x:  ox + (Math.random() - 0.5) * 8,
-          y:  oy + (Math.random() - 0.5) * 8,
-          vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed,
-          rx, ry, angle,
-          color:    colors[Math.floor(Math.random() * colors.length)],
-          dripMaxY: i < 4 ? 28 + Math.random() * 44 : 0,  // 4 of 8 drip
-        })
+    function makeBlobPts(cx: number, cy: number, baseR: number, N: number): BlobPt[] {
+      const pts: BlobPt[] = []
+      const step = (2 * Math.PI) / N
+      for (let i = 0; i < N; i++) {
+        const angle = step * i + (Math.random() - 0.5) * step * 0.55
+        const r     = baseR * (0.50 + Math.random() * 0.85) // 50–135% of baseR
+        pts.push({ x: cx + r * Math.cos(angle), y: cy + r * Math.sin(angle) })
       }
-
-      // ── 12 medium splats — random angles ──────────────────────────────────
-      for (let i = 0; i < 12; i++) {
-        const angle = Math.random() * Math.PI * 2
-        const speed = 6 + Math.random() * 5             // 6-11 px/frame
-        const rx    = 12 + Math.random() * 13           // 12-25 px
-        const ry    =  3 + Math.random() *  5           // 3-8  px
-        particles.push({
-          x:  ox + (Math.random() - 0.5) * 12,
-          y:  oy + (Math.random() - 0.5) * 12,
-          vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed,
-          rx, ry, angle,
-          color:    colors[Math.floor(Math.random() * colors.length)],
-          dripMaxY: 0,
-        })
-      }
-
-      // ── 20 small dots — circles (rx = ry), random angles ─────────────────
-      for (let i = 0; i < 20; i++) {
-        const angle = Math.random() * Math.PI * 2
-        const speed = 3 + Math.random() * 7             // 3-10 px/frame
-        const r     = 4 + Math.random() * 6             // radius 4-10 px
-        particles.push({
-          x:  ox + (Math.random() - 0.5) * 18,
-          y:  oy + (Math.random() - 0.5) * 18,
-          vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed,
-          rx: r, ry: r,                                 // circle
-          angle,
-          color:    colors[Math.floor(Math.random() * colors.length)],
-          dripMaxY: 0,
-        })
-      }
+      return pts
     }
 
-    function drawParticles(t: number) {
-      // Fully opaque for first 25 % of burst, then linear fade to 0
-      const alpha = t < 0.25 ? 1.0 : Math.max(0, 1.0 - (t - 0.25) / 0.75)
+    function buildSplash() {
+      const colors = PALETTES[cycleIndex % 3]
+      const D  = Math.min(CW, CH) // reference dimension
+      const ox = CW * 0.50
+      const oy = CH * 0.50
 
-      for (const p of particles) {
-        // Advance with friction
-        p.x += p.vx
-        p.y += p.vy
-        p.vx *= 0.95
-        p.vy *= 0.95
+      // ── 3–5 organic blobs clustered at centre ─────────────────────
+      const blobs: Blob[] = []
+      const blobCount = 3 + Math.floor(Math.random() * 3)
+      for (let i = 0; i < blobCount; i++) {
+        const cx    = ox + (Math.random() - 0.5) * D * 0.13
+        const cy    = oy + (Math.random() - 0.5) * D * 0.14
+        const baseR = D * (0.08 + Math.random() * 0.06)   // ~29–50 px at D=360
+        const N     = 10 + Math.floor(Math.random() * 5)  // 10–14 control pts
+        const pts   = makeBlobPts(cx, cy, baseR, N)
+        blobs.push({
+          cx, cy, pts,
+          bottomY: Math.max(...pts.map(p => p.y)),
+          color:    colors[Math.floor(Math.random() * colors.length)],
+          dripMaxY: i < 3 ? D * (0.07 + Math.random() * 0.12) : 0,
+        })
+      }
 
-        // Rotated ellipse (or circle when rx === ry)
-        ctx.save()
-        ctx.globalAlpha = alpha
-        ctx.fillStyle   = p.color
-        ctx.translate(p.x, p.y)
-        ctx.rotate(p.angle)
+      // ── 8–12 spatter lines radiating outward ──────────────────────
+      const lines: SpatterLn[] = []
+      const lineCount = 8 + Math.floor(Math.random() * 5)
+      for (let i = 0; i < lineCount; i++) {
+        const angle  = (2 * Math.PI * i) / lineCount + (Math.random() - 0.5) * 0.45
+        const length = D * (0.24 + Math.random() * 0.32)   // 24–56% of D
+        lines.push({
+          ox: ox + (Math.random() - 0.5) * D * 0.04,
+          oy: oy + (Math.random() - 0.5) * D * 0.04,
+          angle, length,
+          lw:    0.8 + Math.random() * 1.2,
+          dotR:  2.5 + Math.random() * 3.5,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          delay: i * (0.25 / lineCount),  // stagger 0 → 0.25
+        })
+      }
+
+      // ── 15–25 satellite droplets near line endpoints ───────────────
+      const droplets: SatDrop[] = []
+      const dropCount = 15 + Math.floor(Math.random() * 11)
+      for (let i = 0; i < dropCount; i++) {
+        const base  = lines[Math.floor(Math.random() * lines.length)]
+        const angle = base.angle + (Math.random() - 0.5) * 0.9
+        const dist  = D * (0.08 + Math.random() * 0.36)
+        droplets.push({
+          x: ox + Math.cos(angle) * dist,
+          y: oy + Math.sin(angle) * dist,
+          r:     3 + Math.random() * 9,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          delay: 0.15 + Math.random() * 0.25,
+        })
+      }
+
+      splash = { blobs, lines, droplets }
+    }
+
+    function drawSplash(t: number) {
+      if (!splash) return
+      ctx.save()
+
+      // Fully opaque for first 45% of burst, then fade to 0
+      const alpha = t < 0.45 ? 1.0 : Math.max(0, 1.0 - (t - 0.45) / 0.55)
+      ctx.globalAlpha = alpha
+
+      // ── Blobs — cubic ease-out burst over first 22% of t ──────────
+      const blobS = 1 - Math.pow(1 - Math.min(t / 0.22, 1), 3)
+
+      for (const blob of splash.blobs) {
+        // Scale control pts from blob centre
+        const pts = blob.pts.map(p => ({
+          x: blob.cx + (p.x - blob.cx) * blobS,
+          y: blob.cy + (p.y - blob.cy) * blobS,
+        }))
+        const N = pts.length
+
+        ctx.fillStyle = blob.color
         ctx.beginPath()
-        ctx.ellipse(0, 0, p.rx, p.ry, 0, 0, Math.PI * 2)
+        ctx.moveTo((pts[N-1].x + pts[0].x) / 2, (pts[N-1].y + pts[0].y) / 2)
+        for (let i = 0; i < N; i++) {
+          const c = pts[i], n = pts[(i + 1) % N]
+          ctx.quadraticCurveTo(c.x, c.y, (c.x + n.x) / 2, (c.y + n.y) / 2)
+        }
+        ctx.closePath()
         ctx.fill()
-        ctx.restore()
 
-        // Drip: grows from t = 0.40, tip is a small filled circle
-        if (p.dripMaxY > 0 && t > 0.40) {
-          const grow     = Math.min((t - 0.40) / 0.35, 1)
-          const dripLen  = p.dripMaxY * grow
-          const dripAlpha = grow * alpha
+        // Drip — grows from t=0.25, tip is an elongated teardrop
+        if (blob.dripMaxY > 0 && t > 0.25) {
+          const dripLen  = blob.dripMaxY * Math.min((t - 0.25) / 0.40, 1)
+          const dripTopY = blob.cy + (blob.bottomY - blob.cy) * blobS
           if (dripLen > 1) {
-            const tipX = p.x
-            const tipY = p.y + p.ry + dripLen
-            ctx.save()
-            ctx.globalAlpha = dripAlpha
-            ctx.strokeStyle = p.color
-            ctx.lineWidth   = Math.max(p.ry * 0.65, 1.5)
+            const tipY = dripTopY + dripLen
+            const tipR = 3 + dripLen * 0.045
+            ctx.strokeStyle = blob.color
+            ctx.lineWidth   = 2
             ctx.lineCap     = 'round'
             ctx.beginPath()
-            ctx.moveTo(p.x, p.y + p.ry)
-            ctx.lineTo(tipX, tipY)
+            ctx.moveTo(blob.cx, dripTopY)
+            ctx.lineTo(blob.cx, tipY)
             ctx.stroke()
-            // Teardrop tip
-            ctx.fillStyle = p.color
+            ctx.fillStyle = blob.color
+            ctx.save()
+            ctx.translate(blob.cx, tipY)
+            ctx.scale(1, 1.55)
             ctx.beginPath()
-            ctx.arc(tipX, tipY, Math.max(p.ry * 0.55, 2.5), 0, Math.PI * 2)
+            ctx.arc(0, 0, tipR, 0, Math.PI * 2)
             ctx.fill()
             ctx.restore()
           }
         }
       }
+
+      // ── Spatter lines — staggered extension ───────────────────────
+      ctx.lineCap = 'round'
+      for (const line of splash.lines) {
+        const lineT = Math.max(0, Math.min(1, (t - line.delay) / 0.22))
+        if (lineT <= 0) continue
+        const len  = line.length * lineT
+        const endX = line.ox + Math.cos(line.angle) * len
+        const endY = line.oy + Math.sin(line.angle) * len
+
+        ctx.strokeStyle = line.color
+        ctx.lineWidth   = line.lw
+        ctx.beginPath()
+        ctx.moveTo(line.ox, line.oy)
+        ctx.lineTo(endX, endY)
+        ctx.stroke()
+
+        // Dot/teardrop at tip — fades in over last 15% of extension
+        if (lineT >= 0.85) {
+          ctx.globalAlpha = alpha * ((lineT - 0.85) / 0.15)
+          ctx.fillStyle   = line.color
+          ctx.save()
+          ctx.translate(endX, endY)
+          ctx.scale(1, 1.3)
+          ctx.beginPath()
+          ctx.arc(0, 0, line.dotR, 0, Math.PI * 2)
+          ctx.fill()
+          ctx.restore()
+          ctx.globalAlpha = alpha
+        }
+      }
+
+      // ── Satellite droplets — pop in staggered ─────────────────────
+      for (const drop of splash.droplets) {
+        if (t < drop.delay) continue
+        const s = Math.min((t - drop.delay) / 0.06, 1)
+        ctx.fillStyle = drop.color
+        ctx.beginPath()
+        ctx.arc(drop.x, drop.y, drop.r * s, 0, Math.PI * 2)
+        ctx.fill()
+      }
+
+      ctx.restore() // restores globalAlpha, lineWidth, lineCap, etc.
     }
 
     // ── Text helpers — unchanged ──────────────────────────────────
