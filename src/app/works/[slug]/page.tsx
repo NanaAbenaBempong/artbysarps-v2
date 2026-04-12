@@ -45,12 +45,10 @@ const caseStudies: CaseStudy[] = [
     description:
       'A personalized book discovery experience designed to help readers find their next great read — faster, easier, and with more joy.',
     meta: [
-      { label: 'Type', value: 'Class Project' },
-      { label: 'Industry', value: 'Reading & Learning Technology' },
+      { label: 'Type',     value: 'Class Project' },
       { label: 'Timeline', value: 'Jan 2025 – Apr 2025' },
-      { label: 'Role', value: 'UI/UX Designer, Researcher' },
-      { label: 'Tools', value: 'Motiff AI, ChatGPT, Julius AI, Dovetail' },
-      { label: 'Audience', value: 'Avid Readers (2+ books/month)' },
+      { label: 'Role',     value: 'UI/UX Designer, Researcher' },
+      { label: 'Tools',    value: 'Motiff AI, ChatGPT, Julius AI, Dovetail' },
     ],
     sections: [
       {
