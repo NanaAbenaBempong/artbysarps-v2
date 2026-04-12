@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { Laptop, Paintbrush, Feather } from 'lucide-react'
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
