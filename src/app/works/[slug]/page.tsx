@@ -147,7 +147,7 @@ const caseStudies: CaseStudy[] = [
       {
         kind: 'prose',
         heading: 'Usability Testing',
-        body: 'Moderated tests with 5 avid readers across 6 core tasks. Key findings: scannability improvements for Discover and Explore tasks; filter redesign after errors in Search & Filter task; refinements to Reviews and Explore flows.',
+        body: 'Moderated tests with 5 avid readers across 6 core tasks. Key findings: scannability improvements for Discover and Explore tasks; filter redesign after errors in Search & Filter task; refinements to Reviews and Explore flows. Findings directly shaped the next iteration — the filter interaction was rebuilt after errors in the Search & Filter task, and the Explore flow was restructured based on navigation confusion observed across multiple sessions.',
         image: '/works/readnext/readnext-19.png',
         imageSide: 'left',
       },
