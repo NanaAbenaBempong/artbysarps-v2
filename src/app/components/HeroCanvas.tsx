@@ -175,108 +175,62 @@ export default function HeroCanvas() {
       }
     }
 
-    // ── Brush stroke ─────────────────────────────────────────────
+    // ── Painting reveal ───────────────────────────────────────────
 
-    // Three stroke paths as bezier control points [px, py] as fractions of CW / CH.
-    // Indexed by cycleIndex % 3, matching the palette order.
-    type BezierStroke = {
-      p0: [number, number]
-      p1: [number, number]
-      p2: [number, number]
-      p3: [number, number]
-      maxR: number   // peak brush radius in px (tip-to-tip width = 2× this)
-    }
+    function drawPainting(img: HTMLImageElement, revealProgress: number, alpha: number) {
+      if (!img.complete || !img.naturalWidth) return
 
-    const STROKES: BezierStroke[] = [
-      // Stroke A — palette 0 (warm earthy): left-centre → right-centre, gentle S-curve upward arc
-      { p0: [0.06, 0.56], p1: [0.26, 0.30], p2: [0.70, 0.70], p3: [0.94, 0.44], maxR: 22 },
-      // Stroke B — palette 1 (cool moody): diagonal top-left → bottom-right, slight midpoint curve
-      { p0: [0.10, 0.18], p1: [0.36, 0.26], p2: [0.60, 0.70], p3: [0.90, 0.82], maxR: 20 },
-      // Stroke C — palette 2 (bold contrast): shorter gestural, roughly centred, curves back on itself
-      { p0: [0.26, 0.64], p1: [0.58, 0.20], p2: [0.76, 0.60], p3: [0.44, 0.46], maxR: 18 },
-    ]
+      const PAD    = 40
+      const FEATHER = 20
+      const RADIUS  = 12
 
-    function drawBrushStroke(drawProgress: number, alpha: number) {
-      const ci     = cycleIndex % 3
-      const color  = PALETTES[ci][0]   // first colour from each palette
-      const stroke = STROKES[ci]
-
-      const POINTS = 200
-      const count  = Math.max(1, Math.floor(POINTS * drawProgress))
-
-      // Taper profile: ramp in over first 20%, full for 20–80%, ramp out over last 20%
-      function paintTaper(u: number): number {
-        if (u < 0.2) return u / 0.2
-        if (u > 0.8) return (1 - u) / 0.2
-        return 1.0
+      // Fit image within canvas keeping aspect ratio
+      const availW = CW - PAD * 2
+      const availH = CH - PAD * 2
+      const imgRatio    = img.naturalWidth / img.naturalHeight
+      const canvasRatio = availW / availH
+      let drawW: number, drawH: number
+      if (imgRatio > canvasRatio) {
+        drawW = availW
+        drawH = availW / imgRatio
+      } else {
+        drawH = availH
+        drawW = availH * imgRatio
       }
-
-      // Deterministic per-point hash — consistent across frames for the same stroke
-      function strokeHash(n: number): number {
-        let h = (ci * 7919 + n * 104729) | 0
-        h = ((h ^ (h >>> 16)) * 0x45d9f3b) | 0
-        h = ((h ^ (h >>> 16)) * 0x45d9f3b) | 0
-        return (h >>> 1) / 0x7fffffff
-      }
-
-      // 4 bristle passes: [widthMultiplier, lateralOffsetPx, passOpacity]
-      const PASSES: [number, number, number][] = [
-        [1.00,  0.0, 0.95],  // main body
-        [0.75,  2.5, 0.75],  // right-side bristle
-        [0.65, -1.5, 0.70],  // left-side bristle
-        [0.70,  4.0, 0.60],  // far right fringe
-      ]
+      const drawX = (CW - drawW) / 2
+      const drawY = (CH - drawH) / 2
 
       ctx.save()
+      ctx.globalAlpha = alpha
 
-      for (let p = 0; p < PASSES.length; p++) {
-        const [widthMult, lateralOff, passOpacity] = PASSES[p]
-        ctx.globalAlpha = alpha * passOpacity
-        ctx.fillStyle   = color
+      // Rounded-rect clip so corners aren't harsh
+      ctx.beginPath()
+      ctx.roundRect(drawX, drawY, drawW, drawH, RADIUS)
+      ctx.clip()
 
-        for (let i = 0; i < count; i++) {
-          const u  = i / (POINTS - 1)
-          const mt = 1 - u
+      // Draw the full painting
+      ctx.drawImage(img, drawX, drawY, drawW, drawH)
 
-          // Cubic bezier position
-          const bx =
-            mt*mt*mt * stroke.p0[0] * CW +
-            3*mt*mt*u * stroke.p1[0] * CW +
-            3*mt*u*u  * stroke.p2[0] * CW +
-            u*u*u     * stroke.p3[0] * CW
-          const by =
-            mt*mt*mt * stroke.p0[1] * CH +
-            3*mt*mt*u * stroke.p1[1] * CH +
-            3*mt*u*u  * stroke.p2[1] * CH +
-            u*u*u     * stroke.p3[1] * CH
+      // Wipe the unrevealed right portion using destination-out (erases drawn pixels)
+      if (revealProgress < 1) {
+        const edgeX   = drawX + drawW * revealProgress
+        const fStartX = Math.max(drawX, edgeX - FEATHER)
 
-          // Bezier tangent (un-normalised derivative ÷ 3)
-          const tdx =
-            mt*mt * (stroke.p1[0] - stroke.p0[0]) * CW +
-            2*mt*u * (stroke.p2[0] - stroke.p1[0]) * CW +
-            u*u    * (stroke.p3[0] - stroke.p2[0]) * CW
-          const tdy =
-            mt*mt * (stroke.p1[1] - stroke.p0[1]) * CH +
-            2*mt*u * (stroke.p2[1] - stroke.p1[1]) * CH +
-            u*u    * (stroke.p3[1] - stroke.p2[1]) * CH
+        ctx.globalCompositeOperation = 'destination-out'
+        ctx.globalAlpha = 1  // full alpha so erase is complete
 
-          // Perpendicular unit vector (rotate tangent 90°)
-          const tLen = Math.sqrt(tdx*tdx + tdy*tdy) || 1
-          const nx   = -tdy / tLen
-          const ny   =  tdx / tLen
+        // Solid erase: everything right of the reveal edge
+        ctx.fillStyle = 'rgba(0,0,0,1)'
+        ctx.fillRect(edgeX, drawY, drawX + drawW - edgeX + 1, drawH)
 
-          // Edge wobble: ±2.5px perpendicular, deterministic per point & pass
-          const wobble = (strokeHash(i * 4 + p) - 0.5) * 5
+        // Feathered erase: gradient zone just left of the edge
+        const grad = ctx.createLinearGradient(fStartX, 0, edgeX, 0)
+        grad.addColorStop(0, 'rgba(0,0,0,0)')  // keep pixels
+        grad.addColorStop(1, 'rgba(0,0,0,1)')  // erase pixels
+        ctx.fillStyle = grad
+        ctx.fillRect(fStartX, drawY, edgeX - fStartX, drawH)
 
-          const x = bx + nx * (lateralOff + wobble)
-          const y = by + ny * (lateralOff + wobble)
-
-          const radius = Math.max(1, paintTaper(u) * widthMult * stroke.maxR)
-
-          ctx.beginPath()
-          ctx.arc(x, y, radius, 0, Math.PI * 2)
-          ctx.fill()
-        }
+        ctx.globalCompositeOperation = 'source-over'
       }
 
       ctx.restore()
