@@ -176,35 +176,67 @@ export default function AboutPage() {
               Currently Listening
             </p>
 
-            {/* TODO: replace placeholder tracks with real ones */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              {tracks.map((item) => (
-                <a
-                  key={item.track}
-                  href={item.href}
-                  className="group flex flex-col items-center gap-4 hover:opacity-75 transition-opacity duration-200"
-                >
-                  {/* Vinyl disc */}
-                  <div
-                    className="w-full aspect-square rounded-full bg-[#1A1A1A] flex items-center justify-center relative overflow-hidden"
-                    style={{ maxWidth: '160px' }}
-                  >
-                    {/* Grooves */}
-                    <div className="absolute inset-0 rounded-full border-[6px] border-[#2a2a2a]" />
-                    <div className="absolute inset-[20%] rounded-full border-[4px] border-[#2a2a2a]" />
-                    <div className="absolute inset-[38%] rounded-full border-[3px] border-[#2a2a2a]" />
-                    {/* Label centre */}
-                    <div className="w-[28%] h-[28%] rounded-full bg-[#3a3a3a] flex items-center justify-center">
-                      <div className="w-[20%] h-[20%] rounded-full bg-[#1A1A1A]" />
+              {loadingMusic
+                ? /* Placeholder skeletons while fetching */
+                  Array.from({ length: 4 }).map((_, i) => (
+                    <div key={i} className="flex flex-col items-center gap-4">
+                      <div className="w-full aspect-square rounded-full bg-[#E8E4E0] animate-pulse" style={{ maxWidth: '160px' }} />
+                      <div className="flex flex-col items-center gap-1 w-full" style={{ maxWidth: '160px' }}>
+                        <div className="h-2.5 w-3/4 rounded bg-[#E8E4E0] animate-pulse" />
+                        <div className="h-2 w-1/2 rounded bg-[#E8E4E0] animate-pulse" />
+                      </div>
                     </div>
-                  </div>
+                  ))
+                : tracks.map((track) => {
+                    const isPlaying = playingId === track.id
+                    return (
+                      <a
+                        key={track.id}
+                        href={track.appleMusicUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex flex-col items-center gap-4"
+                        onMouseEnter={() => handleRecordEnter(track)}
+                        onMouseLeave={handleRecordLeave}
+                      >
+                        {/* Vinyl disc with album art */}
+                        <div
+                          className="relative w-full aspect-square rounded-full bg-[#1A1A1A] flex items-center justify-center overflow-hidden transition-transform duration-300 hover:scale-[1.03]"
+                          style={{ maxWidth: '160px' }}
+                        >
+                          {/* Album art fills the full disc */}
+                          {track.artwork ? (
+                            <Image
+                              src={track.artwork}
+                              alt={track.name}
+                              fill
+                              className="object-cover rounded-full"
+                              sizes="160px"
+                            />
+                          ) : null}
 
-                  <div className="text-center w-full" style={{ maxWidth: '160px' }}>
-                    <p className="text-xs text-[#2C2820] font-medium truncate">{item.track}</p>
-                    <p className="text-xs text-[#8C8278] truncate">{item.artist}</p>
-                  </div>
-                </a>
-              ))}
+                          {/* Vinyl groove rings overlay */}
+                          <div className="absolute inset-0 rounded-full border-[5px] border-black/20 pointer-events-none" />
+                          <div className="absolute inset-[22%] rounded-full border-[3px] border-black/20 pointer-events-none" />
+
+                          {/* Centre spindle hole */}
+                          <div className="absolute w-[10%] h-[10%] rounded-full bg-[#1A1A1A]/80 pointer-events-none" />
+
+                          {/* Playing indicator — subtle pulse ring */}
+                          {isPlaying && (
+                            <div className="absolute inset-0 rounded-full ring-2 ring-white/40 animate-ping pointer-events-none" />
+                          )}
+                        </div>
+
+                        <div className="text-center w-full" style={{ maxWidth: '160px' }}>
+                          <p className="text-xs text-[#2C2820] font-medium truncate">{track.name}</p>
+                          <p className="text-xs text-[#8C8278] truncate">{track.artist}</p>
+                        </div>
+                      </a>
+                    )
+                  })
+              }
             </div>
           </section>
 
