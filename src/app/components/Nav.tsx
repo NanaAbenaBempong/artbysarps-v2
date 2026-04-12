@@ -45,7 +45,7 @@ export default function Nav({ forceDark = false }: { forceDark?: boolean }) {
     <>
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-700 ${
-          isDark
+          navIsDark
             ? 'bg-[#080C14] border-b border-[#0D1525]'
             : 'bg-[#FAF8F4] border-b border-[#EDE9E4]'
         }`}
