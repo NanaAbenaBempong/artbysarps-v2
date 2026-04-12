@@ -117,15 +117,15 @@ export default function AboutPage() {
     }
   }
 
-  function goToPrev() {
+  // Auto-advance slideshow — resets whenever the active section changes
+  useEffect(() => {
     const photos = notAtScreen[activeHover].photos
-    setPhotoIndex(idx => (idx - 1 + photos.length) % photos.length)
-  }
-
-  function goToNext() {
-    const photos = notAtScreen[activeHover].photos
-    setPhotoIndex(idx => (idx + 1) % photos.length)
-  }
+    if (photos.length <= 1) return
+    const id = setInterval(() => {
+      setPhotoIndex(idx => (idx + 1) % photos.length)
+    }, 3000)
+    return () => clearInterval(id)
+  }, [activeHover])
 
   // ── Music state ───────────────────────────────────────────────────────────
   const [tracks, setTracks]           = useState<Track[]>([])
