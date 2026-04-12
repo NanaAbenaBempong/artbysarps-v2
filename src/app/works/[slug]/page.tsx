@@ -158,7 +158,7 @@ const caseStudies: CaseStudy[] = [
       },
       {
         kind: 'cards',
-        heading: 'AI Tools Used',
+        heading: 'Tools & Process',
         cards: [
           {
             label: 'Wireframing',
