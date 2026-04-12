@@ -64,7 +64,7 @@ export default function Nav({ forceDark = false }: { forceDark?: boolean }) {
 
           {/* Desktop links */}
           <div className="hidden md:flex items-center gap-8">
-            {links.map(({ label, href }) => (
+            {NAV_LINKS.map(({ label, href }) => (
               <a
                 key={label}
                 href={href}
@@ -109,7 +109,7 @@ export default function Nav({ forceDark = false }: { forceDark?: boolean }) {
         </button>
 
         <nav className="flex flex-col items-center gap-10" onClick={e => e.stopPropagation()}>
-          {links.map(({ label, href }) => (
+          {NAV_LINKS.map(({ label, href }) => (
             <a
               key={label}
               href={href}
