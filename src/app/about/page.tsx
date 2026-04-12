@@ -133,13 +133,13 @@ export default function AboutPage() {
 
   // Auto-advance slideshow — resets whenever the active section changes
   useEffect(() => {
-    const photos = notAtScreen[activeHover].photos
+    const photos = sections[activeHover].photos
     if (photos.length <= 1) return
     const id = setInterval(() => {
       setPhotoIndex(idx => (idx + 1) % photos.length)
-    }, 3000)
+    }, 2000)
     return () => clearInterval(id)
-  }, [activeHover])
+  }, [activeHover, sections])
 
   // ── Music state ───────────────────────────────────────────────────────────
   const [tracks, setTracks]           = useState<Track[]>([])
