@@ -198,7 +198,7 @@ const caseStudies: CaseStudy[] = [
           },
           {
             number: '03',
-            heading: 'Focus on Gist',
+            heading: 'Less Is More',
             body: 'Summarized insights and scannable layouts improved engagement.',
           },
           {
