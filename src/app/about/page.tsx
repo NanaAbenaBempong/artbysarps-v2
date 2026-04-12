@@ -55,8 +55,7 @@ const notAtScreen = [
   {
     label:  'Somewhere there is food',
     photos: [
-      { src: '/about/food/rice-chicken-bowl.jpg',    alt: 'Rice chicken bowl' },
-      { src: '/about/food/rice-chicken-bowl-2.jpg',  alt: 'Rice chicken bowl 2' },
+      { src: '/about/food/rice-chicken-bowl.jpg',     alt: 'Rice chicken bowl' },
       { src: '/about/food/noodles-dipping-sauce.jpg', alt: 'Noodles with dipping sauce' },
       { src: '/about/food/shrimp-fried-rice.jpg',    alt: 'Shrimp fried rice' },
       { src: '/about/food/chicken-wings.jpg',        alt: 'Chicken wings' },
