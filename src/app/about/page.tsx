@@ -264,8 +264,22 @@ export default function AboutPage() {
               About
             </p>
 
-            <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl text-[#2C2820] leading-tight mb-12 max-w-3xl">
-              &ldquo;I&rsquo;m a storyteller. Everything else follows from that.&rdquo;
+            <h1
+              aria-label='"I\u2019m a storyteller. Everything else follows from that."'
+              className="font-serif text-4xl sm:text-5xl md:text-6xl text-[#2C2820] leading-tight mb-12 max-w-3xl"
+            >
+              {heroChars === null
+                ? <>&ldquo;I&rsquo;m a storyteller. Everything else follows from that.&rdquo;</>
+                : heroChars.map((c, i) => (
+                    <span
+                      key={i}
+                      style={{ color: c.locked ? '#2C2820' : '#9B8E7E' }}
+                      aria-hidden="true"
+                    >
+                      {c.ch}
+                    </span>
+                  ))
+              }
             </h1>
 
             <div className="max-w-2xl flex flex-col gap-6">
