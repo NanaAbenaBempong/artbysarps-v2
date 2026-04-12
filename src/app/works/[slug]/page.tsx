@@ -61,55 +61,46 @@ const caseStudies: CaseStudy[] = [
         imageSide: 'right',
       },
       {
-        kind: 'cards',
+        kind: 'insight-rows',
         heading: 'Key Insights',
-        cards: [
+        rows: [
           {
-            label: '01',
-            title: 'Discovery is Personal',
-            description:
-              'Users want context-aware recommendations for their current mood, not just similarity to past reads.',
+            card: {
+              label: '01',
+              title: 'Discovery is Personal',
+              description: 'Users want context-aware recommendations for their current mood, not just similarity to past reads.',
+            },
+            quote: {
+              text: 'The way it flows made me want to scroll.',
+              attribution: '— Usability test participant',
+            },
+            cardSide: 'left',
+          },
+          {
+            card: {
+              label: '02',
+              title: 'Lack of Trust',
+              description: 'Participants consistently ignored generic top charts and craved personal curation from friends or themed community lists.',
+            },
+            quote: {
+              text: 'It\u2019s smart to include why it\u2019s being recommended for you \u2014 and not just recommendations that are blindly coming in.',
+              attribution: '— Usability test participant',
+            },
+            cardSide: 'right',
+          },
+          {
+            card: {
+              label: '03',
+              title: 'Choice Overload',
+              description: 'Too much visual clutter caused users to simply stop scrolling, leading to decision paralysis.',
+            },
+            quote: {
+              text: 'It was not immediately clear to me that I can select more than one.',
+              attribution: '— Usability test participant',
+            },
+            cardSide: 'left',
           },
         ],
-      },
-      {
-        kind: 'quote',
-        text: 'The way it flows made me want to scroll.',
-        attribution: '— Usability test participant',
-      },
-      {
-        kind: 'cards',
-        heading: '',
-        cards: [
-          {
-            label: '02',
-            title: 'Lack of Trust',
-            description:
-              'Participants consistently ignored generic top charts and craved personal curation from friends or themed community lists.',
-          },
-        ],
-      },
-      {
-        kind: 'quote',
-        text: 'It\u2019s smart to include why it\u2019s being recommended for you \u2014 and not just recommendations that are blindly coming in.',
-        attribution: '— Usability test participant',
-      },
-      {
-        kind: 'cards',
-        heading: '',
-        cards: [
-          {
-            label: '03',
-            title: 'Choice Overload',
-            description:
-              'Too much visual clutter caused users to simply stop scrolling, leading to decision paralysis.',
-          },
-        ],
-      },
-      {
-        kind: 'quote',
-        text: 'It was not immediately clear to me that I can select more than one.',
-        attribution: '— Usability test participant',
       },
       {
         kind: 'solution-rows',
