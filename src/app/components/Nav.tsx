@@ -5,10 +5,10 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 const NAV_LINKS = [
-  { label: 'Works', href: '/works' },
+  { label: 'Works',    href: '/works' },
   { label: 'Paintings', href: '/paintings' },
-  { label: 'Writing', href: '#writing' },
-  { label: 'About', href: '/about' },
+  { label: 'Writing',  href: 'https://writings.artbysarps.com', target: '_blank', rel: 'noopener noreferrer' },
+  { label: 'About',    href: '/about' },
 ]
 
 export default function Nav({ forceDark = false }: { forceDark?: boolean }) {
