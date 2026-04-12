@@ -25,7 +25,6 @@ const notAtScreen = [
       { src: '/about/baking/wreath-rolls-closeup.jpg',   alt: 'Wreath rolls close-up' },
       { src: '/about/baking/wreath-rolls-wide.jpg',      alt: 'Wreath rolls wide' },
       { src: '/about/baking/caramel-layer-cake.jpg',     alt: 'Caramel layer cake' },
-      { src: '/about/baking/waffles-with-syrup.jpg',     alt: 'Waffles with syrup' },
       { src: '/about/baking/cinnamon-rolls.jpg',         alt: 'Cinnamon rolls' },
     ],
   },
