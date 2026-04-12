@@ -447,6 +447,45 @@ function QuotesSection({ heading, quotes, image, imageSide }: { heading: string;
   )
 }
 
+function InsightRowsSection({ heading, rows }: { heading: string; rows: InsightRow[] }) {
+  return (
+    <div className="mb-16">
+      <h2 className="font-serif text-2xl text-[#2C2820] mb-10 leading-snug">{heading}</h2>
+      <div className="flex flex-col gap-10">
+        {rows.map((row) => {
+          const cardEl = (
+            <div className="bg-[#F0EDE8] rounded-lg p-6 flex flex-col gap-3 h-full">
+              <span className="text-xs uppercase tracking-[0.2em] text-[#8C8278]">{row.card.label}</span>
+              <h3 className="font-serif text-lg text-[#2C2820] leading-snug">{row.card.title}</h3>
+              <p className="text-sm text-[#5C4D3C] leading-relaxed">{row.card.description}</p>
+            </div>
+          )
+          const quoteEl = row.quote ? (
+            <blockquote className="border-l-2 border-[#2C2820] pl-6">
+              <p className="font-serif italic text-xl text-[#2C2820] leading-relaxed">
+                &ldquo;{row.quote.text}&rdquo;
+              </p>
+              <p className="text-sm text-[#8C8278] mt-3">{row.quote.attribution}</p>
+            </blockquote>
+          ) : (
+            <div />
+          )
+          // Card always renders first on mobile (order-1); quote second (order-2).
+          // On md+, swap order based on cardSide.
+          const cardOrder  = row.cardSide === 'left'  ? 'order-1 md:order-first' : 'order-1 md:order-last'
+          const quoteOrder = row.cardSide === 'left'  ? 'order-2 md:order-last'  : 'order-2 md:order-first'
+          return (
+            <div key={row.card.title} className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+              <div className={cardOrder}>{cardEl}</div>
+              <div className={quoteOrder}>{quoteEl}</div>
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
 function SolutionRowsSection({ heading, rows }: { heading: string; rows: SolutionRow[] }) {
   return (
     <div className="mb-16">
