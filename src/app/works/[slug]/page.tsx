@@ -81,6 +81,17 @@ const caseStudies: CaseStudy[] = [
             description:
               'Participants consistently ignored generic top charts and craved personal curation from friends or themed community lists.',
           },
+        ],
+      },
+      {
+        kind: 'quote',
+        text: 'It\u2019s smart to include why it\u2019s being recommended for you \u2014 and not just recommendations that are blindly coming in.',
+        attribution: '— Usability test participant',
+      },
+      {
+        kind: 'cards',
+        heading: '',
+        cards: [
           {
             label: '03',
             title: 'Choice Overload',
