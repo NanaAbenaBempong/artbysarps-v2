@@ -35,14 +35,6 @@ const practices = [
   },
 ]
 
-// ── Section 3 tracks ──────────────────────────────────────────────────────────
-// TODO: replace placeholder tracks with real ones
-const tracks = [
-  { track: 'Placeholder Track 1', artist: 'Artist 1', href: '#' },
-  { track: 'Placeholder Track 2', artist: 'Artist 2', href: '#' },
-  { track: 'Placeholder Track 3', artist: 'Artist 3', href: '#' },
-  { track: 'Placeholder Track 4', artist: 'Artist 4', href: '#' },
-]
 
 const skills = [
   'Product Design',
