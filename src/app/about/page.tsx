@@ -50,6 +50,47 @@ const skills = [
 export default function AboutPage() {
   const [hoveredItem, setHoveredItem] = useState<number | null>(null)
 
+  // ── Music state ───────────────────────────────────────────────────────────
+  const [tracks, setTracks]           = useState<Track[]>([])
+  const [loadingMusic, setLoadingMusic] = useState(true)
+  const [playingId, setPlayingId]     = useState<number | null>(null)
+  const audioRef                      = useRef<HTMLAudioElement | null>(null)
+
+  useEffect(() => {
+    fetch('/api/music-previews')
+      .then(r => r.json())
+      .then(d => setTracks(d.tracks ?? []))
+      .catch(() => {})
+      .finally(() => setLoadingMusic(false))
+  }, [])
+
+  function handleRecordEnter(track: Track) {
+    if (!track.previewUrl) return
+    // Stop any currently playing preview
+    if (audioRef.current) {
+      audioRef.current.pause()
+      audioRef.current = null
+    }
+    const audio = new Audio(track.previewUrl)
+    audio.volume = 0.5
+    audio.play().catch(() => {})
+    audioRef.current = audio
+    setPlayingId(track.id)
+  }
+
+  function handleRecordLeave() {
+    if (audioRef.current) {
+      audioRef.current.pause()
+      audioRef.current = null
+    }
+    setPlayingId(null)
+  }
+
+  // Clean up on unmount
+  useEffect(() => {
+    return () => { audioRef.current?.pause() }
+  }, [])
+
   return (
     <>
       <Nav />
