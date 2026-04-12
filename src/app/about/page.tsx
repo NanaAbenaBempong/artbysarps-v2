@@ -34,7 +34,6 @@ const notAtScreen = [
       { src: '/about/nature/sunset-through-trees.jpg',  alt: 'Sunset through trees' },
       { src: '/about/nature/sunset-palm-beach.jpg',     alt: 'Sunset palm beach' },
       { src: '/about/nature/sunset-over-water.jpg',     alt: 'Sunset over water' },
-      { src: '/about/nature/seashell-on-beach.jpg',     alt: 'Seashell on beach' },
       { src: '/about/nature/magenta-roses.jpg',         alt: 'Magenta roses' },
       { src: '/about/nature/peach-roses-path.jpg',      alt: 'Peach roses path' },
       { src: '/about/nature/peach-roses-closeup.jpg',   alt: 'Peach roses close-up' },
