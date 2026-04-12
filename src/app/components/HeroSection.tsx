@@ -4,8 +4,9 @@ import { useState, useEffect } from 'react'
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
-const NAME_CHARS = 'Sarpomaa\nBempong'.split('')  // \n at index 8 snaps instantly
-const NAME_INSTANT = new Set([' ', '\n'])
+// Space at index 8 snaps instantly — no scramble
+const NAME_CHARS   = 'Sarpomaa Bempong'.split('')
+const NAME_INSTANT = new Set([' '])
 
 const TAGLINE_DATA = [
   { text: 'Designing products' },
@@ -51,14 +52,13 @@ const ICONS = [LaptopIcon, PaintbrushIcon, PenIcon]
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function HeroSection() {
-  // null = SSR / pre-mount: render static content
-  const [nameChars, setNameChars]     = useState<CS[] | null>(null)
-  const [taglines,  setTaglines]      = useState<Array<{ visible: boolean; chars: CS[] }> | null>(null)
+  // null = SSR / pre-mount → render static content to avoid hydration mismatch
+  const [nameChars, setNameChars] = useState<CS[] | null>(null)
+  const [taglines,  setTaglines]  = useState<Array<{ visible: boolean; chars: CS[] }> | null>(null)
 
   useEffect(() => {
     let cancelled = false
 
-    // Initialise to pending state
     setNameChars(NAME_CHARS.map(() => ({ ch: '', locked: false })))
     setTaglines(TAGLINE_DATA.map(t => ({
       visible: false,
@@ -67,10 +67,9 @@ export default function HeroSection() {
 
     const wait = (ms: number) => new Promise<void>(res => setTimeout(res, ms))
 
-    // Generic scramble: animates an array of chars in-place via a setter
     async function scramble(
-      chars:    string[],
-      setSlice: (updater: (prev: CS[]) => CS[]) => void,
+      chars:     string[],
+      setSlice:  (upd: (prev: CS[]) => CS[]) => void,
       flickerMs: number,
       gapMs:     number,
       instant:   Set<string>,
@@ -78,25 +77,21 @@ export default function HeroSection() {
       for (let i = 0; i < chars.length; i++) {
         if (cancelled) return
         const actual = chars[i]
+
         if (instant.has(actual)) {
-          setSlice(prev => {
-            const next = [...prev]; next[i] = { ch: actual, locked: true }; return next
-          })
+          setSlice(prev => { const n = [...prev]; n[i] = { ch: actual, locked: true }; return n })
         } else {
           const flickers = 4 + Math.floor(Math.random() * 2)
           for (let f = 0; f < flickers; f++) {
             if (cancelled) return
             const rand = POOL[Math.floor(Math.random() * POOL.length)]
-            setSlice(prev => {
-              const next = [...prev]; next[i] = { ch: rand, locked: false }; return next
-            })
+            setSlice(prev => { const n = [...prev]; n[i] = { ch: rand, locked: false }; return n })
             await wait(flickerMs)
           }
           if (cancelled) return
-          setSlice(prev => {
-            const next = [...prev]; next[i] = { ch: actual, locked: true }; return next
-          })
+          setSlice(prev => { const n = [...prev]; n[i] = { ch: actual, locked: true }; return n })
         }
+
         await wait(gapMs)
       }
     }
@@ -114,11 +109,10 @@ export default function HeroSection() {
       if (cancelled) return
       await wait(150)
 
-      // Step 2 — taglines one by one
+      // Step 2 — taglines one at a time
       for (let t = 0; t < TAGLINE_DATA.length; t++) {
         if (cancelled) return
 
-        // Reveal row (icon appears together with the text)
         setTaglines(prev => {
           if (!prev) return prev
           const next = [...prev]
@@ -126,10 +120,8 @@ export default function HeroSection() {
           return next
         })
 
-        // Scramble that row's text
-        const tChars = TAGLINE_DATA[t].text.split('')
         await scramble(
-          tChars,
+          TAGLINE_DATA[t].text.split(''),
           upd => setTaglines(prev => {
             if (!prev) return prev
             const next = [...prev]
@@ -149,58 +141,56 @@ export default function HeroSection() {
   }, [])
 
   return (
-    <section className="bg-[#FAF8F4] px-8" style={{ paddingTop: '20vh', paddingBottom: '4vh' }}>
-      <div className="max-w-6xl mx-auto w-full flex flex-col md:flex-row md:items-end gap-12 md:gap-16">
+    <section className="bg-[#FAF8F4] px-8" style={{ paddingTop: '14vh', paddingBottom: '6vh' }}>
+      <div className="max-w-6xl mx-auto w-full">
 
-        {/* ── Left: label + name ─────────────────────────────────── */}
-        <div>
-          <p className="text-xs uppercase tracking-[0.25em] text-[#8C8278] mb-10">
-            Product designer · painter · writer
-          </p>
-          <h1
-            aria-label="Sarpomaa Bempong"
-            className="font-serif text-6xl sm:text-7xl lg:text-[7.5rem] text-[#2C2820] leading-[0.92] tracking-tight"
-          >
-            {nameChars === null
-              ? <>Sarpomaa<br />Bempong</>
-              : nameChars.map((c, i) => {
-                  // Line break character: render <br /> once locked, nothing while pending
-                  if (NAME_CHARS[i] === '\n') {
-                    return c.locked ? <br key={i} /> : null
-                  }
-                  return (
-                    <span key={i} aria-hidden="true" style={{ color: c.locked ? '#2C2820' : '#9B8E7E' }}>
-                      {c.ch}
-                    </span>
-                  )
-                })
-            }
-          </h1>
-        </div>
+        {/* Label */}
+        <p className="text-xs uppercase tracking-[0.25em] text-[#8C8278] mb-8">
+          Product designer · painter · writer
+        </p>
 
-        {/* ── Right: taglines ────────────────────────────────────── */}
-        <div className="flex flex-col" style={{ gap: '10px', paddingBottom: '4px' }}>
-          {(taglines === null ? TAGLINE_DATA.map((t, i) => ({ visible: true, text: t.text, idx: i })) : taglines.map((tl, i) => ({ ...tl, text: TAGLINE_DATA[i].text, idx: i }))).map((row, i) => {
-            const Icon = ICONS[i]
+        {/* Name — single line, fluid size */}
+        <h1
+          aria-label="Sarpomaa Bempong"
+          className="font-serif text-[#2C2820] leading-[0.92] tracking-tight mb-10"
+          style={{ fontSize: 'clamp(56px, 8vw, 96px)' }}
+        >
+          {nameChars === null
+            ? 'Sarpomaa Bempong'
+            : nameChars.map((c, i) => (
+                <span
+                  key={i}
+                  aria-hidden="true"
+                  style={{ color: c.locked ? '#2C2820' : '#9B8E7E' }}
+                >
+                  {c.ch}
+                </span>
+              ))
+          }
+        </h1>
+
+        {/* Taglines — single row */}
+        <div className="flex flex-wrap items-center" style={{ gap: '32px' }}>
+          {TAGLINE_DATA.map((t, i) => {
+            const Icon    = ICONS[i]
+            const visible = taglines === null ? true : taglines[i].visible
+            const chars   = taglines?.[i].chars ?? null
+
             return (
               <div
                 key={i}
-                className="flex items-center gap-3"
-                style={{
-                  color:    '#7A6A5A',
-                  fontSize: '13px',
-                  opacity:  row.visible ? 1 : 0,
-                }}
+                className="flex items-center gap-2"
+                style={{ color: '#7A6A5A', fontSize: '13px', opacity: visible ? 1 : 0 }}
               >
                 <Icon />
                 <span aria-hidden="true">
-                  {taglines === null
-                    ? row.text
-                    : (taglines[i].chars.map((c, j) => (
+                  {chars === null
+                    ? t.text
+                    : chars.map((c, j) => (
                         <span key={j} style={{ color: c.locked ? '#7A6A5A' : '#9B8E7E' }}>
                           {c.ch}
                         </span>
-                      )))
+                      ))
                   }
                 </span>
               </div>
