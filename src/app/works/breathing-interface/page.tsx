@@ -34,7 +34,7 @@ export default function BreathingInterfacePage() {
           </p>
 
           {/* ── Metadata ──────────────────────────────────────────── */}
-          <div className="flex flex-wrap gap-x-8 gap-y-3 mb-20 border-t border-b border-[#E8E4E0] py-6">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-20 border-t border-b border-[#E8E4E0] py-6">
             {[
               { label: 'Type', value: 'Experimental Interface / Spatial UX' },
               { label: 'Role', value: 'Concept, Design, Motion Exploration' },
