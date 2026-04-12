@@ -73,7 +73,7 @@ export default function Nav({ forceDark = false }: { forceDark?: boolean }) {
                 key={label}
                 href={href}
                 className={`text-xs uppercase tracking-widest transition-colors duration-700 ${
-                  isDark
+                  navIsDark
                     ? 'text-[#8AAAD8] hover:text-[#C8D8F0]'
                     : 'text-[#8C8278] hover:text-[#2C2820]'
                 }`}
