@@ -152,7 +152,7 @@ export default function Home() {
           id="transition-zone"
           className="relative flex items-center justify-center"
           style={{
-            minHeight: '120vh',
+            minHeight: '65vh',
             background: [
               'linear-gradient(to bottom,',
               '  #FAF8F4   0%,',   /* cream — holds */
