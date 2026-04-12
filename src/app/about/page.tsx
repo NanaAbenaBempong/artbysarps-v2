@@ -347,33 +347,69 @@ export default function AboutPage() {
                 ))}
               </div>
 
-              {/* Right: photo grid for the hovered category */}
+              {/* Right: carousel for the active category */}
               <div className="hidden md:block sticky top-32">
-                {activeHover !== null ? (
-                  <div className="grid grid-cols-3 gap-2">
-                    {notAtScreen[activeHover].photos.map((photo) => (
-                      <div
-                        key={photo.src}
-                        className="relative aspect-square rounded-xl overflow-hidden bg-[#E8E4E0]"
-                      >
+                {(() => {
+                  const photos = notAtScreen[activeHover].photos
+                  const current = photos[photoIndex] ?? photos[0]
+                  return (
+                    <div className="flex flex-col gap-4">
+                      {/* Frame */}
+                      <div className="relative w-full rounded-2xl overflow-hidden bg-[#E8E4E0]" style={{ height: '380px' }}>
                         <Image
-                          src={photo.src}
-                          alt={photo.alt}
+                          key={current.src}
+                          src={current.src}
+                          alt={current.alt}
                           fill
-                          className="object-cover"
-                          sizes="(max-width: 1280px) 12vw, 150px"
+                          className="object-cover animate-fadeIn"
+                          sizes="(max-width: 1280px) 50vw, 580px"
                         />
+
+                        {/* Arrow buttons */}
+                        {photos.length > 1 && (
+                          <>
+                            <button
+                              onClick={goToPrev}
+                              aria-label="Previous photo"
+                              className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-[#FAF8F4]/80 flex items-center justify-center text-[#2C2820] hover:bg-[#FAF8F4] transition-colors duration-150"
+                            >
+                              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M10 3L5 8l5 5" />
+                              </svg>
+                            </button>
+                            <button
+                              onClick={goToNext}
+                              aria-label="Next photo"
+                              className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-[#FAF8F4]/80 flex items-center justify-center text-[#2C2820] hover:bg-[#FAF8F4] transition-colors duration-150"
+                            >
+                              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M6 3l5 5-5 5" />
+                              </svg>
+                            </button>
+                          </>
+                        )}
                       </div>
-                    ))}
-                  </div>
-                ) : (
-                  /* Placeholder grid shown when nothing is hovered */
-                  <div className="grid grid-cols-3 gap-2">
-                    {Array.from({ length: 6 }).map((_, i) => (
-                      <div key={i} className="aspect-square rounded-xl bg-[#F0EDE8]" />
-                    ))}
-                  </div>
-                )}
+
+                      {/* Dot indicators */}
+                      {photos.length > 1 && (
+                        <div className="flex justify-center gap-1.5">
+                          {photos.map((_, i) => (
+                            <button
+                              key={i}
+                              onClick={() => setPhotoIndex(i)}
+                              aria-label={`Photo ${i + 1}`}
+                              className={`rounded-full transition-all duration-200 ${
+                                i === photoIndex
+                                  ? 'w-4 h-1.5 bg-[#5C4D3C]'
+                                  : 'w-1.5 h-1.5 bg-[#C8C0B8]'
+                              }`}
+                            />
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )
+                })()}
               </div>
             </div>
           </section>
