@@ -346,47 +346,32 @@ export default function AboutPage() {
                 ))}
               </div>
 
-              {/* Right: carousel for the active category */}
+              {/* Right: auto-advancing slideshow for the active category */}
               <div className="hidden md:block sticky top-32">
                 {(() => {
                   const photos = notAtScreen[activeHover].photos
-                  const current = photos[photoIndex] ?? photos[0]
                   return (
                     <div className="flex flex-col gap-4">
-                      {/* Frame */}
-                      <div className="relative w-full rounded-2xl overflow-hidden bg-[#E8E4E0]" style={{ height: '380px' }}>
-                        <Image
-                          key={current.src}
-                          src={current.src}
-                          alt={current.alt}
-                          fill
-                          className="object-cover animate-fadeIn"
-                          sizes="(max-width: 1280px) 50vw, 580px"
-                        />
-
-                        {/* Arrow buttons */}
-                        {photos.length > 1 && (
-                          <>
-                            <button
-                              onClick={goToPrev}
-                              aria-label="Previous photo"
-                              className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-[#FAF8F4]/80 flex items-center justify-center text-[#2C2820] hover:bg-[#FAF8F4] transition-colors duration-150"
-                            >
-                              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M10 3L5 8l5 5" />
-                              </svg>
-                            </button>
-                            <button
-                              onClick={goToNext}
-                              aria-label="Next photo"
-                              className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-[#FAF8F4]/80 flex items-center justify-center text-[#2C2820] hover:bg-[#FAF8F4] transition-colors duration-150"
-                            >
-                              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M6 3l5 5-5 5" />
-                              </svg>
-                            </button>
-                          </>
-                        )}
+                      {/* Frame — stacked images crossfade via opacity */}
+                      <div
+                        className="relative w-full rounded-2xl overflow-hidden"
+                        style={{ height: '380px', background: '#F5F3EF' }}
+                      >
+                        {photos.map((photo, idx) => (
+                          <div
+                            key={photo.src}
+                            className="absolute inset-0 transition-opacity duration-700"
+                            style={{ opacity: idx === photoIndex ? 1 : 0 }}
+                          >
+                            <Image
+                              src={photo.src}
+                              alt={photo.alt}
+                              fill
+                              className="object-contain"
+                              sizes="(max-width: 1280px) 50vw, 580px"
+                            />
+                          </div>
+                        ))}
                       </div>
 
                       {/* Dot indicators */}
