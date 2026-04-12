@@ -10,7 +10,6 @@ const notAtScreen = [
   { label: 'Reading',                             color: '#e8e4dc' },
   { label: 'Baking',                              color: '#f0e8dc' },
   { label: 'Sitting outside with fresh air and no agenda', color: '#dce8e0' },
-  { label: 'Cat person',                          color: '#e8dce8' },
 ]
 
 // ── Section 2 cards ───────────────────────────────────────────────────────────
