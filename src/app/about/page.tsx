@@ -335,8 +335,7 @@ export default function AboutPage() {
                     className={`py-5 cursor-default transition-colors duration-200 ${
                       i < notAtScreen.length - 1 ? 'border-b border-[#E8E4E0]' : ''
                     } ${i === 0 ? 'border-t border-[#E8E4E0]' : ''}`}
-                    onMouseEnter={() => setHoveredItem(i)}
-                    onMouseLeave={() => setHoveredItem(null)}
+                    onMouseEnter={() => handleSectionEnter(i)}
                   >
                     <p className={`text-base transition-colors duration-200 ${
                       activeHover === i ? 'text-[#2C2820]' : 'text-[#5C4D3C]'
