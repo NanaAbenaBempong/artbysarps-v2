@@ -129,13 +129,9 @@ const caseStudies: CaseStudy[] = [
         ],
       },
       {
-        kind: 'quotes',
-        heading: 'What Users Said',
-        quotes: [
-          'Curated — like someone with good taste.',
-          'More tailored than just a title dump.',
-          "I'd actually use this. I don't have to think about organizing anything — it just works.",
-        ],
+        kind: 'quote',
+        text: 'I just really like how clean the interface is. Not cluttered, it\u2019s easy to use.',
+        attribution: '— Usability test participant',
       },
       {
         kind: 'prose',
@@ -143,6 +139,11 @@ const caseStudies: CaseStudy[] = [
         body: 'Moderated tests with 5 avid readers across 6 core tasks. Key findings: scannability improvements for Discover and Explore tasks; filter redesign after errors in Search & Filter task; refinements to Reviews and Explore flows.',
         image: '/works/readnext/readnext-19.png',
         imageSide: 'left',
+      },
+      {
+        kind: 'quote',
+        text: 'Give me more than 280 characters. I\u2019m not writing a tweet.',
+        attribution: '— Usability test participant',
       },
       {
         kind: 'cards',
