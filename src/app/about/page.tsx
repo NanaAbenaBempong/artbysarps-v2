@@ -295,7 +295,6 @@ export default function AboutPage() {
           </section>
 
           {/* ── Section 4 — When I'm not at a screen ──────────────────── */}
-          {/* 'use client' directive at file top enables hover state here */}
           <section className="mb-28">
             <p className="text-xs uppercase tracking-[0.25em] text-[#8C8278] mb-12">
               When I&rsquo;m Not at a Screen
@@ -322,21 +321,33 @@ export default function AboutPage() {
                 ))}
               </div>
 
-              {/* Right: colour preview box */}
+              {/* Right: photo grid for the hovered category */}
               <div className="hidden md:block sticky top-32">
-                <div
-                  className="w-full rounded-2xl flex items-center justify-center transition-colors duration-300"
-                  style={{
-                    height: '240px',
-                    backgroundColor: hoveredItem !== null
-                      ? notAtScreen[hoveredItem].color
-                      : '#F0EDE8',
-                  }}
-                >
-                  <p className="text-xs uppercase tracking-[0.2em] text-[#8C8278]">
-                    Photo coming soon
-                  </p>
-                </div>
+                {hoveredItem !== null ? (
+                  <div className="grid grid-cols-3 gap-2">
+                    {notAtScreen[hoveredItem].photos.map((photo) => (
+                      <div
+                        key={photo.src}
+                        className="relative aspect-square rounded-xl overflow-hidden bg-[#E8E4E0]"
+                      >
+                        <Image
+                          src={photo.src}
+                          alt={photo.alt}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 1280px) 12vw, 150px"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  /* Placeholder grid shown when nothing is hovered */
+                  <div className="grid grid-cols-3 gap-2">
+                    {Array.from({ length: 6 }).map((_, i) => (
+                      <div key={i} className="aspect-square rounded-xl bg-[#F0EDE8]" />
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </section>
