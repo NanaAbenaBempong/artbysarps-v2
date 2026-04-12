@@ -68,10 +68,12 @@ export default function Nav({ forceDark = false }: { forceDark?: boolean }) {
 
           {/* Desktop links */}
           <div className="hidden md:flex items-center gap-8">
-            {NAV_LINKS.map(({ label, href }) => (
+            {NAV_LINKS.map(({ label, href, target, rel }) => (
               <a
                 key={label}
                 href={href}
+                target={target}
+                rel={rel}
                 className={`text-xs uppercase tracking-widest transition-colors duration-700 ${
                   navIsDark
                     ? 'text-[#8AAAD8] hover:text-[#C8D8F0]'
