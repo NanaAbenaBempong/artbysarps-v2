@@ -343,7 +343,7 @@ export default function AboutPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-start">
               {/* Left: list */}
               <div className="flex flex-col">
-                {notAtScreen.map((item, i) => (
+                {sections.map((item, i) => (
                   <div
                     key={item.label}
                     className={`py-5 cursor-default transition-colors duration-200 ${
