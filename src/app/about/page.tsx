@@ -5,11 +5,63 @@ import Image from 'next/image'
 import Nav from '../components/Nav'
 import type { Track } from '../api/music-previews/route'
 
-// ── Section 4 hover items ─────────────────────────────────────────────────────
+// ── Section 4 — When I'm not at a screen ─────────────────────────────────────
 const notAtScreen = [
-  { label: 'Reading',                             color: '#e8e4dc' },
-  { label: 'Baking',                              color: '#f0e8dc' },
-  { label: 'Sitting outside with fresh air and no agenda', color: '#dce8e0' },
+  {
+    label:  'Reading',
+    photos: [
+      { src: '/about/reading/vanishing-half.jpg',  alt: 'The Vanishing Half' },
+      { src: '/about/reading/notes-on-grief.jpg',  alt: 'Notes on Grief' },
+    ],
+  },
+  {
+    label:  'Baking',
+    photos: [
+      { src: '/about/baking/bread-loaves-and-rolls.jpg', alt: 'Bread loaves and rolls' },
+      { src: '/about/baking/glazed-oat-cookies.jpg',     alt: 'Glazed oat cookies' },
+      { src: '/about/baking/chocolate-cupcakes.jpg',     alt: 'Chocolate cupcakes' },
+      { src: '/about/baking/purple-cake-front.jpg',      alt: 'Purple cake front' },
+      { src: '/about/baking/purple-cake-side.jpg',       alt: 'Purple cake side' },
+      { src: '/about/baking/wreath-rolls-closeup.jpg',   alt: 'Wreath rolls close-up' },
+      { src: '/about/baking/wreath-rolls-wide.jpg',      alt: 'Wreath rolls wide' },
+      { src: '/about/baking/caramel-layer-cake.jpg',     alt: 'Caramel layer cake' },
+      { src: '/about/baking/waffles-with-syrup.jpg',     alt: 'Waffles with syrup' },
+      { src: '/about/baking/cinnamon-rolls.jpg',         alt: 'Cinnamon rolls' },
+    ],
+  },
+  {
+    label:  'Out in nature',
+    photos: [
+      { src: '/about/nature/sunset-through-trees.jpg',  alt: 'Sunset through trees' },
+      { src: '/about/nature/sunset-palm-beach.jpg',     alt: 'Sunset palm beach' },
+      { src: '/about/nature/sunset-over-water.jpg',     alt: 'Sunset over water' },
+      { src: '/about/nature/seashell-on-beach.jpg',     alt: 'Seashell on beach' },
+      { src: '/about/nature/magenta-roses.jpg',         alt: 'Magenta roses' },
+      { src: '/about/nature/peach-roses-path.jpg',      alt: 'Peach roses path' },
+      { src: '/about/nature/peach-roses-closeup.jpg',   alt: 'Peach roses close-up' },
+    ],
+  },
+  {
+    label:  'Shooting shots',
+    photos: [
+      { src: '/about/shooting/pendant-lights-dark.jpg',       alt: 'Pendant lights in dark' },
+      { src: '/about/shooting/spiral-staircase-colour.jpg',   alt: 'Spiral staircase colour' },
+      { src: '/about/shooting/spiral-staircase-bw.jpg',       alt: 'Spiral staircase black and white' },
+      { src: '/about/shooting/staircase-globes-daytime.jpg',  alt: 'Staircase globes daytime' },
+      { src: '/about/shooting/staircase-globes-bw.jpg',       alt: 'Staircase globes black and white' },
+      { src: '/about/shooting/dramatic-clouds.jpg',           alt: 'Dramatic clouds' },
+    ],
+  },
+  {
+    label:  'Somewhere there is food',
+    photos: [
+      { src: '/about/food/rice-chicken-bowl.jpg',    alt: 'Rice chicken bowl' },
+      { src: '/about/food/rice-chicken-bowl-2.jpg',  alt: 'Rice chicken bowl 2' },
+      { src: '/about/food/noodles-dipping-sauce.jpg', alt: 'Noodles with dipping sauce' },
+      { src: '/about/food/shrimp-fried-rice.jpg',    alt: 'Shrimp fried rice' },
+      { src: '/about/food/chicken-wings.jpg',        alt: 'Chicken wings' },
+    ],
+  },
 ]
 
 // ── Section 2 cards ───────────────────────────────────────────────────────────
