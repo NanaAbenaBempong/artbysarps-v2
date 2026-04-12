@@ -175,8 +175,8 @@ export default function Home() {
                 background: 'linear-gradient(to bottom, transparent, #4A3D52, #384868)',
               }}
             />
-            <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl text-[#C8D8F0] tracking-tight">
-              The human beneath
+            <h2 className="font-serif italic text-4xl sm:text-5xl md:text-6xl text-[#C8D8F0] tracking-tight">
+              Step into my world for a moment.
             </h2>
             <div
               className="w-px h-20 mx-auto mt-12"
