@@ -331,9 +331,9 @@ export default function AboutPage() {
 
               {/* Right: photo grid for the hovered category */}
               <div className="hidden md:block sticky top-32">
-                {hoveredItem !== null ? (
+                {activeHover !== null ? (
                   <div className="grid grid-cols-3 gap-2">
-                    {notAtScreen[hoveredItem].photos.map((photo) => (
+                    {notAtScreen[activeHover].photos.map((photo) => (
                       <div
                         key={photo.src}
                         className="relative aspect-square rounded-xl overflow-hidden bg-[#E8E4E0]"
