@@ -109,17 +109,24 @@ export default function HeroCanvas() {
     const ctx = canvas.getContext('2d')!
 
     // ── Timings (ms) ─────────────────────────────────────────────
-    const DRAW_DUR    = 2200
-    const SHAKE_DUR   = 450
-    const STROKE_DRAW = 1500  // ms to paint the brush stroke
-    const STROKE_HOLD =  500  // ms to hold it fully visible
-    const STROKE_FADE =  300  // ms to fade it out before text types in
-    const CHAR_MS     = 55
-    const HOLD_DUR    = 1600
-    const FADE_DUR    = 900
+    const DRAW_DUR          = 2200
+    const FRAME_FADE_DUR    =  300  // frame fades out
+    const REVEAL_DUR        =  800  // painting wipes in left-to-right
+    const PAINTING_HOLD_DUR =  800  // painting holds fully visible
+    const PAINTING_FADE_DUR =  400  // painting fades out before text
+    const CHAR_MS           =   55
+    const HOLD_DUR          = 1600
+    const FADE_DUR          =  900
+
+    // ── Preload painting images ───────────────────────────────────
+    const paintingImgs: HTMLImageElement[] = PAINTING_SRCS.map(src => {
+      const img = new window.Image()
+      img.src = src
+      return img
+    })
 
     // ── State ─────────────────────────────────────────────────────
-    type Phase = 'draw' | 'shake' | 'burst' | 'type' | 'hold' | 'fade'
+    type Phase = 'draw' | 'frame_fade' | 'painting_reveal' | 'painting_hold' | 'painting_fade' | 'type' | 'hold' | 'fade'
     let phase: Phase = 'draw'
     let phaseStart  = 0
     let sentence    = ''
