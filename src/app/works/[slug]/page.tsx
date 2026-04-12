@@ -632,6 +632,8 @@ export default async function CaseStudyPage({
               return <QuotesSection key={i} {...section} />
             if (section.kind === 'quote')
               return <QuoteBlock key={i} text={section.text} attribution={section.attribution} />
+            if (section.kind === 'insight-rows')
+              return <InsightRowsSection key={i} {...section} />
             if (section.kind === 'takeaways')
               return <TakeawaysSection key={i} {...section} />
             if (section.kind === 'prototype')
