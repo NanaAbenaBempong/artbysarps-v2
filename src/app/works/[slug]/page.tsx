@@ -363,6 +363,19 @@ function ProseSection({ heading, body, image, imageSide }: { heading: string; bo
   )
 }
 
+function QuoteBlock({ text, attribution }: { text: string; attribution: string }) {
+  return (
+    <div className="mb-16">
+      <blockquote className="border-l-2 border-[#2C2820] pl-6">
+        <p className="font-serif italic text-xl text-[#2C2820] leading-relaxed">
+          &ldquo;{text}&rdquo;
+        </p>
+        <p className="text-sm text-[#8C8278] mt-3">{attribution}</p>
+      </blockquote>
+    </div>
+  )
+}
+
 function CardsSection({ heading, cards, image, imageSide }: { heading: string; cards: Card[]; image?: string; imageSide?: 'left' | 'right' }) {
   const isThree = cards.length === 3
   const cardGrid = (
