@@ -588,7 +588,7 @@ export default async function CaseStudyPage({
           </p>
 
           {/* Metadata */}
-          <div className="flex flex-wrap gap-x-8 gap-y-3 mb-14 border-t border-b border-[#E8E4E0] py-6">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-14 border-t border-b border-[#E8E4E0] py-6">
             {cs.meta.map(({ label, value }) => (
               <div key={label}>
                 <p className="text-xs uppercase tracking-[0.2em] text-[#8C8278] mb-1">{label}</p>
