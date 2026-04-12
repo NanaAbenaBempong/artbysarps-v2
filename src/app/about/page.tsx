@@ -58,6 +58,7 @@ const notAtScreen = [
       { src: '/about/food/noodles-dipping-sauce.jpg', alt: 'Noodles with dipping sauce' },
       { src: '/about/food/shrimp-fried-rice.jpg',    alt: 'Shrimp fried rice' },
       { src: '/about/food/chicken-wings.jpg',        alt: 'Chicken wings' },
+      { src: '/about/food/waffles-with-syrup.jpg',   alt: 'Waffles with syrup' },
     ],
   },
 ]
