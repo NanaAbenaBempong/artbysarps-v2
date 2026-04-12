@@ -392,7 +392,7 @@ function CardsSection({ heading, cards, image, imageSide }: { heading: string; c
   if (image) {
     return (
       <div className="mb-16">
-        <h2 className="font-serif text-2xl text-[#2C2820] mb-8 leading-snug">{heading}</h2>
+        {heading && <h2 className="font-serif text-2xl text-[#2C2820] mb-8 leading-snug">{heading}</h2>}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
           {cardGrid}
           <SectionImage src={image} side={imageSide!} />
@@ -402,7 +402,7 @@ function CardsSection({ heading, cards, image, imageSide }: { heading: string; c
   }
   return (
     <div className="mb-16">
-      <h2 className="font-serif text-2xl text-[#2C2820] mb-8 leading-snug">{heading}</h2>
+      {heading && <h2 className="font-serif text-2xl text-[#2C2820] mb-8 leading-snug">{heading}</h2>}
       {cardGrid}
     </div>
   )
