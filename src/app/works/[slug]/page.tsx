@@ -213,12 +213,10 @@ const caseStudies: CaseStudy[] = [
     description:
       'A fitness app designed to help graduate students stay active despite their demanding schedules.',
     meta: [
-      { label: 'Type', value: 'Personal Project' },
-      { label: 'Industry', value: 'Fitness & Wellness' },
+      { label: 'Type',     value: 'Personal Project' },
       { label: 'Timeline', value: 'Oct 2024 – Dec 2024' },
-      { label: 'Role', value: 'UI/UX Designer, Researcher' },
-      { label: 'Tools', value: 'Figma' },
-      { label: 'Audience', value: 'Graduate Students' },
+      { label: 'Role',     value: 'UI/UX Designer, Researcher' },
+      { label: 'Tools',    value: 'Figma' },
     ],
     sections: [
       {
