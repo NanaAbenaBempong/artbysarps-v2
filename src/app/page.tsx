@@ -212,6 +212,9 @@ export default function Home() {
           <div className="max-w-6xl mx-auto">
             {/* Soft spacer so the label doesn't start right at the seam */}
             <div className="h-24" />
+            <p className="font-serif italic text-[#8AAAD8] text-base leading-relaxed mb-16 max-w-xl">
+              I paint to experiment — colours, shapes, lines, no brief, just curiosity. I write stories rooted in love, faith, and friendship. The kind I would have loved to find growing up. I usually know the destination before I know the route.
+            </p>
             <p className="text-xs uppercase tracking-[0.25em] text-[#384868] mb-12">
               Paintings
             </p>
