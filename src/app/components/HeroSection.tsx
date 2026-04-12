@@ -180,7 +180,7 @@ export default function HeroSection() {
               <div
                 key={i}
                 className="flex items-center gap-2"
-                style={{ color: '#7A6A5A', fontSize: '13px', opacity: visible ? 1 : 0 }}
+                style={{ color: '#7A6A5A', fontSize: '15px', opacity: visible ? 1 : 0 }}
               >
                 <Icon />
                 <span aria-hidden="true">
