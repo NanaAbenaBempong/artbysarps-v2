@@ -14,6 +14,7 @@ const NAV_LINKS = [
 export default function Nav({ forceDark = false }: { forceDark?: boolean }) {
   const [scrollDark, setScrollDark] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
     if (forceDark) return
