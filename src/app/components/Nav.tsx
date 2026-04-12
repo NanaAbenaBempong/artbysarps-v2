@@ -54,7 +54,7 @@ export default function Nav({ forceDark = false }: { forceDark?: boolean }) {
           <Link href="/" className="flex items-center">
             <Image
               src={
-                isDark
+                navIsDark
                   ? '/Transparent Logo/Logo - White LogoMark (2).png'
                   : '/Transparent Logo/Logo - Black LogoMark (2).png'
               }
