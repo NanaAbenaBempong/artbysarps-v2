@@ -321,7 +321,7 @@ export default function AboutPage() {
                     onMouseLeave={() => setHoveredItem(null)}
                   >
                     <p className={`text-base transition-colors duration-200 ${
-                      hoveredItem === i ? 'text-[#2C2820]' : 'text-[#5C4D3C]'
+                      activeHover === i ? 'text-[#2C2820]' : 'text-[#5C4D3C]'
                     }`}>
                       {item.label}
                     </p>
