@@ -141,7 +141,7 @@ export default function HeroSection() {
   }, [])
 
   return (
-    <section className="bg-[#FAF8F4] px-8" style={{ paddingTop: '14vh', paddingBottom: '6vh' }}>
+    <section className="bg-[#FAF8F4] px-8" style={{ paddingTop: '14vh', paddingBottom: '3.5vh' }}>
       <div className="max-w-6xl mx-auto w-full">
 
         {/* Label */}
