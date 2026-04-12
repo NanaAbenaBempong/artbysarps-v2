@@ -128,6 +128,66 @@ export default function AboutPage() {
   // Only apply interactive state after mount so both renders start identically.
   useEffect(() => { setMounted(true) }, [])
 
+  // ── Hero typewriter-scramble ────────────────────────────────────────────────
+  // null = not started (show static text for SSR / first render)
+  // array = animation in progress or complete
+  const [heroChars, setHeroChars] = useState<Array<{ ch: string; locked: boolean }> | null>(null)
+
+  useEffect(() => {
+    const chars = HERO_TEXT.split('')
+    let cancelled = false
+
+    setHeroChars(chars.map(() => ({ ch: '', locked: false })))
+
+    const wait = (ms: number) => new Promise<void>(res => setTimeout(res, ms))
+
+    async function run() {
+      await wait(120) // brief settle before starting
+      for (let i = 0; i < chars.length; i++) {
+        if (cancelled) return
+        const actual = chars[i]
+
+        if (INSTANT_CHARS.has(actual)) {
+          setHeroChars(prev => {
+            if (!prev || cancelled) return prev
+            const next = [...prev]
+            next[i] = { ch: actual, locked: true }
+            return next
+          })
+        } else {
+          const scrambles = 4 + Math.floor(Math.random() * 2) // 4 or 5
+          for (let s = 0; s < scrambles; s++) {
+            if (cancelled) return
+            const rand = SCRAMBLE_POOL[Math.floor(Math.random() * SCRAMBLE_POOL.length)]
+            setHeroChars(prev => {
+              if (!prev) return prev
+              const next = [...prev]
+              next[i] = { ch: rand, locked: false }
+              return next
+            })
+            await wait(40)
+          }
+          if (cancelled) return
+          setHeroChars(prev => {
+            if (!prev) return prev
+            const next = [...prev]
+            next[i] = { ch: actual, locked: true }
+            return next
+          })
+        }
+
+        if (i === SENTENCE_1_END) {
+          await wait(600) // pause between sentences
+        } else {
+          await wait(55)  // standard inter-character gap
+        }
+      }
+    }
+
+    run()
+    return () => { cancelled = true }
+  }, [])
+
   const activeHover = mounted ? hoveredItem : 0
 
   function handleSectionEnter(i: number) {
