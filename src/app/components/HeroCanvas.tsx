@@ -289,26 +289,33 @@ export default function HeroCanvas() {
       if (phase === 'draw') {
         const t = Math.min(elapsed / DRAW_DUR, 1)
         drawFrame(t)
-        if (t >= 1) { phase = 'shake'; phaseStart = now }
+        if (t >= 1) { phase = 'frame_fade'; phaseStart = now }
 
-      } else if (phase === 'shake') {
-        const t = elapsed / SHAKE_DUR
-        const intensity = 5 * Math.max(0, 1 - t)
-        const dx = (Math.random() - 0.5) * intensity
-        const dy = (Math.random() - 0.5) * intensity
+      } else if (phase === 'frame_fade') {
+        // Frame fades out — draw it at decreasing opacity
+        const t = Math.min(elapsed / FRAME_FADE_DUR, 1)
         ctx.save()
-        ctx.translate(dx, dy)
+        ctx.globalAlpha = 1 - t
         drawFrame(1)
         ctx.restore()
-        if (t >= 1) { phase = 'burst'; phaseStart = now }
+        if (t >= 1) { phase = 'painting_reveal'; phaseStart = now }
 
-      } else if (phase === 'burst') {
-        // Sub-phases: draw stroke → hold → fade out → hand off to 'type'
-        const drawProgress = Math.min(elapsed / STROKE_DRAW, 1)
-        const fadeElapsed  = Math.max(0, elapsed - STROKE_DRAW - STROKE_HOLD)
-        const alpha        = fadeElapsed > 0 ? Math.max(0, 1 - fadeElapsed / STROKE_FADE) : 1
-        drawBrushStroke(drawProgress, alpha)
-        if (elapsed >= STROKE_DRAW + STROKE_HOLD + STROKE_FADE) { phase = 'type'; phaseStart = now }
+      } else if (phase === 'painting_reveal') {
+        // Painting wipes in left-to-right with feathered edge
+        const t = Math.min(elapsed / REVEAL_DUR, 1)
+        drawPainting(paintingImgs[cycleIndex % 3], t, 1)
+        if (t >= 1) { phase = 'painting_hold'; phaseStart = now }
+
+      } else if (phase === 'painting_hold') {
+        // Painting holds fully visible
+        drawPainting(paintingImgs[cycleIndex % 3], 1, 1)
+        if (elapsed >= PAINTING_HOLD_DUR) { phase = 'painting_fade'; phaseStart = now }
+
+      } else if (phase === 'painting_fade') {
+        // Painting fades out as text is about to type in
+        const t = Math.min(elapsed / PAINTING_FADE_DUR, 1)
+        drawPainting(paintingImgs[cycleIndex % 3], 1, 1 - t)
+        if (t >= 1) { phase = 'type'; phaseStart = now }
 
       } else if (phase === 'type') {
         const charsToShow = Math.floor(elapsed / CHAR_MS)
