@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import Nav from './components/Nav'
-import HeroCanvas from './components/HeroCanvas'
+import HeroSection from './components/HeroSection'
 
 const uxProjects = [
   {
