@@ -64,14 +64,20 @@ export default function AboutPage() {
       .finally(() => setLoadingMusic(false))
   }, [])
 
-  function handleRecordEnter(track: Track) {
-    if (!track.previewUrl) return
-    // Stop any currently playing preview
+  function stopAudio() {
     if (audioRef.current) {
       audioRef.current.pause()
+      audioRef.current.src = ''  // release the resource
       audioRef.current = null
     }
-    const audio = new Audio(track.previewUrl)
+  }
+
+  function handleRecordEnter(track: Track) {
+    if (!track.previewUrl) return
+    stopAudio()
+    // Route through our proxy so the browser never hits Apple's CORS-restricted CDN directly
+    const proxyUrl = `/api/music-proxy?url=${encodeURIComponent(track.previewUrl)}`
+    const audio = new Audio(proxyUrl)
     audio.volume = 0.5
     audio.play().catch(() => {})
     audioRef.current = audio
@@ -79,16 +85,13 @@ export default function AboutPage() {
   }
 
   function handleRecordLeave() {
-    if (audioRef.current) {
-      audioRef.current.pause()
-      audioRef.current = null
-    }
+    stopAudio()
     setPlayingId(null)
   }
 
   // Clean up on unmount
   useEffect(() => {
-    return () => { audioRef.current?.pause() }
+    return () => { stopAudio() }
   }, [])
 
   return (
