@@ -115,10 +115,12 @@ export default function Nav({ forceDark = false }: { forceDark?: boolean }) {
         </button>
 
         <nav className="flex flex-col items-center gap-10" onClick={e => e.stopPropagation()}>
-          {NAV_LINKS.map(({ label, href }) => (
+          {NAV_LINKS.map(({ label, href, target, rel }) => (
             <a
               key={label}
               href={href}
+              target={target}
+              rel={rel}
               className="font-serif text-4xl text-[#C8D8F0] hover:text-[#8AAAD8] transition-colors duration-200"
               onClick={() => setMenuOpen(false)}
             >
