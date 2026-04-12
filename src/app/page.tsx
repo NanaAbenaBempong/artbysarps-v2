@@ -240,7 +240,7 @@ export default function Home() {
         {/* ── Fiction ───────────────────────────────────────────── */}
         <section id="writing" className="bg-[#080C14] px-8 py-24">
           <div className="max-w-6xl mx-auto border-t border-[#0D1525] pt-24">
-            <p className="text-xs uppercase tracking-[0.25em] text-[#384868] mb-6">
+            <p className="uppercase tracking-[0.25em] text-[#A89880] mb-6" style={{ fontSize: '13px' }}>
               Fiction
             </p>
             <p className="text-[#384868] text-sm mb-20 max-w-md leading-relaxed">
