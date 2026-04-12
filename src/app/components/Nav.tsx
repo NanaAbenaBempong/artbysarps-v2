@@ -89,9 +89,9 @@ export default function Nav({ forceDark = false }: { forceDark?: boolean }) {
             onClick={() => setMenuOpen(true)}
             aria-label="Open menu"
           >
-            <span className={`block h-px w-full transition-colors duration-700 ${isDark ? 'bg-[#8AAAD8]' : 'bg-[#8C8278]'}`} />
-            <span className={`block h-px w-full transition-colors duration-700 ${isDark ? 'bg-[#8AAAD8]' : 'bg-[#8C8278]'}`} />
-            <span className={`block h-px w-full transition-colors duration-700 ${isDark ? 'bg-[#8AAAD8]' : 'bg-[#8C8278]'}`} />
+            <span className={`block h-px w-full transition-colors duration-700 ${navIsDark ? 'bg-[#8AAAD8]' : 'bg-[#8C8278]'}`} />
+            <span className={`block h-px w-full transition-colors duration-700 ${navIsDark ? 'bg-[#8AAAD8]' : 'bg-[#8C8278]'}`} />
+            <span className={`block h-px w-full transition-colors duration-700 ${navIsDark ? 'bg-[#8AAAD8]' : 'bg-[#8C8278]'}`} />
           </button>
         </div>
       </nav>
