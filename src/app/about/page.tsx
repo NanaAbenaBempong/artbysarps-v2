@@ -99,7 +99,15 @@ const skills = [
 ]
 
 export default function AboutPage() {
+  const [mounted, setMounted]         = useState(false)
   const [hoveredItem, setHoveredItem] = useState<number | null>(null)
+
+  // Suppress hydration mismatch: hoveredItem-driven class names and the photo
+  // grid vs placeholder grid differ between server (null) and client renders.
+  // Only apply interactive state after mount so both renders start identically.
+  useEffect(() => { setMounted(true) }, [])
+
+  const activeHover = mounted ? hoveredItem : null
 
   // ── Music state ───────────────────────────────────────────────────────────
   const [tracks, setTracks]           = useState<Track[]>([])
