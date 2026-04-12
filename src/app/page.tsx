@@ -67,21 +67,21 @@ const stories = [
     title: 'Tomi, The Go-Between',
     date: 'Mar 2026',
     excerpt: 'I whispered a prayer before getting to work. I smiled at Otto when I was done and soon wished I hadn\'t.',
-    href: 'https://writings.artbysarps.com',
+    href: 'https://writings.artbysarps.com/2026/03/27/tomi-the-go-between/',
   },
   {
     number: '02',
     title: 'The Elevator Experience',
     date: 'Mar 2026',
     excerpt: '"Kofi, is that you?" Ama said excitedly. "Excuse me, who are you, and why are you all over my man?"',
-    href: 'https://writings.artbysarps.com',
+    href: 'https://writings.artbysarps.com/2026/03/03/the-elevator-experience/',
   },
   {
     number: '03',
     title: 'The Winning Race',
     date: 'Dec 2025',
     excerpt: 'They say a book can change your life. Follow two lives — an ambitious young woman who has stopped dreaming, and an Uber driver looking to impact the world.',
-    href: 'https://writings.artbysarps.com',
+    href: 'https://writings.artbysarps.com/2025/12/17/the-winning-race/',
   },
 ]
 
