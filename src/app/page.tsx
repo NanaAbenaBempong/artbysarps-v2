@@ -193,7 +193,7 @@ export default function Home() {
           <div className="max-w-6xl mx-auto">
             {/* Soft spacer so the label doesn't start right at the seam */}
             <div className="h-24" />
-            <p className="text-xs uppercase tracking-[0.25em] text-[#384868] mb-12">
+            <p className="uppercase tracking-[0.25em] text-[#A89880] mb-12" style={{ fontSize: '13px' }}>
               Paintings
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#141E33] mb-10">
