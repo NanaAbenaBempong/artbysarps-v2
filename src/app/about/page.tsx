@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
-import Link from 'next/link'
+import { useState, useEffect, useRef } from 'react'
+import Image from 'next/image'
 import Nav from '../components/Nav'
+import type { Track } from '../api/music-previews/route'
 
 // ── Section 4 hover items ─────────────────────────────────────────────────────
 const notAtScreen = [
