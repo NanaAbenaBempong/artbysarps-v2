@@ -48,6 +48,7 @@ const notAtScreen = [
       { src: '/about/shooting/staircase-globes-daytime.jpg',  alt: 'Staircase globes daytime' },
       { src: '/about/shooting/staircase-globes-bw.jpg',       alt: 'Staircase globes black and white' },
       { src: '/about/shooting/dramatic-clouds.jpg',           alt: 'Dramatic clouds' },
+      { src: '/about/shooting/seashell-on-beach.jpg',        alt: 'Seashell on beach' },
     ],
   },
   {
