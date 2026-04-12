@@ -36,7 +36,10 @@ export default function Nav({ forceDark = false }: { forceDark?: boolean }) {
     return () => { document.body.style.overflow = '' }
   }, [menuOpen])
 
-  const isDark = forceDark || scrollDark
+  useEffect(() => { setMounted(true) }, [])
+
+  const isDark    = forceDark || scrollDark
+  const navIsDark = mounted ? isDark : false
 
   return (
     <>
