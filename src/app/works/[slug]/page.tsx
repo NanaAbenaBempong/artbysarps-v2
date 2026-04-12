@@ -13,6 +13,7 @@ type Section =
   | { kind: 'prose'; heading: string; body: string; image?: string; imageSide?: 'left' | 'right' }
   | { kind: 'cards'; heading: string; cards: Card[]; image?: string; imageSide?: 'left' | 'right' }
   | { kind: 'quotes'; heading: string; quotes: Quote[]; image?: string; imageSide?: 'left' | 'right' }
+  | { kind: 'quote'; text: string; attribution: string }
   | { kind: 'takeaways'; heading: string; items: Takeaway[] }
   | { kind: 'prototype'; href: string }
   | { kind: 'solution-rows'; heading: string; rows: SolutionRow[] }
