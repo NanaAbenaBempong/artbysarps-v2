@@ -5,6 +5,12 @@ import Image from 'next/image'
 import Nav from '../components/Nav'
 import type { Track } from '../api/music-previews/route'
 
+// ── Hero typewriter-scramble ──────────────────────────────────────────────────
+const HERO_TEXT        = '\u201cI\u2019m a storyteller. Everything else follows from that.\u201d'
+const SENTENCE_1_END   = 18   // index of the period after "storyteller"
+const SCRAMBLE_POOL    = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz0123456789@#$%&!'
+const INSTANT_CHARS    = new Set([' ', '.', '\u2019', '\u201c', '\u201d'])
+
 // ── Section 4 — When I'm not at a screen ─────────────────────────────────────
 const notAtScreen = [
   {
