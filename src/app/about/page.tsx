@@ -363,7 +363,7 @@ export default function AboutPage() {
               {/* Right: auto-advancing slideshow for the active category */}
               <div className="hidden md:block sticky top-32">
                 {(() => {
-                  const photos = notAtScreen[activeHover].photos
+                  const photos = sections[activeHover].photos
                   return (
                     <div className="flex flex-col gap-4">
                       {/* Frame — stacked images crossfade via opacity */}
