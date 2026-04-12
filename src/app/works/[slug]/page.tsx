@@ -64,6 +64,17 @@ const caseStudies: CaseStudy[] = [
             description:
               'Users want context-aware recommendations for their current mood, not just similarity to past reads.',
           },
+        ],
+      },
+      {
+        kind: 'quote',
+        text: 'The way it flows made me want to scroll.',
+        attribution: '— Usability test participant',
+      },
+      {
+        kind: 'cards',
+        heading: '',
+        cards: [
           {
             label: '02',
             title: 'Lack of Trust',
@@ -77,6 +88,11 @@ const caseStudies: CaseStudy[] = [
               'Too much visual clutter caused users to simply stop scrolling, leading to decision paralysis.',
           },
         ],
+      },
+      {
+        kind: 'quote',
+        text: 'It was not immediately clear to me that I can select more than one.',
+        attribution: '— Usability test participant',
       },
       {
         kind: 'solution-rows',
