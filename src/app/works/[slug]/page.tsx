@@ -9,11 +9,17 @@ type Card = { label: string; title: string; description: string }
 type Quote = string
 type Takeaway = { number: string; heading: string; body: string }
 type SolutionRow = { image: string; imageSide: 'left' | 'right'; label: string; title: string; description: string }
+type InsightRow = {
+  card: Card
+  quote?: { text: string; attribution: string }
+  cardSide: 'left' | 'right'
+}
 type Section =
   | { kind: 'prose'; heading: string; body: string; image?: string; imageSide?: 'left' | 'right' }
   | { kind: 'cards'; heading: string; cards: Card[]; image?: string; imageSide?: 'left' | 'right' }
   | { kind: 'quotes'; heading: string; quotes: Quote[]; image?: string; imageSide?: 'left' | 'right' }
   | { kind: 'quote'; text: string; attribution: string }
+  | { kind: 'insight-rows'; heading: string; rows: InsightRow[] }
   | { kind: 'takeaways'; heading: string; items: Takeaway[] }
   | { kind: 'prototype'; href: string }
   | { kind: 'solution-rows'; heading: string; rows: SolutionRow[] }
