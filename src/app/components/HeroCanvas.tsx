@@ -8,11 +8,12 @@ const FALLBACKS = [
   "He smiled at Otto when he was done and soon wished he hadn't.",
 ]
 
-// Three palettes — each paired with the frame at the same index
-const PALETTES: string[][] = [
-  ['#c17a3a', '#d4a853', '#8a6a2a', '#e8c87a'], // warm earthy  (frame 0)
-  ['#3a6a8a', '#4a5a7a', '#6a4a8a', '#2a4a6a'], // cool moody   (frame 1)
-  ['#8a2a2a', '#c84a2a', '#f5e6c8', '#6a2a1a'], // bold contrast (frame 2)
+// Paintings cycled on each loop — preloaded upfront so they're ready by the time
+// the reveal phase starts (2.2 s draw phase gives plenty of loading time).
+const PAINTING_SRCS = [
+  '/paintings/unrestrained/unrestrained-23.png',  // bold colour-block rectangles (Rest)
+  '/paintings/unrestrained/unrestrained-11.png',  // Squares — lime green geometric
+  '/paintings/unrestrained/unrestrained-12.png',  // Circles — gold on black
 ]
 
 // Primitive types — coords as fractions of CW (x/w) and CH (y/h); circle.r is fraction of CW
