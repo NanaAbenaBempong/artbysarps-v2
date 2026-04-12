@@ -12,7 +12,7 @@ export default function FittGradPage() {
 
           {/* ── Back link ─────────────────────────────────────────── */}
           <Link
-            href="/"
+            href="/works"
             className="text-xs text-[#8C8278] hover:text-[#2C2820] transition-colors duration-200 uppercase tracking-widest block mb-16"
           >
             ← All works
