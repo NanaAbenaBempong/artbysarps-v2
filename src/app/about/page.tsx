@@ -98,10 +98,24 @@ const skills = [
   'Prototyping',
 ]
 
+function shuffled<T>(arr: T[]): T[] {
+  const a = [...arr]
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]]
+  }
+  return a
+}
+
 export default function AboutPage() {
   const [mounted, setMounted]         = useState(false)
   const [hoveredItem, setHoveredItem] = useState<number>(0)
   const [photoIndex, setPhotoIndex]   = useState(0)
+
+  // Shuffled photo arrays — randomised once on mount, stable thereafter
+  const [sections] = useState(() =>
+    notAtScreen.map(s => ({ ...s, photos: shuffled(s.photos) }))
+  )
 
   // Suppress hydration mismatch: hoveredItem-driven class names and the
   // carousel differ between server and client renders.
