@@ -100,14 +100,32 @@ const skills = [
 
 export default function AboutPage() {
   const [mounted, setMounted]         = useState(false)
-  const [hoveredItem, setHoveredItem] = useState<number | null>(null)
+  const [hoveredItem, setHoveredItem] = useState<number>(0)
+  const [photoIndex, setPhotoIndex]   = useState(0)
 
-  // Suppress hydration mismatch: hoveredItem-driven class names and the photo
-  // grid vs placeholder grid differ between server (null) and client renders.
+  // Suppress hydration mismatch: hoveredItem-driven class names and the
+  // carousel differ between server and client renders.
   // Only apply interactive state after mount so both renders start identically.
   useEffect(() => { setMounted(true) }, [])
 
-  const activeHover = mounted ? hoveredItem : null
+  const activeHover = mounted ? hoveredItem : 0
+
+  function handleSectionEnter(i: number) {
+    if (i !== hoveredItem) {
+      setHoveredItem(i)
+      setPhotoIndex(0)
+    }
+  }
+
+  function goToPrev() {
+    const photos = notAtScreen[activeHover].photos
+    setPhotoIndex(idx => (idx - 1 + photos.length) % photos.length)
+  }
+
+  function goToNext() {
+    const photos = notAtScreen[activeHover].photos
+    setPhotoIndex(idx => (idx + 1) % photos.length)
+  }
 
   // ── Music state ───────────────────────────────────────────────────────────
   const [tracks, setTracks]           = useState<Track[]>([])
