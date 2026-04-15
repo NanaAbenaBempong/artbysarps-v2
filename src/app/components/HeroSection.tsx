@@ -5,6 +5,13 @@ import { Laptop, Paintbrush, Feather } from 'lucide-react'
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
+const AVAILABILITY = [
+  'Open to full-time roles',
+  'Open to networking',
+  'Open to coffee chats',
+  'Open to collaborations',
+]
+
 // Space at index 8 snaps instantly — no scramble
 const NAME_CHARS   = 'Sarpomaa Bempong'.split('')
 const NAME_INSTANT = new Set([' '])
