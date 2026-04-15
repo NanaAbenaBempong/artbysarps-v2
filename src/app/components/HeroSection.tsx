@@ -176,7 +176,7 @@ export default function HeroSection() {
         </div>
 
         {/* Label */}
-        <p className="text-xs uppercase tracking-[0.25em] text-[#8C8278] mb-4">
+        <p className="text-xs uppercase tracking-[0.25em] text-[#8C8278] mb-4 md:mb-8">
           Product designer · painter · writer
         </p>
 
