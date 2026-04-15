@@ -5,10 +5,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 const NAV_LINKS = [
-  { label: 'Works',    href: '/works' },
-  { label: 'Paintings', href: '/paintings' },
-  { label: 'Writing',  href: 'https://writings.artbysarps.com', target: '_blank', rel: 'noopener noreferrer' },
-  { label: 'About',    href: '/about' },
+  { label: 'Works',    href: '/works',                               target: undefined as string | undefined, rel: undefined as string | undefined, pill: false },
+  { label: 'Paintings', href: '/paintings',                          target: undefined as string | undefined, rel: undefined as string | undefined, pill: false },
+  { label: 'Writing',  href: 'https://writings.artbysarps.com',      target: '_blank',                        rel: 'noopener noreferrer',            pill: false },
+  { label: 'About',    href: '/about',                               target: undefined as string | undefined, rel: undefined as string | undefined, pill: false },
+  { label: 'Resume',   href: '/sarpomaa-bempong-resume.pdf',         target: '_blank',                        rel: 'noopener noreferrer',            pill: true  },
 ]
 
 export default function Nav({ forceDark = false }: { forceDark?: boolean }) {
