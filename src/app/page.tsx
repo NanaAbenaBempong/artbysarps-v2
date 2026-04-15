@@ -290,7 +290,7 @@ export default function Home() {
         </section>
 
         {/* ── Contact ───────────────────────────────────────────── */}
-        <section className="bg-[#060A10] px-8 pt-16 pb-10">
+        <section className="bg-[#060A10] px-8 pt-8 pb-10">
           <div className="max-w-6xl mx-auto">
             {/* Heading */}
             <h2
