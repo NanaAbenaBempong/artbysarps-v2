@@ -458,14 +458,23 @@ export default function AboutPage() {
                       i < notAtScreen.length - 1 ? 'border-b border-[#E8E4E0]' : ''
                     } ${i === 0 ? 'border-t border-[#E8E4E0]' : ''}`}
                     onMouseEnter={() => handleSectionEnter(i)}
+                    onClick={() => handleSectionEnter(i)}
                   >
                     <p className={`text-base transition-colors duration-200 ${
                       activeHover === i ? 'text-[#2C2820]' : 'text-[#5C4D3C]'
                     }`}>
-                      {item.label}
+                      <span className={`md:no-underline ${
+                        activeHover === i ? 'underline underline-offset-4 decoration-[#C4B8AE]' : ''
+                      } md:decoration-transparent`}>
+                        {item.label}
+                      </span>
                     </p>
                   </div>
                 ))}
+                {/* Tap hint — mobile only */}
+                <p className="md:hidden text-center mt-4" style={{ fontSize: '11px', color: '#B0A090' }}>
+                  tap a section to explore
+                </p>
               </div>
 
               {/* Right: auto-advancing slideshow for the active category */}
