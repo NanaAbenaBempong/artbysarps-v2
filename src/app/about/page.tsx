@@ -293,7 +293,7 @@ export default function AboutPage() {
                   I design digital products that reduce friction and respect people&rsquo;s time,
                   grounded in research and shaped by empathy. I paint in Procreate, exploring
                   geometry, abstraction, and colour as their own kind of language. And I write
-                  stories that sit with questions I haven&rsquo;t figured out yet.
+                  stories that pique your curiosity and attempt to satisfy it.
                 </p>
                 <p className="text-base text-[#5C4D3C] leading-relaxed">
                   The three practices aren&rsquo;t separate. They borrow from each other constantly.
