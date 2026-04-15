@@ -1,8 +1,10 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import Nav from '../../components/Nav'
+import { getAdjacentWorks } from '../../../lib/works'
 
 export default function BreathingInterfacePage() {
+  const { prev, next } = getAdjacentWorks('breathing-interface')
   return (
     <>
       <Nav />
