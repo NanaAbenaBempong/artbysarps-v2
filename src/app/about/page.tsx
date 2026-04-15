@@ -87,7 +87,7 @@ const practices = [
   },
   {
     label:   'Writing',
-    default: 'I write to sit with questions I haven\u2019t solved.',
+    default: 'I write stories that make you want more.',
     hover:   null, // rendered manually to include a link
     href:    'https://writings.artbysarps.com',
   },
