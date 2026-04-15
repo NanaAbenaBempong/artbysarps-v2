@@ -520,27 +520,6 @@ export default function AboutPage() {
             </div>
           </section>
 
-          {/* ── Section 5 — Skills and availability ───────────────────── */}
-          <section>
-            <p className="text-xs uppercase tracking-[0.25em] text-[#8C8278] mb-10">
-              Skills
-            </p>
-
-            <div className="flex flex-wrap gap-3 mb-8">
-              {skills.map((skill) => (
-                <span
-                  key={skill}
-                  className="text-xs uppercase tracking-[0.15em] text-[#5C4D3C] border border-[#E8E4E0] rounded-full px-4 py-2"
-                >
-                  {skill}
-                </span>
-              ))}
-            </div>
-
-            <p className="text-sm text-[#8C8278] leading-relaxed">
-              Currently open to full-time roles and freelance collaborations.
-            </p>
-          </section>
 
         </div>
       </main>
