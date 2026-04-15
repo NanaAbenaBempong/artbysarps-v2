@@ -316,7 +316,7 @@ export default function AboutPage() {
                   {skills.map((skill) => (
                     <span
                       key={skill}
-                      className="text-xs uppercase tracking-[0.15em] text-[#5C4D3C] border border-[#E8E4E0] rounded-full px-4 py-2"
+                      className="text-xs tracking-[0.05em] text-[#5C4D3C] border border-[#E8E4E0] rounded-full px-4 py-2"
                     >
                       {skill}
                     </span>
