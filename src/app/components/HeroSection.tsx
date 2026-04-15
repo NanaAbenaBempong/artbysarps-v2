@@ -39,6 +39,20 @@ export default function HeroSection() {
   const [nameChars, setNameChars] = useState<CS[] | null>(null)
   const [taglines,  setTaglines]  = useState<Array<{ visible: boolean; chars: CS[] }> | null>(null)
 
+  const [availIdx,     setAvailIdx]     = useState(0)
+  const [availVisible, setAvailVisible] = useState(true)
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setAvailVisible(false)
+      setTimeout(() => {
+        setAvailIdx(i => (i + 1) % AVAILABILITY.length)
+        setAvailVisible(true)
+      }, 300)
+    }, 3000)
+    return () => clearInterval(id)
+  }, [])
+
   useEffect(() => {
     let cancelled = false
 
