@@ -637,26 +637,18 @@ export default async function CaseStudyPage({
 
           {/* Footer nav */}
           <div className="flex items-center justify-between border-t border-[#E8E4E0] pt-10 mt-8">
-            {cs.prev ? (
-              <Link
-                href={`/works/${cs.prev.slug}`}
-                className="text-xs text-[#8C8278] hover:text-[#2C2820] transition-colors duration-200 uppercase tracking-widest"
-              >
-                ← {cs.prev.title}
-              </Link>
-            ) : (
-              <span />
-            )}
-            {cs.next ? (
-              <Link
-                href={`/works/${cs.next.slug}`}
-                className="text-xs text-[#8C8278] hover:text-[#2C2820] transition-colors duration-200 uppercase tracking-widest"
-              >
-                {cs.next.title} →
-              </Link>
-            ) : (
-              <span />
-            )}
+            <Link
+              href={`/works/${prev.slug}`}
+              className="text-xs text-[#8C8278] hover:text-[#2C2820] transition-colors duration-200 uppercase tracking-widest"
+            >
+              ← {prev.title}
+            </Link>
+            <Link
+              href={`/works/${next.slug}`}
+              className="text-xs text-[#8C8278] hover:text-[#2C2820] transition-colors duration-200 uppercase tracking-widest"
+            >
+              {next.title} →
+            </Link>
           </div>
 
         </div>
