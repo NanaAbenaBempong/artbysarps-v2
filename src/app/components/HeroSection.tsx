@@ -153,17 +153,14 @@ export default function HeroSection() {
     <div
       className="inline-flex items-center gap-2 rounded-full px-3 py-1.5"
       style={{
-        background: '#F0EDE8',
-        border: '0.5px solid #D9D3CC',
+        background: '#080C14',
         fontSize: '12px',
-        color: '#5C4D3C',
+        color: '#FAF8F4',
         fontFamily: 'sans-serif',
-        opacity: availVisible ? 1 : 0,
-        transition: 'opacity 0.3s ease',
         whiteSpace: 'nowrap',
       }}
     >
-      {/* Green pulsing dot */}
+      {/* Green pulsing dot — always visible, never animates away */}
       <span className="relative flex items-center justify-center" style={{ width: '8px', height: '8px', flexShrink: 0 }}>
         <span
           className="absolute inline-flex rounded-full animate-ping"
@@ -174,7 +171,22 @@ export default function HeroSection() {
           style={{ width: '6px', height: '6px', background: '#4CAF50' }}
         />
       </span>
-      {AVAILABILITY[availIdx]}
+
+      {/* Slot machine — clip to one line, stack shifts up */}
+      <div style={{ height: `${SLOT_ITEM_H}px`, overflow: 'hidden' }}>
+        <div
+          style={{
+            transform: `translateY(-${slotIdx * SLOT_ITEM_H}px)`,
+            transition: slotAnimate ? 'transform 0.4s ease-in-out' : 'none',
+          }}
+        >
+          {SLOT_ITEMS.map((phrase, i) => (
+            <div key={i} style={{ height: `${SLOT_ITEM_H}px`, lineHeight: `${SLOT_ITEM_H}px` }}>
+              {phrase}
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   )
 
