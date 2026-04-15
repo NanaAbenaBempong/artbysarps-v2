@@ -18,6 +18,7 @@ const notAtScreen = [
     photos: [
       { src: '/about/reading/vanishing-half.jpg',  alt: 'The Vanishing Half' },
       { src: '/about/reading/notes-on-grief.jpg',  alt: 'Notes on Grief' },
+      { src: '/about/reading/grammar_queen.jpeg',  alt: 'Grammar Queen' },
     ],
   },
   {
