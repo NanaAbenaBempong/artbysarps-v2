@@ -120,6 +120,7 @@ export default function AboutPage() {
   const [mounted, setMounted]         = useState(false)
   const [hoveredItem, setHoveredItem] = useState<number>(0)
   const [photoIndex, setPhotoIndex]   = useState(0)
+  const [tappedCard, setTappedCard]   = useState<string | null>(null)
 
   // Shuffled photo arrays — randomised once on mount, stable thereafter
   const [sections] = useState(() =>
