@@ -137,14 +137,53 @@ export default function HeroSection() {
     return () => { cancelled = true }
   }, [])
 
+  const badge = (
+    <div
+      className="inline-flex items-center gap-2 rounded-full px-3 py-1.5"
+      style={{
+        background: '#F0EDE8',
+        border: '0.5px solid #D9D3CC',
+        fontSize: '12px',
+        color: '#5C4D3C',
+        fontFamily: 'sans-serif',
+        opacity: availVisible ? 1 : 0,
+        transition: 'opacity 0.3s ease',
+        whiteSpace: 'nowrap',
+      }}
+    >
+      {/* Green pulsing dot */}
+      <span className="relative flex items-center justify-center" style={{ width: '8px', height: '8px', flexShrink: 0 }}>
+        <span
+          className="absolute inline-flex rounded-full animate-ping"
+          style={{ width: '8px', height: '8px', background: '#4CAF50', opacity: 0.4 }}
+        />
+        <span
+          className="relative inline-flex rounded-full"
+          style={{ width: '6px', height: '6px', background: '#4CAF50' }}
+        />
+      </span>
+      {AVAILABILITY[availIdx]}
+    </div>
+  )
+
   return (
     <section className="bg-[#FAF8F4] px-8" style={{ paddingTop: '14vh', paddingBottom: '3.5vh' }}>
-      <div className="max-w-6xl mx-auto w-full">
+      <div className="relative max-w-6xl mx-auto w-full">
+
+        {/* Badge — desktop: absolute top-right; mobile: inline below label */}
+        <div className="hidden md:block absolute top-0 right-0">
+          {badge}
+        </div>
 
         {/* Label */}
-        <p className="text-xs uppercase tracking-[0.25em] text-[#8C8278] mb-8">
+        <p className="text-xs uppercase tracking-[0.25em] text-[#8C8278] mb-4">
           Product designer · painter · writer
         </p>
+
+        {/* Badge — mobile only, left-aligned below label */}
+        <div className="md:hidden mb-8">
+          {badge}
+        </div>
 
         {/* Name — single line, fluid size */}
         <h1
