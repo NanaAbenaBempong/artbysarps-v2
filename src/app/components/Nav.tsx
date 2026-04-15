@@ -83,6 +83,19 @@ export default function Nav({ forceDark = false }: { forceDark?: boolean }) {
                 {label}
               </a>
             ))}
+            <a
+              href="/sarpomaa-bempong-resume.pdf"
+              download
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`text-xs uppercase tracking-widest transition-colors duration-200 rounded-full px-3 py-1.5 border ${
+                navIsDark
+                  ? 'text-[#8AAAD8] border-[#1A2E48] hover:text-[#C8D8F0] hover:border-[#384868]'
+                  : 'text-[#8C8278] border-[#E8E4E0] hover:text-[#2C2820] hover:border-[#C4B8AE]'
+              }`}
+            >
+              Resume
+            </a>
           </div>
 
           {/* Hamburger button — mobile only */}
