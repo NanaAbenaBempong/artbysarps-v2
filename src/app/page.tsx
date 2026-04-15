@@ -295,7 +295,7 @@ export default function Home() {
             {/* Heading */}
             <h2
               className="font-serif italic text-[#FAF8F4] leading-none mb-12"
-              style={{ fontSize: 'clamp(48px, 6vw, 64px)' }}
+              style={{ fontSize: 'clamp(64px, 8vw, 96px)' }}
             >
               Say hello.
             </h2>
