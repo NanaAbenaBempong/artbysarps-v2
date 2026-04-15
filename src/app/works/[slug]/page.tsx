@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import Nav from '../../components/Nav'
+import { getAdjacentWorks } from '../../../lib/works'
 
 /* ── Types ──────────────────────────────────────────────────────── */
 
