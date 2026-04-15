@@ -334,43 +334,59 @@ export default function AboutPage() {
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {practices.map((card) => (
-                <div
-                  key={card.label}
-                  className="group border border-[#E8E4E0] rounded-2xl p-8 flex flex-col gap-4 min-h-[180px] justify-between"
-                >
-                  <p className="text-xs uppercase tracking-[0.2em] text-[#8C8278]">
-                    {card.label}
-                  </p>
-
-                  <div className="relative flex-1 flex items-end">
-                    {/* Default line — fades out on hover */}
-                    <p className="font-serif text-lg text-[#2C2820] leading-snug absolute inset-0 flex items-end transition-opacity duration-300 group-hover:opacity-0">
-                      {card.default}
+              {practices.map((card) => {
+                const isTapped = mounted && tappedCard === card.label
+                return (
+                  <div
+                    key={card.label}
+                    className={`group rounded-2xl p-8 flex flex-col gap-4 min-h-[180px] justify-between transition-colors duration-200 border ${
+                      isTapped ? 'border-[#C4B8AE]' : 'border-[#E8E4E0]'
+                    }`}
+                    onClick={() => setTappedCard(prev => prev === card.label ? null : card.label)}
+                  >
+                    <p className="text-xs uppercase tracking-[0.2em] text-[#8C8278]">
+                      {card.label}
                     </p>
 
-                    {/* Hover line — fades in */}
-                    <div className="font-serif italic text-base text-[#5C4D3C] leading-relaxed absolute inset-0 flex items-end opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                      {card.label === 'Writing' ? (
-                        <p>
-                          Short stories and longer fiction at{' '}
-                          <a
-                            href="https://writings.artbysarps.com"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-[#5C4D3C] underline underline-offset-2 hover:text-[#2C2820] transition-colors duration-200"
-                          >
-                            writings.artbysarps.com
-                          </a>
-                        </p>
-                      ) : (
-                        <p>{card.hover}</p>
-                      )}
+                    <div className="relative flex-1 flex items-end">
+                      {/* Default line — fades out on hover (desktop) or tap (mobile) */}
+                      <p
+                        className="font-serif text-lg text-[#2C2820] leading-snug absolute inset-0 flex items-end transition-opacity duration-300 group-hover:opacity-0"
+                        style={{ opacity: isTapped ? 0 : undefined }}
+                      >
+                        {card.default}
+                      </p>
+
+                      {/* Hover/tap line — fades in */}
+                      <div
+                        className="font-serif italic text-base text-[#5C4D3C] leading-relaxed absolute inset-0 flex items-end opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                        style={{ opacity: isTapped ? 1 : undefined }}
+                      >
+                        {card.label === 'Writing' ? (
+                          <p>
+                            Short stories and longer fiction at{' '}
+                            <a
+                              href="https://writings.artbysarps.com"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-[#5C4D3C] underline underline-offset-2 hover:text-[#2C2820] transition-colors duration-200"
+                            >
+                              writings.artbysarps.com
+                            </a>
+                          </p>
+                        ) : (
+                          <p>{card.hover}</p>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
+            {/* Tap hint — mobile only */}
+            <p className="md:hidden text-center mt-5" style={{ fontSize: '11px', color: '#B0A090' }}>
+              tap a card to explore
+            </p>
           </section>
 
           {/* ── Section 3 — Currently listening ───────────────────────── */}
