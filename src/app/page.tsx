@@ -290,34 +290,39 @@ export default function Home() {
         </section>
 
         {/* ── Contact ───────────────────────────────────────────── */}
-        <section className="bg-[#060A10] px-8 py-32">
+        <section className="bg-[#060A10] px-8 pt-16 pb-10">
           <div className="max-w-6xl mx-auto">
-            <h2 className="font-serif text-4xl sm:text-5xl text-[#C8D8F0] mb-16 leading-snug">
-              Let's build something.
+            {/* Heading */}
+            <h2
+              className="font-serif italic text-[#FAF8F4] leading-none mb-12"
+              style={{ fontSize: 'clamp(48px, 6vw, 64px)' }}
+            >
+              Say hello.
             </h2>
-            <div className="flex flex-col gap-5">
+
+            {/* Links row */}
+            <div className="flex items-center gap-6 mb-16">
               <a
-                href="mailto:hello@artbysarps.com"
-                className="text-xs text-[#8AAAD8] hover:text-[#C8D8F0] transition-colors duration-200 uppercase tracking-widest w-fit"
+                href="mailto:bempong.n@northeastern.edu"
+                className="text-xs uppercase tracking-widest text-[#9B8E7E] hover:text-[#FAF8F4] transition-colors duration-200 border-b border-[#9B8E7E]/40 pb-0.5 hover:border-[#FAF8F4]/40"
               >
                 Email
               </a>
+              <span className="text-[#2A3040] select-none">|</span>
               <a
-                href="https://linkedin.com/in/sarpomaa-bempong"
+                href="https://linkedin.com/in/nanaabenabempong/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs text-[#8AAAD8] hover:text-[#C8D8F0] transition-colors duration-200 uppercase tracking-widest w-fit"
+                className="text-xs uppercase tracking-widest text-[#9B8E7E] hover:text-[#FAF8F4] transition-colors duration-200 border-b border-[#9B8E7E]/40 pb-0.5 hover:border-[#FAF8F4]/40"
               >
                 LinkedIn
               </a>
-              <a
-                href="https://artbysarps.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs text-[#8AAAD8] hover:text-[#C8D8F0] transition-colors duration-200 uppercase tracking-widest w-fit"
-              >
-                artbysarps.com
-              </a>
+            </div>
+
+            {/* Bottom row */}
+            <div className="flex items-center justify-between border-t border-[#0D1525] pt-6">
+              <p className="text-[11px] text-[#384868]">© 2026 Sarpomaa Bempong</p>
+              <p className="text-[11px] text-[#384868]">Boston, MA</p>
             </div>
           </div>
         </section>
