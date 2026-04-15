@@ -317,8 +317,6 @@ const caseStudies: CaseStudy[] = [
         ],
       },
     ],
-    prev: { slug: 'breathing-interface', title: 'The Breathing Interface' },
-    next: null,
   },
 ]
 
