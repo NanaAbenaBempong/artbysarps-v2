@@ -463,9 +463,7 @@ export default function AboutPage() {
                     <p className={`text-base transition-colors duration-200 ${
                       activeHover === i ? 'text-[#2C2820]' : 'text-[#5C4D3C]'
                     }`}>
-                      <span className={`md:no-underline ${
-                        activeHover === i ? 'underline underline-offset-4 decoration-[#C4B8AE]' : ''
-                      } md:decoration-transparent`}>
+                      <span className={activeHover === i ? 'underline underline-offset-4 decoration-[#C4B8AE] md:no-underline' : ''}>
                         {item.label}
                       </span>
                     </p>
