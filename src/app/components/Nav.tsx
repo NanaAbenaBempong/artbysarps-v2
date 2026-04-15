@@ -140,6 +140,16 @@ export default function Nav({ forceDark = false }: { forceDark?: boolean }) {
               {label}
             </a>
           ))}
+          <a
+            href="/sarpomaa-bempong-resume.pdf"
+            download
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs uppercase tracking-widest text-[#8AAAD8] hover:text-[#C8D8F0] transition-colors duration-200 border border-[#1A2E48] hover:border-[#384868] rounded-full px-5 py-2"
+            onClick={() => setMenuOpen(false)}
+          >
+            Resume
+          </a>
         </nav>
       </div>
     </>
