@@ -209,16 +209,16 @@ export default function BreathingInterfacePage() {
         <div className="max-w-[800px] mx-auto px-8">
           <div className="flex items-center justify-between border-t border-[#E8E4E0] pt-10">
             <Link
-              href="/works/readnext"
+              href={`/works/${prev.slug}`}
               className="text-xs text-[#8C8278] hover:text-[#2C2820] transition-colors duration-200 uppercase tracking-widest"
             >
-              ← ReadNext
+              ← {prev.title}
             </Link>
             <Link
-              href="/works/fittgrad"
+              href={`/works/${next.slug}`}
               className="text-xs text-[#8C8278] hover:text-[#2C2820] transition-colors duration-200 uppercase tracking-widest"
             >
-              FittGrad →
+              {next.title} →
             </Link>
           </div>
         </div>
