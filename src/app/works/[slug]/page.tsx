@@ -32,8 +32,6 @@ type CaseStudy = {
   heroImage?: string
   meta: { label: string; value: string }[]
   sections: Section[]
-  prev: { slug: string; title: string } | null
-  next: { slug: string; title: string } | null
 }
 
 /* ── Data ───────────────────────────────────────────────────────── */
