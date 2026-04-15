@@ -124,28 +124,22 @@ export default function Nav({ forceDark = false }: { forceDark?: boolean }) {
         </button>
 
         <nav className="flex flex-col items-center gap-10" onClick={e => e.stopPropagation()}>
-          {NAV_LINKS.map(({ label, href, target, rel }) => (
+          {NAV_LINKS.map(({ label, href, target, rel, pill }) => (
             <a
               key={label}
               href={href}
               target={target}
               rel={rel}
-              className="font-serif text-4xl text-[#C8D8F0] hover:text-[#8AAAD8] transition-colors duration-200"
+              className={
+                pill
+                  ? 'text-xs uppercase tracking-widest text-[#8AAAD8] hover:text-[#C8D8F0] transition-colors duration-200 border border-[#1A2E48] hover:border-[#384868] rounded-full px-5 py-2'
+                  : 'font-serif text-4xl text-[#C8D8F0] hover:text-[#8AAAD8] transition-colors duration-200'
+              }
               onClick={() => setMenuOpen(false)}
             >
               {label}
             </a>
           ))}
-          <a
-            href="/sarpomaa-bempong-resume.pdf"
-            download
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs uppercase tracking-widest text-[#8AAAD8] hover:text-[#C8D8F0] transition-colors duration-200 border border-[#1A2E48] hover:border-[#384868] rounded-full px-5 py-2"
-            onClick={() => setMenuOpen(false)}
-          >
-            Resume
-          </a>
         </nav>
       </div>
     </>
