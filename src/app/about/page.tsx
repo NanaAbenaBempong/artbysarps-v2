@@ -94,14 +94,16 @@ const practices = [
 
 
 const skills = [
-  'Product Design',
-  'UX/UI',
-  'User Research',
-  'Visual Design',
+  'Interaction Design',
+  'UX Research',
+  'Figma',
+  'Usability Testing',
+  'Human-Centered Design',
+  'Information Architecture',
+  'AI-Assisted Prototyping',
+  'Front-End Development',
   'Digital Painting',
-  'Design Systems',
   'Creative Writing',
-  'Prototyping',
 ]
 
 function shuffled<T>(arr: T[]): T[] {
