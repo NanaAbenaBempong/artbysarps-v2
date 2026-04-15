@@ -493,7 +493,7 @@ export default function AboutPage() {
               </div>
 
               {/* Right: auto-advancing slideshow for the active category */}
-              <div className="hidden md:block sticky top-32">
+              <div className="md:sticky md:top-32">
                 {(() => {
                   const photos = sections[activeHover].photos
                   return (
@@ -501,7 +501,7 @@ export default function AboutPage() {
                       {/* Frame — stacked images crossfade via opacity */}
                       <div
                         className="relative w-full rounded-2xl overflow-hidden"
-                        style={{ height: '380px', background: '#F5F3EF' }}
+                        style={{ height: 'clamp(260px, 50vw, 380px)', background: '#F5F3EF' }}
                       >
                         {photos.map((photo, idx) => (
                           <div
