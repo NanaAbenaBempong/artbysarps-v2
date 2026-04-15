@@ -284,19 +284,45 @@ export default function AboutPage() {
               }
             </h1>
 
-            <div className="max-w-2xl flex flex-col gap-6">
-              <p className="text-base text-[#5C4D3C] leading-relaxed">
-                I&rsquo;m Sarpomaa, a product designer, painter, and writer based in Boston.
-                I design digital products that reduce friction and respect people&rsquo;s time,
-                grounded in research and shaped by empathy. I paint in Procreate, exploring
-                geometry, abstraction, and colour as their own kind of language. And I write
-                stories that sit with questions I haven&rsquo;t figured out yet.
-              </p>
-              <p className="text-base text-[#5C4D3C] leading-relaxed">
-                The three practices aren&rsquo;t separate. They borrow from each other constantly.
-                Good design tells a story. A good painting has structure. Good writing, like good
-                UX, knows what to leave out.
-              </p>
+            <div className="flex flex-col md:flex-row gap-12 md:gap-16 items-start">
+              {/* Left — bio (~60%) */}
+              <div className="flex flex-col gap-6 md:w-[60%]">
+                <p className="text-base text-[#5C4D3C] leading-relaxed">
+                  I&rsquo;m Sarpomaa, a product designer, painter, and writer based in Boston.
+                  I design digital products that reduce friction and respect people&rsquo;s time,
+                  grounded in research and shaped by empathy. I paint in Procreate, exploring
+                  geometry, abstraction, and colour as their own kind of language. And I write
+                  stories that sit with questions I haven&rsquo;t figured out yet.
+                </p>
+                <p className="text-base text-[#5C4D3C] leading-relaxed">
+                  The three practices aren&rsquo;t separate. They borrow from each other constantly.
+                  Good design tells a story. A good painting has structure. Good writing, like good
+                  UX, knows what to leave out.
+                </p>
+                <div className="border-t border-[#E8E4E0]/60 pt-4">
+                  <p style={{ fontSize: '13px', color: '#9B8E7E', lineHeight: '1.6' }}>
+                    Currently completing my MS at Northeastern and open to full-time product design
+                    roles from May 2026 — in Boston, hybrid, or remote.
+                  </p>
+                </div>
+              </div>
+
+              {/* Right — skills (~40%) */}
+              <div className="md:w-[40%]">
+                <p className="text-xs uppercase tracking-[0.25em] text-[#8C8278] mb-5">
+                  Skills
+                </p>
+                <div className="flex flex-wrap gap-2.5">
+                  {skills.map((skill) => (
+                    <span
+                      key={skill}
+                      className="text-xs uppercase tracking-[0.15em] text-[#5C4D3C] border border-[#E8E4E0] rounded-full px-4 py-2"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
           </section>
 
