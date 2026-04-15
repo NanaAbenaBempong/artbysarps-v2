@@ -225,16 +225,16 @@ export default function FittGradPage() {
           {/* ── Footer nav ────────────────────────────────────────── */}
           <div className="flex items-center justify-between border-t border-[#E8E4E0] pt-10 mt-8">
             <Link
-              href="/works/readnext"
+              href={`/works/${prev.slug}`}
               className="text-xs text-[#8C8278] hover:text-[#2C2820] transition-colors duration-200 uppercase tracking-widest"
             >
-              ← ReadNext
+              ← {prev.title}
             </Link>
             <Link
-              href="/works/breathing-interface"
+              href={`/works/${next.slug}`}
               className="text-xs text-[#8C8278] hover:text-[#2C2820] transition-colors duration-200 uppercase tracking-widest"
             >
-              The Breathing Interface →
+              {next.title} →
             </Link>
           </div>
 
