@@ -302,8 +302,7 @@ export default function AboutPage() {
                 </p>
                 <div className="border-t border-[#E8E4E0]/60 pt-4">
                   <p style={{ fontSize: '13px', color: '#9B8E7E', lineHeight: '1.6' }}>
-                    Currently completing my MS at Northeastern and open to full-time product design
-                    roles from May 2026 — in Boston, hybrid, or remote.
+                    Currently completing my MS in Information Systems at Northeastern and open to full-time product design roles from May 2026, in Boston, hybrid, or remote.
                   </p>
                 </div>
               </div>
