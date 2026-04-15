@@ -73,7 +73,10 @@ export default function WorksPage() {
           <div className="flex flex-col">
             {works.map((work) => (
               <div key={work.title}>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center py-16">
+                <Link
+                  href={work.href}
+                  className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center py-16 cursor-pointer group block"
+                >
 
                   {/* Image */}
                   <div
@@ -109,15 +112,12 @@ export default function WorksPage() {
                     <p className="text-[#5C4D3C] text-base leading-relaxed mb-6">
                       {work.description}
                     </p>
-                    <Link
-                      href={work.href}
-                      className="text-xs uppercase tracking-widest text-[#8C8278] hover:text-[#2C2820] transition-colors duration-200"
-                    >
+                    <span className="text-xs uppercase tracking-widest text-[#8C8278] group-hover:text-[#2C2820] transition-colors duration-200">
                       {work.linkLabel} →
-                    </Link>
+                    </span>
                   </div>
 
-                </div>
+                </Link>
                 <div className="border-t border-[#E8E4E0]" />
               </div>
             ))}
