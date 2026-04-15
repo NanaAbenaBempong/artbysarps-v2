@@ -558,6 +558,7 @@ export default async function CaseStudyPage({
   const { slug } = await params
   const cs = caseStudies.find((c) => c.slug === slug)
   if (!cs) notFound()
+  const { prev, next } = getAdjacentWorks(slug)
 
   return (
     <>
