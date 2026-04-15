@@ -85,7 +85,6 @@ export default function Nav({ forceDark = false }: { forceDark?: boolean }) {
             ))}
             <a
               href="/sarpomaa-bempong-resume.pdf"
-              download
               target="_blank"
               rel="noopener noreferrer"
               className={`text-xs uppercase tracking-widest transition-colors duration-200 rounded-full px-3 py-1.5 border ${
