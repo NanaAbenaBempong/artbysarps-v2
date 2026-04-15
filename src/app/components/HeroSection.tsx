@@ -39,16 +39,28 @@ export default function HeroSection() {
   const [nameChars, setNameChars] = useState<CS[] | null>(null)
   const [taglines,  setTaglines]  = useState<Array<{ visible: boolean; chars: CS[] }> | null>(null)
 
-  const [availIdx,     setAvailIdx]     = useState(0)
-  const [availVisible, setAvailVisible] = useState(true)
+  const SLOT_ITEM_H   = 18  // px — clip window height & per-item height
+  const SLOT_ITEMS    = [...AVAILABILITY, AVAILABILITY[0]]  // duplicate first for seamless loop
+
+  const availIdxRef   = useRef(0)
+  const [slotIdx,     setSlotIdx]     = useState(0)
+  const [slotAnimate, setSlotAnimate] = useState(false)
 
   useEffect(() => {
     const id = setInterval(() => {
-      setAvailVisible(false)
-      setTimeout(() => {
-        setAvailIdx(i => (i + 1) % AVAILABILITY.length)
-        setAvailVisible(true)
-      }, 300)
+      const next = availIdxRef.current + 1
+      setSlotAnimate(true)
+      setSlotIdx(next)
+      availIdxRef.current = next
+
+      if (next >= AVAILABILITY.length) {
+        // After transition finishes, snap silently back to index 0
+        setTimeout(() => {
+          setSlotAnimate(false)
+          setSlotIdx(0)
+          availIdxRef.current = 0
+        }, 420)
+      }
     }, 3000)
     return () => clearInterval(id)
   }, [])
